@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--CSS link-->
+    <link rel="stylesheet" href="Discover/css/discoverstyle.css">
+    <!--Font links-->
+    <link href="https://fonts.googleapis.com/css2?family=Life+Savers:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <!--Icons link-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://kit.fontawesome.com/6f3e3dc980.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-------- NAVBAR --------->
+    <nav class="nav">
+        <a class="nav-logo" onclick="showPage('main')">
+           <img src="Discover/images/logo.png" alt="Palette" style="height:60px; width:auto; display:block;">
+        </a>
+        <ul class="nav-links">
+            <li><a>dashboard</a></li>
+            <li class="nav-sep">|</li>
+            <li><a>logbook</a></li>
+            <li class="nav-sep">|</li>
+            <li><a>discover</a></li>
+            <li class="nav-sep">|</li>
+            <li><a>profile</a></li>
+        </ul>
+    </nav>
+    <section>
+        <div class="folder1">
+            <br>
+            <h4 id="subtitle" style="margin-left:30px;"> ★ wander through worlds</h4>
+            <h1 id="title" style="margin-left: 50px;">Discover <em>&amp; Browse</em></h1>
+            <h4 id="subtitle"style="margin-left:50px;">
+                this is where taste gets a little messy. songs next to films, books beside random thoughts, reviews that hit or miss—<br>
+                but somehow, it all makes sense once you start browsing.
+            </h4>
+            <br>
+            <div class="search-bar">
+                <div class="search-input" >
+                    <i class="material-icons">search</i>
+                    <input type="text" placeholder="search for whatever you desire..."/>
+                </div>
+                <button class="search-button">
+                    <i class="material-icons">search</i>
+                     Search
+                </button> 
+            </div>
+            <div class="filter">
+                <div class="filter-pill active" onclick="setFilter(this)"><i class="fa-solid fa-star"></i> All</div>
+                <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-music"></i> Music</div>
+                <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-film"></i> Films</div>
+                <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-book"></i>Books</div>
+                <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-palette"></i> Arts</div>
+                <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-feather-pointed"></i> Writings</div>
+            </div>
+        </div>
+    </section>
+    
+</body>
+</html>

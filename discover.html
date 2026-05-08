@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Palette</title>
@@ -12,85 +12,165 @@
     <!--Icons link-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="https://kit.fontawesome.com/6f3e3dc980.js" crossorigin="anonymous"></script>
-</head>
-<body>
+  </head>
+  <body>
     <!-------- NAVBAR --------->
     <nav class="nav">
-        <a class="nav-logo" onclick="showPage('main')">
-           <img src="Discover/images/logo.png" alt="Palette" style="height:60px; width:auto; display:block;">
-        </a>
-        <ul class="nav-links">
-            <li><a>dashboard</a></li>
-            <li class="nav-sep">|</li>
-            <li><a>logbook</a></li>
-            <li class="nav-sep">|</li>
-            <li><a>discover</a></li>
-            <li class="nav-sep">|</li>
-            <li><a>profile</a></li>
-        </ul>
+      <a class="nav-logo" onclick="showPage('main')">
+      <img src="Discover/images/logo.png" alt="Palette" style="height:60px; width:auto; display:block;">
+      </a>
+      <ul class="nav-links">
+        <li><a>dashboard</a></li>
+        <li class="nav-sep">|</li>
+        <li><a>logbook</a></li>
+        <li class="nav-sep">|</li>
+        <li><a>discover</a></li>
+        <li class="nav-sep">|</li>
+        <li><a>profile</a></li>
+      </ul>
     </nav>
     <section>
-        <div class="folder1">
-            <br><br>
-            <h4 id="subtitle" style="margin-left:30px;"> ★ wander through worlds</h4>
-            <h1 id="title" style="margin-left: 50px;">Discover <em>&amp; Browse</em></h1>
-            <h4 id="subtitle"style="margin-left:50px;">
-                this is where taste gets a little messy. songs next to films, books beside random thoughts, reviews that hit or miss—<br>
-                but somehow, it all makes sense once you start browsing.
-            </h4>
-            <br>
-            <div class="search-bar">
-                <div class="search-input" >
-                    <i class="material-icons">search</i>
-                    <input type="text" placeholder="search for whatever you desire..."/>
+      <div class="folder1">
+        <br><br>
+        <h4 id="subtitle" style="margin-left:30px;"> ★ wander through worlds</h4>
+        <h1 id="title" style="margin-left: 50px;">Discover <em>&amp; Browse</em></h1>
+        <h4 id="subtitle"style="margin-left:50px;">
+          this is where taste gets a little messy. songs next to films, books beside random thoughts, reviews that hit or miss—<br>
+          but somehow, it all makes sense once you start browsing.
+        </h4>
+        <br>
+        <div class="search-bar">
+          <div class="search-input" >
+            <i class="material-icons">search</i>
+            <input type="text" placeholder="search for whatever you desire..."/>
+          </div>
+          <button class="search-button">
+          <i class="material-icons">search</i>
+          Search
+          </button> 
+        </div>
+        <div class="filter">
+          <div class="filter-pill active" onclick="setFilter(this)"><i class="fa-solid fa-star"></i> All</div>
+          <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-music"></i> Music</div>
+          <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-film"></i> Films</div>
+          <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-book"></i>Books</div>
+          <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-palette"></i> Arts</div>
+          <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-feather-pointed"></i> Writings</div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="folder2">
+        <h4 class="title-headers"> ★ this week's magical palette</h4>
+      </div>
+    </section>
+    <section>
+      <div class="section-music">
+        <h4 class="section-header">★ soundwaves &amp; sentiments</h4>
+        <div class="carousel-wrap" id="music-wrap">
+          <button class="carousel-btn prev" onclick="slide('music',-1)" aria-label="Previous">&#8592;</button>
+          <div class="carousel-track-outer">
+            <div class="carousel-track" id="music-track">
+              <div class="music-card">
+                <div class="music-card-img"><img src="https://i.scdn.co/image/ab67616d0000b2730c471c36970b9406004f3eab" alt="Pink Pony Club album cover" onerror="this.style.display='none'"/></div>
+                <div class="music-card-body">
+                  <div class="spotify-badge">
+                    <div class="spotify-dot"></div>
+                    SPOTIFY
+                  </div>
+                  <p class="music-title">Pink Pony Club</p>
+                  <p class="music-artist">Chappell Roan</p>
                 </div>
-                <button class="search-button">
-                    <i class="material-icons">search</i>
-                     Search
-                </button> 
+                <button class="heart-btn" aria-label="Like">♡</button>
+              </div>
+              <div class="music-card">
+                <div class="music-card-img"><img src="https://i.scdn.co/image/ab67616d0000b273e19d2a68d5c80be05a219b5a" alt="drop dead album cover" onerror="this.style.display='none'"/></div>
+                <div class="music-card-body">
+                  <div class="spotify-badge">
+                    <div class="spotify-dot"></div>
+                    SPOTIFY
+                  </div>
+                  <p class="music-title">drop dead</p>
+                  <p class="music-artist">Olivia Rodrigo</p>
+                </div>
+                <button class="heart-btn" aria-label="Like">♡</button>
+              </div>
+              <div class="music-card">
+                <div class="music-card-img"><img src="https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647" alt="Cruel Summer album cover" onerror="this.style.display='none'"/></div>
+                <div class="music-card-body">
+                  <div class="spotify-badge">
+                    <div class="spotify-dot"></div>
+                    SPOTIFY
+                  </div>
+                  <p class="music-title">Cruel Summer</p>
+                  <p class="music-artist">Taylor Swift</p>
+                </div>
+                <button class="heart-btn" aria-label="Like">♡</button>
+              </div>
+              <div class="music-card">
+                <div class="music-card-img"><img src="https://i.scdn.co/image/ab67616d0000b273a150c0d3e1c91c0d6a4b3e20" alt="because i liked a boy album cover" onerror="this.style.display='none'"/></div>
+                <div class="music-card-body">
+                  <div class="spotify-badge">
+                    <div class="spotify-dot"></div>
+                    SPOTIFY
+                  </div>
+                  <p class="music-title">because i liked a boy</p>
+                  <p class="music-artist">Sabrina Carpenter</p>
+                </div>
+                <button class="heart-btn" aria-label="Like">♡</button>
+              </div>
+              <div class="music-card">
+                <div class="music-card-img" style="background:#2a1a2a;"></div>
+                <div class="music-card-body">
+                  <div class="spotify-badge">
+                    <div class="spotify-dot"></div>
+                    SPOTIFY
+                  </div>
+                  <p class="music-title">Good 4 U</p>
+                  <p class="music-artist">Olivia Rodrigo</p>
+                </div>
+                <button class="heart-btn" aria-label="Like">♡</button>
+              </div>
+              <div class="music-card">
+                <div class="music-card-img" style="background:#1a2030;"></div>
+                <div class="music-card-body">
+                  <div class="spotify-badge">
+                    <div class="spotify-dot"></div>
+                    SPOTIFY
+                  </div>
+                  <p class="music-title">Espresso</p>
+                  <p class="music-artist">Sabrina Carpenter</p>
+                </div>
+                <button class="heart-btn" aria-label="Like">♡</button>
+              </div>
             </div>
-            <div class="filter">
-                <div class="filter-pill active" onclick="setFilter(this)"><i class="fa-solid fa-star"></i> All</div>
-                <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-music"></i> Music</div>
-                <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-film"></i> Films</div>
-                <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-book"></i>Books</div>
-                <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-palette"></i> Arts</div>
-                <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-feather-pointed"></i> Writings</div>
-            </div>
+          </div>
+          <button class="carousel-btn next" onclick="slide('music',1)" aria-label="Next">&#8594;</button>
         </div>
+      </div>
     </section>
     <section>
-        <div class="folder2">
-            <h4 class="title-headers"> ★ this week's magical palette</h4>
-        </div>
+      <div class="shelf">
+        <h4 class="title-headers" style="margin-top: 80px; margin-left: 70px;color:white;"> ★ stories and spines</h4>
+      </div>
     </section>
     <section>
-        <div class="section-pink">
-            <h4 class="title-headers" style="margin-right:30px; text-align:right;"> ★ soundwaves & sentiments</h4>
-        </div>
+      <div class="film">
+        <h4 class="title-headers" style="margin-top: 80px; margin-right:30px; text-align:right;color:white;"> ★ films</h4>
+      </div>
     </section>
     <section>
-        <div class="shelf">
-            <h4 class="title-headers" style="margin-top: 80px; margin-left: 70px;color:white;"> ★ stories and spines</h4>
-        </div>
+      <div class="art">
+        <h4 class="title-headers" style="margin-top: 40px; margin-left: 70px;margin-right:30px; text-align:right;"> ★ musuem of masterpieces</h4>
+      </div>
     </section>
     <section>
-        <div class="film">
-            <h4 class="title-headers" style="margin-top: 80px; margin-right:30px; text-align:right;color:white;"> ★ films</h4>
-        </div>
-    </section>
-    <section>
-        <div class="art">
-            <h4 class="title-headers" style="margin-top: 40px; margin-left: 70px;margin-right:30px; text-align:right;"> ★ musuem of masterpieces</h4>
-        </div>
-    </section>
-    <section>
-        <div class="write">
-            <h4 class="title-headers" style="margin-top: 450px; margin-left: 70px;"> ★ mailbox with love</h4>
-            
-        </div>
+      <div class="write">
+        <h4 class="title-headers" style="margin-top: 450px; margin-left: 70px;"> ★ mailbox with love</h4>
+      </div>
     </section>
     <footer>
     </footer>
-</body>
+    <script src="Discover/jscripts/discoveruifx.js"></script>
+  </body>
 </html>

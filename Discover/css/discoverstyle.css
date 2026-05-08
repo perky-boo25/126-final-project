@@ -8,11 +8,14 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   padding: 0;
+  display:flex;
+  flex-direction: column;
 }
 
 /* ─── NAV ─── */
@@ -26,6 +29,7 @@ body {
   height: 56px;
   background: #c97d87;
   border-bottom: 1px solid rgba(196,120,120,.25);
+  
 }
 
 .nav-logo {
@@ -71,14 +75,18 @@ body {
   color: #F5EFE0;
 }
 
+section{
+  display:flex;
+}
 /* ============ PINK FOLDER ==============*/
 .folder1 {
   width: 100%;
-  height: 550px;
+  height: 600px;
   background-image: url('../images/pink_folder.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  z-index: 6;
 }
 
 #subtitle{
@@ -177,4 +185,69 @@ body {
 
 .filter-pill > i {
   color:#651a2d;
+}
+
+/* ============ YELLOW FOLDER ==============*/
+.folder2 {
+  width: 100%;
+  height: 700px;
+  background-image: url('../images/yellow-folder.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top: -165px;
+  z-index: 5;
+  
+}
+
+.title-headers {
+  margin-top: 60px;
+  margin-left: 30px;
+  font-family: "Life Savers";
+  font-size: 18px;
+}
+
+/*========== Pink Section =========*/
+.section-pink{
+  background:pink;
+  width: 100%;
+  height:400px;
+  z-index: 4;
+  margin-top: -250px;
+  box-shadow: black;
+}
+
+/*========== Book section =========*/
+.shelf {
+  width: 100%;
+  height: 500px;
+  background-image: url('../images/shelf.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top:-55px;
+  z-index: 4;
+  
+}
+
+.art{
+  width: 100%;
+  height: 500px;
+  background-image: url('../images/paintboard.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top:-160px;
+  z-index: 5;
+}
+
+.write{
+  width: 100%;
+  height: 800px;
+  background-image: url('../images/shred.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top:-480px;
+  z-index: 8;
 }

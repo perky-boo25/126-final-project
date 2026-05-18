@@ -1,0 +1,212 @@
+[
+  {
+    "title": "Pink Pony Club",
+    "subtitle": "Chappell Roan",
+    "img": "https://images.genius.com/2505709e2feddad52d4257963876b3d7.1000x1000x1.png",
+    "genre": "pop",
+    "liked": false,
+    "description": "A glittery, anthemic pop track about a girl who dreams of escaping her small town to dance in a big-city gay bar. Chappell Roan's breakout moment — bold, campy, and completely unforgettable.",
+    "meta": [
+      { "label": "Released", "value": "2021" },
+      { "label": "Album", "value": "The Rise and Fall of a Midwest Princess" },
+      { "label": "Duration", "value": "4:02" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com/track/0qEMCJBSjlZnZkFRHtGFNs" }
+  },
+  {
+    "title": "drop dead",
+    "subtitle": "Olivia Rodrigo",
+    "img": "https://upload.wikimedia.org/wikipedia/en/6/64/Olivia_Rodrigo_-_Drop_Dead.png",
+    "genre": "pop",
+    "liked": false,
+    "description": "A brooding, distorted pop-rock number from GUTS. Raw, sarcastic, and dripping with teenage fury — exactly what you'd expect from Rodrigo at her most unfiltered.",
+    "meta": [
+      { "label": "Released", "value": "2023" },
+      { "label": "Album", "value": "GUTS" },
+      { "label": "Duration", "value": "2:23" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com/track/0qEMCJBSjlZnZkFRHtGFNs" }
+  },
+  {
+    "title": "Cruel Summer",
+    "subtitle": "Taylor Swift",
+    "img": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+    "genre": "pop",
+    "liked": false,
+    "description": "Originally buried as a deep cut on Lover, Cruel Summer became a phenomenon years later. A synth-pop rush of summer tension, secret love, and screaming confessions.",
+    "meta": [
+      { "label": "Released", "value": "2019" },
+      { "label": "Album", "value": "Lover" },
+      { "label": "Duration", "value": "2:58" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com/track/1BxfuPKGuaTgP7aM0Bbdwr" }
+  },
+  {
+    "title": "because i liked a boy",
+    "subtitle": "Sabrina Carpenter",
+    "img": "https://upload.wikimedia.org/wikipedia/en/7/78/Sabrina_Carpenter_-_Emails_I_Can%27t_Send.png",
+    "genre": "pop",
+    "liked": false,
+    "description": "A wry, self-aware pop track where Carpenter catalogues the absurd social fallout of liking a boy. Delivered with a wink and impeccable vocal control.",
+    "meta": [
+      { "label": "Released", "value": "2023" },
+      { "label": "Album", "value": "emails i can't send" },
+      { "label": "Duration", "value": "3:31" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com" }
+  },
+  {
+    "title": "Good 4 U",
+    "subtitle": "Olivia Rodrigo",
+    "img": "https://upload.wikimedia.org/wikipedia/en/b/b2/Olivia_Rodrigo_-_SOUR.png",
+    "genre": "pop",
+    "liked": false,
+    "description": "A pop-punk explosion of jealousy and fake well-wishing. Good 4 U captures the messy, irrational anger of watching an ex move on perfectly fine without you.",
+    "meta": [
+      { "label": "Released", "value": "2021" },
+      { "label": "Album", "value": "SOUR" },
+      { "label": "Duration", "value": "2:58" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com" }
+  },
+  {
+    "title": "Espresso",
+    "subtitle": "Sabrina Carpenter",
+    "img": "https://upload.wikimedia.org/wikipedia/en/7/71/Espresso_-_Sabrina_Carpenter.png",
+    "genre": "pop",
+    "liked": false,
+    "description": "Light, breezy, and impossibly catchy. Espresso is the summer earworm that turned Sabrina Carpenter into a household name — all confidence and effortless cool.",
+    "meta": [
+      { "label": "Released", "value": "2024" },
+      { "label": "Album", "value": "Short n' Sweet" },
+      { "label": "Duration", "value": "2:55" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com" }
+  },
+  {
+    "title": "Casual",
+    "subtitle": "Chappell Roan",
+    "img": "https://upload.wikimedia.org/wikipedia/en/a/a3/Casual_chappell_roan_single_cover.png",
+    "genre": "indie",
+    "liked": false,
+    "description": "A quieter, more vulnerable side of Chappell Roan. Casual aches with the confusion of a relationship that refuses to be defined — tender and strangely heavy.",
+    "meta": [
+      { "label": "Released", "value": "2023" },
+      { "label": "Album", "value": "The Rise and Fall of a Midwest Princess" },
+      { "label": "Duration", "value": "3:20" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com" }
+  },
+  {
+    "title": "vampire",
+    "subtitle": "Olivia Rodrigo",
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/14/Olivia_Rodrigo_-_Vampire.png",
+    "genre": "pop",
+    "liked": false,
+    "description": "A sweeping, piano-driven ballad that builds into something almost orchestral. Rodrigo weaponises a classic metaphor — the charming emotional predator — with surgical precision.",
+    "meta": [
+      { "label": "Released", "value": "2023" },
+      { "label": "Album", "value": "GUTS" },
+      { "label": "Duration", "value": "3:39" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com" }
+  },
+  {
+    "title": "Ribs",
+    "subtitle": "Lorde",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Lorde_Ribs.jpg",
+    "genre": "indie",
+    "liked": false,
+    "description": "A haunting, synth-layered track from Pure Heroine that captures the specific anxiety of growing up — of having a body and a life that feels too big and too fast to hold.",
+    "meta": [
+      { "label": "Released", "value": "2013" },
+      { "label": "Album", "value": "Pure Heroine" },
+      { "label": "Duration", "value": "3:49" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com" }
+  },
+  {
+    "title": "Solar Power",
+    "subtitle": "Lorde",
+    "img": "https://upload.wikimedia.org/wikipedia/en/8/8f/Lorde_-_Solar_Power.png",
+    "genre": "indie",
+    "liked": false,
+    "description": "Languid and sun-drenched, Solar Power is Lorde shedding intensity for something looser and more pastoral. A divisive pivot, but undeniably beautiful in its softness.",
+    "meta": [
+      { "label": "Released", "value": "2021" },
+      { "label": "Album", "value": "Solar Power" },
+      { "label": "Duration", "value": "3:26" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com" }
+  },
+  {
+    "title": "drivers license",
+    "subtitle": "Olivia Rodrigo",
+    "img": "https://i.scdn.co/image/ab67616d0000b273a91c10fe9472d9bd89802e52",
+    "genre": "pop",
+    "liked": false,
+    "description": "The debut that changed everything. Drivers license arrived like a thunderclap — confessional, devastating, and inescapable. A modern breakup classic.",
+    "meta": [
+      { "label": "Released", "value": "2021" },
+      { "label": "Album", "value": "SOUR" },
+      { "label": "Duration", "value": "4:02" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com" }
+  },
+  {
+    "title": "Die For You",
+    "subtitle": "The Weeknd",
+    "img": "https://upload.wikimedia.org/wikipedia/en/8/81/The_Weeknd_-_Die_for_You.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail_unscaled",
+    "genre": "rnb",
+    "liked": false,
+    "description": "Originally from Starboy, Die For You found new life years later. A slow-burn declaration of devotion wrapped in gleaming synths and falsetto — The Weeknd at his most romantic.",
+    "meta": [
+      { "label": "Released", "value": "2016" },
+      { "label": "Album", "value": "Starboy" },
+      { "label": "Duration", "value": "4:20" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com" }
+  },
+  {
+    "title": "Blinding Lights",
+    "subtitle": "The Weeknd",
+    "img": "https://upload.wikimedia.org/wikipedia/en/e/e6/The_Weeknd_-_Blinding_Lights.png",
+    "genre": "rnb",
+    "liked": false,
+    "description": "A retro-synth juggernaut that dominated the charts for what felt like an eternity. Blinding Lights distils 80s nostalgia into something urgent and modern.",
+    "meta": [
+      { "label": "Released", "value": "2019" },
+      { "label": "Album", "value": "After Hours" },
+      { "label": "Duration", "value": "3:20" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com" }
+  },
+  {
+    "title": "Motion Sickness",
+    "subtitle": "Phoebe Bridgers",
+    "img": "https://upload.wikimedia.org/wikipedia/en/d/df/Phoebe_bridgers_motion_sickness.jpg",
+    "genre": "indie",
+    "liked": false,
+    "description": "Biting and precise, Motion Sickness is Phoebe Bridgers unravelling a toxic relationship with devastating calm. The acoustic softness makes it hit harder, not easier.",
+    "meta": [
+      { "label": "Released", "value": "2017" },
+      { "label": "Album", "value": "Stranger in the Alps" },
+      { "label": "Duration", "value": "3:41" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com" }
+  },
+  {
+    "title": "Vienna",
+    "subtitle": "Billy Joel",
+    "img": "https://upload.wikimedia.org/wikipedia/en/1/1f/Viennabillyj.jpg",
+    "genre": "alt",
+    "liked": false,
+    "description": "A timeless reminder to slow down. Vienna tells a young, overachieving generation that there's time — that rushing toward some imagined finish line misses the whole point of living.",
+    "meta": [
+      { "label": "Released", "value": "1977" },
+      { "label": "Album", "value": "The Stranger" },
+      { "label": "Duration", "value": "3:34" }
+    ],
+    "link": { "label": "Open in Spotify", "url": "https://open.spotify.com" }
+  }
+]

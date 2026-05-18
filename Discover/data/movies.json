@@ -1,0 +1,843 @@
+[
+    {
+        "id": 1,
+        "title": "Amélie",
+        "subtitle": "Jean-Pierre Jeunet · 2001",
+        "img": "https://upload.wikimedia.org/wikipedia/en/5/53/Amelie_poster.jpg",
+        "year": 2001,
+        "genre": "romance",
+        "director": "Jean-Pierre Jeunet",
+        "runtime": "122 min",
+        "rating": 5,
+        "liked": false,
+        "description": "A shy Parisian waitress decides to change the lives of those around her for the better while searching for love herself. A whimsical, visually magical film that feels like a dream painted in gold and green.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Jean-Pierre Jeunet"
+            },
+            {
+                "label": "Year",
+                "value": "2001"
+            },
+            {
+                "label": "Runtime",
+                "value": "122 min"
+            },
+            {
+                "label": "Language",
+                "value": "French"
+            }
+        ],
+        "link": {
+            "url": "https://www.letterboxd.com/film/amelie/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 2,
+        "title": "Parasite",
+        "subtitle": "Bong Joon-ho · 2019",
+        "img": "https://upload.wikimedia.org/wikipedia/en/5/53/Parasite_%282019_film%29.png",
+        "year": 2019,
+        "genre": "thriller",
+        "director": "Bong Joon-ho",
+        "runtime": "132 min",
+        "rating": 5,
+        "liked": false,
+        "description": "The Kims, a poor family, scheme to become employed by the Parks, a wealthy family, and begin to infiltrate their household. A brilliant dark comedy turned harrowing thriller that says everything about class and capitalism.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Bong Joon-ho"
+            },
+            {
+                "label": "Year",
+                "value": "2019"
+            },
+            {
+                "label": "Runtime",
+                "value": "132 min"
+            },
+            {
+                "label": "Language",
+                "value": "Korean"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/parasite-2019/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 3,
+        "title": "Spirited Away",
+        "subtitle": "Hayao Miyazaki · 2001",
+        "img": "https://upload.wikimedia.org/wikipedia/en/d/db/Spirited_Away_Japanese_poster.png",
+        "year": 2001,
+        "genre": "animation",
+        "director": "Hayao Miyazaki",
+        "runtime": "125 min",
+        "rating": 5,
+        "liked": false,
+        "description": "A young girl wanders into a spirit world and must find a way back to her parents. The most enchanting animated film ever made — every frame is a painting, every moment a memory.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Hayao Miyazaki"
+            },
+            {
+                "label": "Year",
+                "value": "2001"
+            },
+            {
+                "label": "Runtime",
+                "value": "125 min"
+            },
+            {
+                "label": "Language",
+                "value": "Japanese"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/spirited-away/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 4,
+        "title": "Eternal Sunshine of the Spotless Mind",
+        "subtitle": "Michel Gondry · 2004",
+        "img": "https://upload.wikimedia.org/wikipedia/en/a/a4/Eternal_Sunshine_of_the_Spotless_Mind.png",
+        "year": 2004,
+        "genre": "romance",
+        "director": "Michel Gondry",
+        "runtime": "108 min",
+        "rating": 4,
+        "liked": false,
+        "description": "When their relationship turns sour, a couple undergoes a medical procedure to have each other erased from their memories. A heartbreakingly gorgeous meditation on love, loss, and the things we choose to remember.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Michel Gondry"
+            },
+            {
+                "label": "Year",
+                "value": "2004"
+            },
+            {
+                "label": "Runtime",
+                "value": "108 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/eternal-sunshine-of-the-spotless-mind/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 5,
+        "title": "Portrait of a Lady on Fire",
+        "subtitle": "Céline Sciamma · 2019",
+        "img": "https://upload.wikimedia.org/wikipedia/en/c/cb/Portrait_of_a_Lady_on_Fire.jpg",
+        "year": 2019,
+        "genre": "romance",
+        "director": "Céline Sciamma",
+        "runtime": "122 min",
+        "rating": 5,
+        "liked": false,
+        "description": "On an isolated island in Brittany at the end of the eighteenth century, a female painter is commissioned to do a wedding portrait of a young woman. A slow-burn love story rendered in firelight and longing.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Céline Sciamma"
+            },
+            {
+                "label": "Year",
+                "value": "2019"
+            },
+            {
+                "label": "Runtime",
+                "value": "122 min"
+            },
+            {
+                "label": "Language",
+                "value": "French"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/portrait-of-a-lady-on-fire/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 6,
+        "title": "Moonlight",
+        "subtitle": "Barry Jenkins · 2016",
+        "img": "https://upload.wikimedia.org/wikipedia/en/8/84/Moonlight_%282016_film%29.png",
+        "year": 2016,
+        "genre": "drama",
+        "director": "Barry Jenkins",
+        "runtime": "111 min",
+        "rating": 5,
+        "liked": false,
+        "description": "A young African-American man grapples with his identity and sexuality while growing up in a rough neighborhood of Miami. Three chapters. One soul. Cinema at its most tender and devastating.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Barry Jenkins"
+            },
+            {
+                "label": "Year",
+                "value": "2016"
+            },
+            {
+                "label": "Runtime",
+                "value": "111 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/moonlight-2016/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 7,
+        "title": "The Grand Budapest Hotel",
+        "subtitle": "Wes Anderson · 2014",
+        "img": "https://upload.wikimedia.org/wikipedia/en/1/1c/The_Grand_Budapest_Hotel.png",
+        "year": 2014,
+        "genre": "comedy",
+        "director": "Wes Anderson",
+        "runtime": "99 min",
+        "rating": 4,
+        "liked": false,
+        "description": "The adventures of Gustave H., a legendary concierge at a famous European hotel between the wars, and Zero Moustafa, the lobby boy who becomes his most trusted friend. A perfectly symmetrical confection of absurdist joy.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Wes Anderson"
+            },
+            {
+                "label": "Year",
+                "value": "2014"
+            },
+            {
+                "label": "Runtime",
+                "value": "99 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/the-grand-budapest-hotel/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 8,
+        "title": "In the Mood for Love",
+        "subtitle": "Wong Kar-wai · 2000",
+        "img": "https://upload.wikimedia.org/wikipedia/en/4/45/In_the_Mood_for_Love_movie.jpg",
+        "year": 2000,
+        "genre": "romance",
+        "director": "Wong Kar-wai",
+        "runtime": "98 min",
+        "rating": 5,
+        "liked": false,
+        "description": "Two neighbors form a bond after both suspect their spouses of having an affair. A film that smells like perfume and sounds like longing — Wong Kar-wai's most exquisite ache.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Wong Kar-wai"
+            },
+            {
+                "label": "Year",
+                "value": "2000"
+            },
+            {
+                "label": "Runtime",
+                "value": "98 min"
+            },
+            {
+                "label": "Language",
+                "value": "Cantonese"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/in-the-mood-for-love/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 9,
+        "title": "La La Land",
+        "subtitle": "Damien Chazelle · 2016",
+        "img": "https://upload.wikimedia.org/wikipedia/en/a/ab/La_La_Land_%28film%29.png",
+        "year": 2016,
+        "genre": "romance",
+        "director": "Damien Chazelle",
+        "runtime": "128 min",
+        "rating": 5,
+        "liked": false,
+        "description": "A jazz pianist and an aspiring actress fall in love while chasing impossible dreams in Los Angeles. Bittersweet, dazzling, and painfully human.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Damien Chazelle"
+            },
+            {
+                "label": "Year",
+                "value": "2016"
+            },
+            {
+                "label": "Runtime",
+                "value": "128 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/la-la-land/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 10,
+        "title": "Everything Everywhere All at Once",
+        "subtitle": "Daniel Kwan & Daniel Scheinert · 2022",
+        "img": "https://upload.wikimedia.org/wikipedia/en/1/1e/Everything_Everywhere_All_at_Once.jpg",
+        "year": 2022,
+        "genre": "comedy",
+        "director": "Daniel Kwan & Daniel Scheinert",
+        "runtime": "139 min",
+        "rating": 5,
+        "liked": false,
+        "description": "A laundromat owner becomes entangled in a multiversal crisis while trying to repair her relationship with her daughter.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Daniel Kwan & Daniel Scheinert"
+            },
+            {
+                "label": "Year",
+                "value": "2022"
+            },
+            {
+                "label": "Runtime",
+                "value": "139 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/everything-everywhere-all-at-once/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 11,
+        "title": "Interstellar",
+        "subtitle": "Christopher Nolan · 2014",
+        "img": "https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg",
+        "year": 2014,
+        "genre": "drama",
+        "director": "Christopher Nolan",
+        "runtime": "169 min",
+        "rating": 5,
+        "liked": false,
+        "description": "A team of astronauts travel through a wormhole in search of humanity's survival. Grand, emotional, and overwhelming in scale.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Christopher Nolan"
+            },
+            {
+                "label": "Year",
+                "value": "2014"
+            },
+            {
+                "label": "Runtime",
+                "value": "169 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/interstellar/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 12,
+        "title": "Your Name",
+        "subtitle": "Makoto Shinkai · 2016",
+        "img": "https://upload.wikimedia.org/wikipedia/en/0/0b/Your_Name_poster.png",
+        "year": 2016,
+        "genre": "animation",
+        "director": "Makoto Shinkai",
+        "runtime": "106 min",
+        "rating": 5,
+        "liked": false,
+        "description": "Two teenagers mysteriously swap bodies and become connected across time and distance.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Makoto Shinkai"
+            },
+            {
+                "label": "Year",
+                "value": "2016"
+            },
+            {
+                "label": "Runtime",
+                "value": "106 min"
+            },
+            {
+                "label": "Language",
+                "value": "Japanese"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/your-name/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 13,
+        "title": "The Batman",
+        "subtitle": "Matt Reeves · 2022",
+        "img": "https://upload.wikimedia.org/wikipedia/en/8/87/The_Batman_%28film%29_poster.jpg",
+        "year": 2022,
+        "genre": "thriller",
+        "director": "Matt Reeves",
+        "runtime": "176 min",
+        "rating": 4,
+        "liked": false,
+        "description": "Batman uncovers corruption in Gotham while tracking a serial killer known as the Riddler.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Matt Reeves"
+            },
+            {
+                "label": "Year",
+                "value": "2022"
+            },
+            {
+                "label": "Runtime",
+                "value": "176 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/the-batman/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 14,
+        "title": "Little Women",
+        "subtitle": "Greta Gerwig · 2019",
+        "img": "https://upload.wikimedia.org/wikipedia/en/9/95/Little_Women_%282019_film%29.jpeg",
+        "year": 2019,
+        "genre": "drama",
+        "director": "Greta Gerwig",
+        "runtime": "135 min",
+        "rating": 5,
+        "liked": false,
+        "description": "The March sisters navigate love, ambition, and adulthood in post-Civil War America.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Greta Gerwig"
+            },
+            {
+                "label": "Year",
+                "value": "2019"
+            },
+            {
+                "label": "Runtime",
+                "value": "135 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/little-women-2019/",
+            "label": "View on Letterboxd"
+        }
+    },
+
+  {
+        "id": 15,
+        "title": "Lady Bird",
+        "subtitle": "Greta Gerwig · 2017",
+        "img": "https://upload.wikimedia.org/wikipedia/en/6/61/Lady_Bird_poster.jpeg",
+        "year": 2017,
+        "genre": "drama",
+        "director": "Greta Gerwig",
+        "runtime": "94 min",
+        "rating": 5,
+        "liked": false,
+        "description": "A fiercely independent teenager navigates family, friendship, and identity during her final year of high school in Sacramento.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Greta Gerwig"
+            },
+            {
+                "label": "Year",
+                "value": "2017"
+            },
+            {
+                "label": "Runtime",
+                "value": "94 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/lady-bird/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 16,
+        "title": "Coraline",
+        "subtitle": "Henry Selick · 2009",
+        "img": "https://upload.wikimedia.org/wikipedia/en/9/9b/Coraline.jpg",
+        "year": 2009,
+        "genre": "animation",
+        "director": "Henry Selick",
+        "runtime": "100 min",
+        "rating": 5,
+        "liked": false,
+        "description": "A curious girl discovers a parallel world that initially seems perfect — until it turns terrifying.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Henry Selick"
+            },
+            {
+                "label": "Year",
+                "value": "2009"
+            },
+            {
+                "label": "Runtime",
+                "value": "100 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/coraline/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 17,
+        "title": "Past Lives",
+        "subtitle": "Celine Song · 2023",
+        "img": "https://upload.wikimedia.org/wikipedia/en/d/de/Past_Lives_film_poster.png",
+        "year": 2023,
+        "genre": "romance",
+        "director": "Celine Song",
+        "runtime": "106 min",
+        "rating": 5,
+        "liked": false,
+        "description": "Two childhood friends reunite decades later and confront what could have been.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Celine Song"
+            },
+            {
+                "label": "Year",
+                "value": "2023"
+            },
+            {
+                "label": "Runtime",
+                "value": "106 min"
+            },
+            {
+                "label": "Language",
+                "value": "English / Korean"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/past-lives/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 18,
+        "title": "Her",
+        "subtitle": "Spike Jonze · 2013",
+        "img": "https://upload.wikimedia.org/wikipedia/en/4/44/Her2013Poster.jpg",
+        "year": 2013,
+        "genre": "romance",
+        "director": "Spike Jonze",
+        "runtime": "126 min",
+        "rating": 5,
+        "liked": false,
+        "description": "A lonely writer develops a relationship with an advanced AI operating system.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Spike Jonze"
+            },
+            {
+                "label": "Year",
+                "value": "2013"
+            },
+            {
+                "label": "Runtime",
+                "value": "126 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/her/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 19,
+        "title": "Black Swan",
+        "subtitle": "Darren Aronofsky · 2010",
+        "img": "https://upload.wikimedia.org/wikipedia/en/2/21/Black_Swan_poster.jpg",
+        "year": 2010,
+        "genre": "thriller",
+        "director": "Darren Aronofsky",
+        "runtime": "108 min",
+        "rating": 5,
+        "liked": false,
+        "description": "A ballerina spirals into obsession and paranoia while preparing for Swan Lake.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Darren Aronofsky"
+            },
+            {
+                "label": "Year",
+                "value": "2010"
+            },
+            {
+                "label": "Runtime",
+                "value": "108 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/black-swan/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 20,
+        "title": "Perfect Blue",
+        "subtitle": "Satoshi Kon · 1997",
+        "img": "https://upload.wikimedia.org/wikipedia/en/c/c4/Perfect_Blue_film_poster.jpg",
+        "year": 1997,
+        "genre": "thriller",
+        "director": "Satoshi Kon",
+        "runtime": "81 min",
+        "rating": 5,
+        "liked": false,
+        "description": "A former pop idol descends into psychological horror while pursuing acting.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Satoshi Kon"
+            },
+            {
+                "label": "Year",
+                "value": "1997"
+            },
+            {
+                "label": "Runtime",
+                "value": "81 min"
+            },
+            {
+                "label": "Language",
+                "value": "Japanese"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/perfect-blue/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 21,
+        "title": "Gone Girl",
+        "subtitle": "David Fincher · 2014",
+        "img": "https://upload.wikimedia.org/wikipedia/en/0/05/Gone_Girl_Poster.jpg",
+        "year": 2014,
+        "genre": "thriller",
+        "director": "David Fincher",
+        "runtime": "149 min",
+        "rating": 5,
+        "liked": false,
+        "description": "A husband becomes the prime suspect when his wife mysteriously disappears.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "David Fincher"
+            },
+            {
+                "label": "Year",
+                "value": "2014"
+            },
+            {
+                "label": "Runtime",
+                "value": "149 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/gone-girl/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 22,
+        "title": "Scott Pilgrim vs. the World",
+        "subtitle": "Edgar Wright · 2010",
+        "img": "https://upload.wikimedia.org/wikipedia/en/8/82/ScottPilgrim.jpg",
+        "year": 2010,
+        "genre": "comedy",
+        "director": "Edgar Wright",
+        "runtime": "112 min",
+        "rating": 4,
+        "liked": false,
+        "description": "Scott Pilgrim must defeat his girlfriend’s seven evil exes in explosive comic-book battles.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Edgar Wright"
+            },
+            {
+                "label": "Year",
+                "value": "2010"
+            },
+            {
+                "label": "Runtime",
+                "value": "112 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/scott-pilgrim-vs-the-world/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 23,
+        "title": "The Perks of Being a Wallflower",
+        "subtitle": "Stephen Chbosky · 2012",
+        "img": "https://upload.wikimedia.org/wikipedia/en/0/0b/WallflowerPoster.jpg",
+        "year": 2012,
+        "genre": "drama",
+        "director": "Stephen Chbosky",
+        "runtime": "103 min",
+        "rating": 5,
+        "liked": false,
+        "description": "A socially awkward teenager finds friendship and healing during his freshman year.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Stephen Chbosky"
+            },
+            {
+                "label": "Year",
+                "value": "2012"
+            },
+            {
+                "label": "Runtime",
+                "value": "103 min"
+            },
+            {
+                "label": "Language",
+                "value": "English"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/the-perks-of-being-a-wallflower/",
+            "label": "View on Letterboxd"
+        }
+    },
+    {
+        "id": 24,
+        "title": "Howl’s Moving Castle",
+        "subtitle": "Hayao Miyazaki · 2004",
+        "img": "https://upload.wikimedia.org/wikipedia/en/a/a0/Howls-moving-castleposter.jpg",
+        "year": 2004,
+        "genre": "animation",
+        "director": "Hayao Miyazaki",
+        "runtime": "119 min",
+        "rating": 5,
+        "liked": false,
+        "description": "A young woman cursed into old age encounters a mysterious wizard and his moving castle.",
+        "meta": [
+            {
+                "label": "Director",
+                "value": "Hayao Miyazaki"
+            },
+            {
+                "label": "Year",
+                "value": "2004"
+            },
+            {
+                "label": "Runtime",
+                "value": "119 min"
+            },
+            {
+                "label": "Language",
+                "value": "Japanese"
+            }
+        ],
+        "link": {
+            "url": "https://letterboxd.com/film/howls-moving-castle/",
+            "label": "View on Letterboxd"
+        }
+    }
+]

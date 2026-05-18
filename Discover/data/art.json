@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "title": "The Starry Night",
+    "subtitle": "Vincent van Gogh · 1889",
+    "artist": "Vincent van Gogh",
+    "year": 1889,
+    "medium": "Oil on Canvas",
+    "genre": "post-impressionism",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/960px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
+    "liked": false,
+    "rating": 0,
+    "description": "Painted from the window of his asylum room at Saint-Rémy-de-Provence, van Gogh's swirling night sky is one of the most recognised paintings in Western art. The village below sleeps while the heavens churn with an almost violent energy — hope and anguish in a single canvas.",
+    "meta": [
+      { "label": "Artist",  "value": "Vincent van Gogh" },
+      { "label": "Year",    "value": "1889" },
+      { "label": "Medium",  "value": "Oil on Canvas" },
+      { "label": "Held at", "value": "MoMA, New York" }
+    ],
+    "link": { "url": "https://www.moma.org/collection/works/79802", "label": "View at MoMA" }
+  },
+  {
+    "id": 2,
+    "title": "Girl with a Pearl Earring",
+    "subtitle": "Johannes Vermeer · 1665",
+    "artist": "Johannes Vermeer",
+    "year": 1665,
+    "medium": "Oil on Canvas",
+    "genre": "baroque",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/1665_Girl_with_a_Pearl_Earring.jpg/960px-1665_Girl_with_a_Pearl_Earring.jpg",
+    "liked": false,
+    "rating": 0,
+    "description": "Often called the Mona Lisa of the North, Vermeer's mysterious figure glances back over her shoulder with an expression that has puzzled viewers for centuries. The luminous pearl, the soft turban, the parted lips — everything here sits on the edge of a sentence never finished.",
+    "meta": [
+      { "label": "Artist",  "value": "Johannes Vermeer" },
+      { "label": "Year",    "value": "c. 1665" },
+      { "label": "Medium",  "value": "Oil on Canvas" },
+      { "label": "Held at", "value": "Mauritshuis, The Hague" }
+    ],
+    "link": { "url": "https://www.mauritshuis.nl/en/our-collection/artworks/670-girl-with-a-pearl-earring/", "label": "View at Mauritshuis" }
+  },
+  {
+    "id": 3,
+    "title": "The Great Wave off Kanagawa",
+    "subtitle": "Katsushika Hokusai · 1831",
+    "artist": "Katsushika Hokusai",
+    "year": 1831,
+    "medium": "Woodblock Print",
+    "genre": "ukiyo-e",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Great_Wave_off_Kanagawa2.jpg/960px-Great_Wave_off_Kanagawa2.jpg",
+    "liked": false,
+    "rating": 0,
+    "description": "A towering wave of foam-tipped fingers reaches toward three fishing boats while Mount Fuji sits, tiny and serene, in the background. Hokusai distilled all of nature's indifferent power into a single frozen moment of Prussian blue and white.",
+    "meta": [
+      { "label": "Artist",  "value": "Katsushika Hokusai" },
+      { "label": "Year",    "value": "c. 1831" },
+      { "label": "Medium",  "value": "Woodblock Print" },
+      { "label": "Held at", "value": "Metropolitan Museum of Art, New York" }
+    ],
+    "link": { "url": "https://www.metmuseum.org/art/collection/search/45434", "label": "View at The Met" }
+  },
+  {
+    "id": 4,
+    "title": "Water Lilies (Nymphéas)",
+    "subtitle": "Claude Monet · 1906",
+    "artist": "Claude Monet",
+    "year": 1906,
+    "medium": "Oil on Canvas",
+    "genre": "impressionism",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/WLA_metmuseum_Water_Lilies_by_Claude_Monet.jpg/960px-WLA_metmuseum_Water_Lilies_by_Claude_Monet.jpg",
+    "liked": false,
+    "rating": 0,
+    "description": "Monet spent the last 26 years of his life obsessively painting the pond at Giverny. This panel dissolves the boundary between water, light, and reflection until the surface becomes pure sensation — a painting you feel before you understand it.",
+    "meta": [
+      { "label": "Artist",  "value": "Claude Monet" },
+      { "label": "Year",    "value": "1906" },
+      { "label": "Medium",  "value": "Oil on Canvas" },
+      { "label": "Held at", "value": "Art Institute of Chicago" }
+    ],
+    "link": { "url": "https://www.artic.edu/artworks/16568", "label": "View at Art Institute" }
+  },
+  {
+    "id": 5,
+    "title": "The Persistence of Memory",
+    "subtitle": "Salvador Dalí · 1931",
+    "artist": "Salvador Dalí",
+    "year": 1931,
+    "medium": "Oil on Canvas",
+    "genre": "surrealism",
+    "img": "https://upload.wikimedia.org/wikipedia/en/d/dd/The_Persistence_of_Memory.jpg",
+    "liked": false,
+    "rating": 0,
+    "description": "Melting watches draped over a barren landscape make time itself feel unreliable. Dalí allegedly painted this small masterpiece after staring at a melting Camembert cheese — proof that the most disorienting ideas can come from the most ordinary moments.",
+    "meta": [
+      { "label": "Artist",  "value": "Salvador Dalí" },
+      { "label": "Year",    "value": "1931" },
+      { "label": "Medium",  "value": "Oil on Canvas" },
+      { "label": "Held at", "value": "MoMA, New York" }
+    ],
+    "link": { "url": "https://www.moma.org/collection/works/79018", "label": "View at MoMA" }
+  },
+  {
+    "id": 6,
+    "title": "A Sunday on La Grande Jatte",
+    "subtitle": "Georges Seurat · 1886",
+    "artist": "Georges Seurat",
+    "year": 1886,
+    "medium": "Oil on Canvas",
+    "genre": "post-impressionism",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/A_Sunday_on_La_Grande_Jatte%2C_Georges_Seurat%2C_1884.jpg/960px-A_Sunday_on_La_Grande_Jatte%2C_Georges_Seurat%2C_1884.jpg",
+    "liked": false,
+    "rating": 0,
+    "description": "Built entirely from millions of tiny dots of pure colour — a technique Seurat called Pointillism — this monumental scene of Parisians at leisure rewards close inspection and wide-eyed wonder equally. Step back and the dots dissolve into shimmering afternoon light.",
+    "meta": [
+      { "label": "Artist",  "value": "Georges Seurat" },
+      { "label": "Year",    "value": "1884–1886" },
+      { "label": "Medium",  "value": "Oil on Canvas" },
+      { "label": "Held at", "value": "Art Institute of Chicago" }
+    ],
+    "link": { "url": "https://www.artic.edu/artworks/27992", "label": "View at Art Institute" }
+  },
+  {
+    "id": 7,
+    "title": "The Birth of Venus",
+    "subtitle": "Sandro Botticelli · 1485",
+    "artist": "Sandro Botticelli",
+    "year": 1485,
+    "medium": "Tempera on Canvas",
+    "genre": "renaissance",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg/960px-Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+    "liked": false,
+    "rating": 0,
+    "description": "Venus rises from the sea on a shell, her golden hair caught by the breath of Zephyr. Painted for the Medici family, Botticelli's goddess of love remains one of the most graceful images in all of Western painting — myth made flesh in tempera and gold.",
+    "meta": [
+      { "label": "Artist",  "value": "Sandro Botticelli" },
+      { "label": "Year",    "value": "c. 1484–1486" },
+      { "label": "Medium",  "value": "Tempera on Canvas" },
+      { "label": "Held at", "value": "Uffizi Gallery, Florence" }
+    ],
+    "link": { "url": "https://www.uffizi.it/en/artworks/birth-of-venus", "label": "View at Uffizi" }
+  },
+  {
+    "id": 8,
+    "title": "Impression, Sunrise",
+    "subtitle": "Claude Monet · 1872",
+    "artist": "Claude Monet",
+    "year": 1872,
+    "medium": "Oil on Canvas",
+    "genre": "impressionism",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Monet_-_Impression%2C_Sunrise.jpg/960px-Monet_-_Impression%2C_Sunrise.jpg",
+    "liked": false,
+    "rating": 0,
+    "description": "The painting that accidentally named an entire movement. A critic mocked its sketchiness, calling it a mere 'impression' — and the Impressionists kept the name. That small orange sun burning through the fog of Le Havre harbour is one of the most consequential brushstrokes in art history.",
+    "meta": [
+      { "label": "Artist",  "value": "Claude Monet" },
+      { "label": "Year",    "value": "1872" },
+      { "label": "Medium",  "value": "Oil on Canvas" },
+      { "label": "Held at", "value": "Musée Marmottan Monet, Paris" }
+    ],
+    "link": { "url": "https://www.marmottan.fr/en/collection/impression-soleil-levant/", "label": "View at Marmottan" }
+  }
+]

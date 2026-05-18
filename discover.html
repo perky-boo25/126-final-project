@@ -1,176 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Palette</title>
-    <!--CSS link-->
-    <link rel="stylesheet" href="Discover/css/discoverstyle.css">
-    <!--Font links-->
-    <link href="https://fonts.googleapis.com/css2?family=Life+Savers:wght@400;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-    <!--Icons link-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script src="https://kit.fontawesome.com/6f3e3dc980.js" crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <!-------- NAVBAR --------->
-    <nav class="nav">
-      <a class="nav-logo" onclick="showPage('main')">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Palette</title>
+  <link rel="stylesheet" href="Discover/css/discoverstyle.css">
+  <link href="https://fonts.googleapis.com/css2?family=Life+Savers:wght@400;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Caveat:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script src="https://kit.fontawesome.com/6f3e3dc980.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <nav class="nav">
+    <a class="nav-logo" href="#">
       <img src="Discover/images/logo.png" alt="Palette" style="height:60px; width:auto; display:block;">
-      </a>
-      <ul class="nav-links">
-        <li><a>dashboard</a></li>
-        <li class="nav-sep">|</li>
-        <li><a>logbook</a></li>
-        <li class="nav-sep">|</li>
-        <li><a>discover</a></li>
-        <li class="nav-sep">|</li>
-        <li><a>profile</a></li>
-      </ul>
-    </nav>
-    <section>
-      <div class="folder1">
-        <br><br>
-        <h4 id="subtitle" style="margin-left:30px;"> ★ wander through worlds</h4>
-        <h1 id="title" style="margin-left: 50px;">Discover <em>&amp; Browse</em></h1>
-        <h4 id="subtitle"style="margin-left:50px;">
-          this is where taste gets a little messy. songs next to films, books beside random thoughts, reviews that hit or miss—<br>
-          but somehow, it all makes sense once you start browsing.
-        </h4>
-        <br>
-        <div class="search-bar">
-          <div class="search-input" >
-            <i class="material-icons">search</i>
-            <input type="text" placeholder="search for whatever you desire..."/>
-          </div>
-          <button class="search-button">
+    </a>
+    <ul class="nav-links">
+      <li><a>dashboard</a></li>
+      <li class="nav-sep">|</li>
+      <li><a>logbook</a></li>
+      <li class="nav-sep">|</li>
+      <li><a>discover</a></li>
+      <li class="nav-sep">|</li>
+      <li><a>profile</a></li>
+    </ul>
+  </nav>
+
+  <section>
+    <div class="folder1">
+      <br><br>
+      <h4 id="subtitle" style="margin-left:30px;"> ★ wander through worlds</h4>
+      <h1 id="title" style="margin-left: 50px;">Discover <em>&amp; Browse</em></h1>
+      <h4 id="subtitle" style="margin-left:50px;">
+        this is where taste gets a little messy. songs next to films, books beside random thoughts, reviews that hit or
+        miss—<br>
+        but somehow, it all makes sense once you start browsing.
+      </h4>
+      <br>
+      <div class="search-bar">
+        <div class="search-input">
+          <i class="material-icons">search</i>
+          <input type="text" placeholder="search for whatever you desire..." />
+        </div>
+        <button class="search-button">
           <i class="material-icons">search</i>
           Search
-          </button> 
-        </div>
-        <div class="filter">
-          <div class="filter-pill active" onclick="setFilter(this)"><i class="fa-solid fa-star"></i> All</div>
-          <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-music"></i> Music</div>
-          <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-film"></i> Films</div>
-          <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-book"></i>Books</div>
-          <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-palette"></i> Arts</div>
-          <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-feather-pointed"></i> Writings</div>
-        </div>
+        </button>
       </div>
-    </section>
-    <section>
-      <div class="folder2">
-        <h4 class="title-headers"> ★ this week's magical palette</h4>
+      <div class="filter">
+        <div class="filter-pill active" onclick="setFilter(this)"><i class="fa-solid fa-star"></i> All</div>
+        <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-music"></i> Music</div>
+        <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-film"></i> Films</div>
+        <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-book"></i>Books</div>
+        <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-palette"></i> Arts</div>
+        <div class="filter-pill" onclick="setFilter(this)"><i class="fa-solid fa-feather-pointed"></i> Writings</div>
       </div>
-    </section>
-    <section>
-      <div class="section-music">
-        <h4 class="section-header">★ soundwaves &amp; sentiments</h4>
-        <div class="carousel-wrap" id="music-wrap">
-          <button class="carousel-btn prev" onclick="slide('music',-1)" aria-label="Previous">&#8592;</button>
-          <div class="carousel-track-outer">
-            <div class="carousel-track" id="music-track">
-              <div class="music-card">
-                <div class="music-card-img"><img src="https://i.scdn.co/image/ab67616d0000b2730c471c36970b9406004f3eab" alt="Pink Pony Club album cover" onerror="this.style.display='none'"/></div>
-                <div class="music-card-body">
-                  <div class="spotify-badge">
-                    <div class="spotify-dot"></div>
-                    SPOTIFY
-                  </div>
-                  <p class="music-title">Pink Pony Club</p>
-                  <p class="music-artist">Chappell Roan</p>
-                </div>
-                <button class="heart-btn" aria-label="Like">♡</button>
-              </div>
-              <div class="music-card">
-                <div class="music-card-img"><img src="https://i.scdn.co/image/ab67616d0000b273e19d2a68d5c80be05a219b5a" alt="drop dead album cover" onerror="this.style.display='none'"/></div>
-                <div class="music-card-body">
-                  <div class="spotify-badge">
-                    <div class="spotify-dot"></div>
-                    SPOTIFY
-                  </div>
-                  <p class="music-title">drop dead</p>
-                  <p class="music-artist">Olivia Rodrigo</p>
-                </div>
-                <button class="heart-btn" aria-label="Like">♡</button>
-              </div>
-              <div class="music-card">
-                <div class="music-card-img"><img src="https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647" alt="Cruel Summer album cover" onerror="this.style.display='none'"/></div>
-                <div class="music-card-body">
-                  <div class="spotify-badge">
-                    <div class="spotify-dot"></div>
-                    SPOTIFY
-                  </div>
-                  <p class="music-title">Cruel Summer</p>
-                  <p class="music-artist">Taylor Swift</p>
-                </div>
-                <button class="heart-btn" aria-label="Like">♡</button>
-              </div>
-              <div class="music-card">
-                <div class="music-card-img"><img src="https://i.scdn.co/image/ab67616d0000b273a150c0d3e1c91c0d6a4b3e20" alt="because i liked a boy album cover" onerror="this.style.display='none'"/></div>
-                <div class="music-card-body">
-                  <div class="spotify-badge">
-                    <div class="spotify-dot"></div>
-                    SPOTIFY
-                  </div>
-                  <p class="music-title">because i liked a boy</p>
-                  <p class="music-artist">Sabrina Carpenter</p>
-                </div>
-                <button class="heart-btn" aria-label="Like">♡</button>
-              </div>
-              <div class="music-card">
-                <div class="music-card-img" style="background:#2a1a2a;"></div>
-                <div class="music-card-body">
-                  <div class="spotify-badge">
-                    <div class="spotify-dot"></div>
-                    SPOTIFY
-                  </div>
-                  <p class="music-title">Good 4 U</p>
-                  <p class="music-artist">Olivia Rodrigo</p>
-                </div>
-                <button class="heart-btn" aria-label="Like">♡</button>
-              </div>
-              <div class="music-card">
-                <div class="music-card-img" style="background:#1a2030;"></div>
-                <div class="music-card-body">
-                  <div class="spotify-badge">
-                    <div class="spotify-dot"></div>
-                    SPOTIFY
-                  </div>
-                  <p class="music-title">Espresso</p>
-                  <p class="music-artist">Sabrina Carpenter</p>
-                </div>
-                <button class="heart-btn" aria-label="Like">♡</button>
-              </div>
-            </div>
-          </div>
-          <button class="carousel-btn next" onclick="slide('music',1)" aria-label="Next">&#8594;</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="folder2">
+      <h4 class="title-headers"> ★ this week's magical palette</h4>
+      <div class="magical-palette-grid" id="magical-palette-grid">
+        <!-- Skeleton loaders shown while engines are still fetching -->
+        <div class="mp-skeleton"></div>
+        <div class="mp-skeleton"></div>
+        <div class="mp-skeleton"></div>
+        <div class="mp-skeleton"></div>
+        <div class="mp-skeleton"></div>
+        <div class="mp-skeleton"></div>
+        <div class="mp-skeleton"></div>
+      </div>
+
+      <!-- Refresh button — re-shuffles on click -->
+      <div class="mp-refresh-row">
+        <button class="mp-refresh-btn" onclick="MagicalPalette.shuffle()" title="Shuffle again">
+          <i class="fa-solid fa-shuffle"></i> shuffle palette
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-music">
+      <h4 class="section-header" style="margin-left:85%;">★ soundwaves &amp; sentiments</h4>
+      <div class="carousel-wrap" id="music-wrap">
+        <button class="carousel-btn prev" onclick="PaletteCollection.getInstance('music').slide(-1)">←</button>
+        <div class="carousel-track-outer">
+          <div class="carousel-track" id="music-track"></div>
+        </div>
+        <button class="carousel-btn next" onclick="PaletteCollection.getInstance('music').slide(1)">→</button>
+
+        <div class="view-all-container">
+          <button class="view-all-btn" onclick="PaletteCollection.getInstance('music').openSheet()">
+            <i class="fa-solid fa-music"></i> view all
+          </button>
         </div>
       </div>
-    </section>
-    <section>
-      <div class="shelf">
-        <h4 class="title-headers" style="margin-top: 80px; margin-left: 70px;color:white;"> ★ stories and spines</h4>
+    </div>
+  </section>
+
+  <section>
+    <div class="shelf">
+      <div class="books-header-row">
+        <h4 class="section-header" style="color: white; padding-top: 20px;">
+          ★ stories and spines
+        </h4>
+
+        <button class="view-all-btn books-view-btn" onclick="PaletteCollection.getInstance('books').openSheet()"
+          style="margin-top:150px; margin-right:15px;">
+
+          <i class="fa-solid fa-book"></i> view all
+        </button>
       </div>
-    </section>
-    <section>
-      <div class="film">
-        <h4 class="title-headers" style="margin-top: 80px; margin-right:30px; text-align:right;color:white;"> ★ films</h4>
+      <div class="carousel-wrap" id="books-wrap">
+        <div class="carousel-track-outer">
+          <div class="carousel-track" id="books-track"></div>
+        </div>
+        <div class="view-all-container">
+        </div>
       </div>
-    </section>
-    <section>
-      <div class="art">
-        <h4 class="title-headers" style="margin-top: 40px; margin-left: 70px;margin-right:30px; text-align:right;"> ★ musuem of masterpieces</h4>
+    </div>
+  </section>
+  <section class="movies">
+    <div class="section-movies">
+
+      <!-- Header row: title left, view-all right -->
+      <div class="movies-header-row">
+        <h4 class="movies-section-header">★ frames &amp; feelings</h4>
+        <button class="view-all-btn movies-view-btn" onclick="PaletteCollection.getInstance('movies').openSheet()">
+          <i class="fa-solid fa-film"></i> view all
+        </button>
       </div>
-    </section>
-    <section>
-      <div class="write">
-        <h4 class="title-headers" style="margin-top: 450px; margin-left: 70px;"> ★ mailbox with love</h4>
+
+      <!-- Film-strip carousel -->
+      <div class="carousel-wrap" id="movies-wrap">
+
+        <!-- Sprocket holes — top row -->
+        <div class="filmstrip-holes filmstrip-holes--top" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+
+        <!-- Prev / Next arrows -->
+        <button class="carousel-btn movies-carousel-btn prev"
+          onclick="PaletteCollection.getInstance('movies').slide(-1)">←</button>
+
+        <div class="carousel-track-outer movies-track-outer">
+          <div class="carousel-track" id="movies-track"></div>
+        </div>
+
+        <button class="carousel-btn movies-carousel-btn next"
+          onclick="PaletteCollection.getInstance('movies').slide(1)">→</button>
+
+        <!-- Sprocket holes — bottom row -->
+        <div class="filmstrip-holes filmstrip-holes--bottom" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+
       </div>
-    </section>
-    <footer>
-    </footer>
-    <script src="Discover/jscripts/discoveruifx.js"></script>
-  </body>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-art">
+
+      <!-- Header row: title left, view-all right -->
+      <div class="art-header-row">
+        <h4 class="art-section-header">★ pigments &amp; poetry</h4>
+        <button class="view-all-btn art-view-btn" onclick="PaletteCollection.getInstance('art').openSheet()">
+          <i class="fa-solid fa-palette"></i> view all
+        </button>
+      </div>
+
+      <!-- Gallery carousel -->
+      <div class="carousel-wrap" id="art-wrap">
+
+        <button class="carousel-btn art-carousel-btn prev"
+          onclick="PaletteCollection.getInstance('art').slide(-1)">←</button>
+
+        <div class="carousel-track-outer art-track-outer">
+          <div class="carousel-track art-track" id="art-track"></div>
+        </div>
+
+        <button class="carousel-btn art-carousel-btn next"
+          onclick="PaletteCollection.getInstance('art').slide(1)">→</button>
+
+      </div><!-- /.carousel-wrap -->
+
+      <!-- Decorative floor line -->
+      <div class="art-floor-line"></div>
+
+    </div><!-- /.section-art -->
+  </section>
+  <section style="margin-top:-20px;">
+    <div class="section-letters">
+
+      <!-- Header row: label + sub-label left · view-all right -->
+      <div class="letters-header-row">
+        <div class="letters-header-left">
+          <h4 class="letters-section-header">★ letters &amp; journals</h4>
+          <p class="letters-section-sub">little words left out in the open</p>
+        </div>
+        <button class="view-all-btn letters-view-btn" onclick="PaletteCollection.getInstance('letters').openSheet()">
+          <i class="fa-solid fa-feather-pointed"></i> view all
+        </button>
+      </div>
+
+      <!-- Envelope carousel -->
+      <div class="letters-carousel-wrap">
+
+        <!-- Prev arrow -->
+        <button class="letters-arrow" onclick="PaletteCollection.getInstance('letters').slide(-1)"
+          aria-label="Previous">&#8592;</button>
+
+        <!-- Sliding track -->
+        <div class="letters-track-outer">
+          <div class="letters-track" id="letters-track"></div>
+        </div>
+
+        <!-- Next arrow -->
+        <button class="letters-arrow" onclick="PaletteCollection.getInstance('letters').slide(1)"
+          aria-label="Next">&#8594;</button>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <div id="palette-sheet-overlay"></div>
+  <div id="palette-popup-overlay"></div>
+
+  <script src="Discover/jscripts/discoveruifx.js"></script>
+</body>
+
 </html>

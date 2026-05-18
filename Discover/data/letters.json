@@ -1,0 +1,266 @@
+[
+  {
+    "id": "L001",
+    "title": "things i never said out loud",
+    "subtitle": "anonymous",
+    "date": "March 12, 2024",
+    "genre": "unsent",
+    "excerpt": "i kept rehearsing the conversation in my head until it stopped feeling like something real and started feeling like a script.",
+    "description": "i kept rehearsing the conversation in my head until it stopped feeling like something real and started feeling like a script. there's a version of me that said everything perfectly — the right words, the right pause, the right amount of not-quite-crying. that version got closure. this version just has a notes app full of drafts.\n\nbut i think that's okay. some letters aren't meant to be sent. some things are just meant to be felt, written down, and let go of slowly.",
+    "img": "",
+    "tags": ["UNSENT", "PERSONAL"],
+    "rating": 5,
+    "meta": [
+      { "label": "Mood", "value": "bittersweet" },
+      { "label": "Length", "value": "short" },
+      { "label": "Written", "value": "late night, March 2024" }
+    ],
+    "liked": false,
+    "reviews": [
+      { "user": "quietreader", "text": "this is exactly how it feels. exactly.", "rating": 5 },
+      { "user": "wordsandwine", "text": "the notes app full of drafts line hit different.", "rating": 5 }
+    ]
+  },
+  {
+    "id": "L002",
+    "title": "on turning twenty-three",
+    "subtitle": "cielo",
+    "date": "January 5, 2025",
+    "genre": "personal",
+    "excerpt": "i thought by now i'd feel more like a person and less like a person-in-progress. turns out the becoming never really stops.",
+    "description": "i thought by now i'd feel more like a person and less like a person-in-progress. turns out the becoming never really stops.\n\ntwenty-three looks like: staying up too late doing things that matter to me, learning that rest is not the same as laziness, eating something properly for once. it looks like knowing my own opinions and not apologizing for them so quickly.\n\nit's not a dramatic year. it's a quiet one. and i think that's the whole point.",
+    "img": "",
+    "tags": ["PERSONAL", "REALIZATION"],
+    "rating": 4,
+    "meta": [
+      { "label": "Mood", "value": "reflective" },
+      { "label": "Length", "value": "medium" },
+      { "label": "Written", "value": "birthday morning" }
+    ],
+    "liked": false,
+    "reviews": [
+      { "user": "growingslowly", "text": "person-in-progress is going to live in my head forever.", "rating": 5 },
+      { "user": "quietbloomer", "text": "this is the most accurate thing i've read about being in your early twenties.", "rating": 4 }
+    ]
+  },
+  {
+    "id": "L003",
+    "title": "a letter to the city i left",
+    "subtitle": "a traveller",
+    "date": "August 20, 2023",
+    "genre": "personal",
+    "excerpt": "you were never mine to keep. but for a while, your coffee shops and your rain and your strangers felt like they belonged to me.",
+    "description": "you were never mine to keep. but for a while, your coffee shops and your rain and your strangers felt like they belonged to me.\n\ndear city — i know you don't miss me. cities don't do that. but i left a version of myself in your streets somewhere between the bookshop on the corner and the bridge i crossed every morning. i hope she's doing well. i hope she found a good playlist for the commute.\n\nthank you for the two years. i think i needed every single one of your overcast days.",
+    "img": "",
+    "tags": ["PERSONAL", "OBSERVATIONS"],
+    "rating": 5,
+    "meta": [
+      { "label": "Mood", "value": "nostalgic" },
+      { "label": "Length", "value": "medium" },
+      { "label": "Written", "value": "departure lounge" }
+    ],
+    "liked": true,
+    "reviews": [
+      { "user": "wanderwords", "text": "cities don't do that — i felt that in my chest.", "rating": 5 },
+      { "user": "roamingpen", "text": "beautifully aching. perfect travel writing.", "rating": 5 }
+    ]
+  },
+  {
+    "id": "L004",
+    "title": "what i've noticed about mornings",
+    "subtitle": "an observer",
+    "date": "February 3, 2025",
+    "genre": "observations",
+    "excerpt": "7am has a specific quality of light that 8am doesn't. softer. more apologetic. like it's not quite sure it has the right to be there yet.",
+    "description": "7am has a specific quality of light that 8am doesn't. softer. more apologetic. like it's not quite sure it has the right to be there yet.\n\ni've started waking up early on purpose, which feels like a betrayal of my past self. but there's something about being up before everything decides what kind of day it's going to be. the kettle. the quiet. the birds who haven't clocked in yet but show up anyway.\n\nmornings are not for productivity. mornings are for noticing.",
+    "img": "",
+    "tags": ["OBSERVATIONS"],
+    "rating": 4,
+    "meta": [
+      { "label": "Mood", "value": "calm" },
+      { "label": "Length", "value": "short" },
+      { "label": "Written", "value": "7:14am, February" }
+    ],
+    "liked": false,
+    "reviews": [
+      { "user": "earlybird_ink", "text": "the birds who haven't clocked in yet. gorgeous.", "rating": 5 },
+      { "user": "morningpages", "text": "this made me want to wake up earlier. i can't believe it.", "rating": 4 }
+    ]
+  },
+  {
+    "id": "L005",
+    "title": "the thing about reading",
+    "subtitle": "a bookworm",
+    "date": "October 8, 2024",
+    "genre": "hobby",
+    "excerpt": "books don't fix things. but they make you feel less alone while things are unfixed, which is almost better.",
+    "description": "books don't fix things. but they make you feel less alone while things are unfixed, which is almost better.\n\ni've been reading more since everything got complicated. not self-help. not productivity. just stories — people living their made-up lives in made-up cities, loving and losing and figuring things out in ways that feel so real i forget they're not.\n\nthere's a kindness in fiction. it says: here, sit down. someone else has been here too. you don't have to explain yourself.",
+    "img": "",
+    "tags": ["HOBBY", "PERSONAL"],
+    "rating": 5,
+    "meta": [
+      { "label": "Mood", "value": "cozy, honest" },
+      { "label": "Length", "value": "short" },
+      { "label": "Written", "value": "rainy afternoon" }
+    ],
+    "liked": true,
+    "reviews": [
+      { "user": "pagestears", "text": "almost better than fixed — yes. this is exactly it.", "rating": 5 },
+      { "user": "quietshelf", "text": "the kindness in fiction paragraph should be framed.", "rating": 5 }
+    ]
+  },
+  {
+    "id": "L006",
+    "title": "realizing i don't have to rush",
+    "subtitle": "a late bloomer",
+    "date": "June 14, 2024",
+    "genre": "realization",
+    "excerpt": "somewhere between comparing myself to everyone else's timeline and forgetting to eat lunch, i realized: i'm not behind. i'm just on my own schedule.",
+    "description": "somewhere between comparing myself to everyone else's timeline and forgetting to eat lunch, i realized: i'm not behind. i'm just on my own schedule.\n\nthe world is very loud about what you should have done by now. degree by this age. job by this year. settled by this milestone. but no one actually checks.\n\nso i'm choosing to stop auditing my own life against a rubric i didn't write. i'll get there. i'll get somewhere. and it'll be on a Tuesday, probably, quiet and unremarkable, and it'll still count.",
+    "img": "",
+    "tags": ["REALIZATION", "PERSONAL"],
+    "rating": 5,
+    "meta": [
+      { "label": "Mood", "value": "exhale" },
+      { "label": "Length", "value": "medium" },
+      { "label": "Written", "value": "after a very long week" }
+    ],
+    "liked": false,
+    "reviews": [
+      { "user": "gentleprogress", "text": "auditing my own life against a rubric i didn't write. saving this forever.", "rating": 5 },
+      { "user": "laterbloom", "text": "needed this more than i realized. thank you for writing it.", "rating": 5 }
+    ]
+  },
+  {
+    "id": "L007",
+    "title": "dear younger me",
+    "subtitle": "looking back",
+    "date": "December 31, 2024",
+    "genre": "personal",
+    "excerpt": "you're going to spend a lot of time trying to be likeable. i'm not going to tell you to stop — it takes a while to learn that being liked and being known are completely different things.",
+    "description": "you're going to spend a lot of time trying to be likeable. i'm not going to tell you to stop — it takes a while to learn that being liked and being known are completely different things.\n\nbut here's what i want you to know: the awkward years end. the things you're embarrassed about right now will become the things you tell stories about later. the friends who matter will stay. the ones who leave early were teaching you something.\n\nalso — please sleep more. please eat breakfast. please stop leaving things to the last minute even though i know you're going to anyway.",
+    "img": "",
+    "tags": ["PERSONAL", "UNSENT"],
+    "rating": 4,
+    "meta": [
+      { "label": "Mood", "value": "tender" },
+      { "label": "Length", "value": "medium" },
+      { "label": "Written", "value": "New Year's Eve" }
+    ],
+    "liked": true,
+    "reviews": [
+      { "user": "olderme", "text": "the liked vs known distinction is so quietly profound.", "rating": 5 },
+      { "user": "letterstopast", "text": "the breakfast line at the end made me laugh then immediately feel called out.", "rating": 4 }
+    ]
+  },
+  {
+    "id": "L008",
+    "title": "what coffee shops taught me",
+    "subtitle": "a regular",
+    "date": "September 5, 2024",
+    "genre": "observations",
+    "excerpt": "every coffee shop is its own small civilization. there are rules no one wrote down, a social contract maintained entirely by vibes.",
+    "description": "every coffee shop is its own small civilization. there are rules no one wrote down, a social contract maintained entirely by vibes.\n\nyou don't talk loudly on the phone. you don't take the big table if you're alone. you make eye contact with the barista like a human being. you tip when you can.\n\ni've done a lot of my best thinking in coffee shops — not because of the caffeine, but because of the ambient noise of other people living their lives. it's company without obligation. presence without demands. \n\nmaybe that's what i need most. to be around people without needing anything from them.",
+    "img": "",
+    "tags": ["OBSERVATIONS", "HOBBY"],
+    "rating": 4,
+    "meta": [
+      { "label": "Mood", "value": "warm, observational" },
+      { "label": "Length", "value": "medium" },
+      { "label": "Written", "value": "corner table, 2pm" }
+    ],
+    "liked": false,
+    "reviews": [
+      { "user": "cafejournals", "text": "company without obligation. i'm going to think about that all week.", "rating": 5 },
+      { "user": "regularattable5", "text": "the small civilization metaphor is perfect.", "rating": 4 }
+    ]
+  },
+  {
+    "id": "L009",
+    "title": "a note on being tired",
+    "subtitle": "honestly",
+    "date": "April 22, 2025",
+    "genre": "personal",
+    "excerpt": "not the kind of tired that sleep fixes. the other kind. the kind that comes from performing okayness for too long.",
+    "description": "not the kind of tired that sleep fixes. the other kind. the kind that comes from performing okayness for too long.\n\ni've been fine. i've been great, even, on the days when people asked. but there's a difference between fine and actually fine, and lately i've been the first kind wearing the costume of the second.\n\nso: i'm writing this down as a record. i was tired in April 2025. i got through it anyway. and somewhere between the getting through it, i found small things that made it lighter — a song, a window, a conversation that didn't require me to explain myself.\n\nthat's enough. that counts.",
+    "img": "",
+    "tags": ["PERSONAL", "REALIZATION"],
+    "rating": 5,
+    "meta": [
+      { "label": "Mood", "value": "honest, heavy but soft" },
+      { "label": "Length", "value": "medium" },
+      { "label": "Written", "value": "late April" }
+    ],
+    "liked": true,
+    "reviews": [
+      { "user": "softreads", "text": "performing okayness — this is the most accurate phrase i've ever read.", "rating": 5 },
+      { "user": "honest_words", "text": "that's enough. that counts. i needed to hear this.", "rating": 5 }
+    ]
+  },
+  {
+    "id": "L010",
+    "title": "on playlists as portraits",
+    "subtitle": "a listener",
+    "date": "July 19, 2024",
+    "genre": "hobby",
+    "excerpt": "a playlist is a self-portrait. every song you add is something you're trying to say about who you are, or who you want to be, or who you were at 11pm on a specific Wednesday.",
+    "description": "a playlist is a self-portrait. every song you add is something you're trying to say about who you are, or who you want to be, or who you were at 11pm on a specific Wednesday.\n\ni have playlists for moods i don't have words for yet. playlists for the drive home when i need to decompress. playlists for being productive that are secretly just vibes. playlists that i've never shared with anyone because they'd reveal too much.\n\nmusic is the part of me that speaks before i've figured out what i'm feeling. it says the thing first. i catch up later.",
+    "img": "",
+    "tags": ["HOBBY", "OBSERVATIONS"],
+    "rating": 4,
+    "meta": [
+      { "label": "Mood", "value": "reflective, warm" },
+      { "label": "Length", "value": "medium" },
+      { "label": "Written", "value": "while making a playlist" }
+    ],
+    "liked": false,
+    "reviews": [
+      { "user": "musicdiary", "text": "playlists i've never shared because they reveal too much — yes. exactly this.", "rating": 5 },
+      { "user": "headphonepoet", "text": "the wednesday at 11pm detail made this feel so real.", "rating": 4 }
+    ]
+  },
+  {
+    "id": "L011",
+    "title": "things that surprised me about growing up",
+    "subtitle": "still figuring it out",
+    "date": "November 2, 2024",
+    "genre": "realization",
+    "excerpt": "nobody actually knows what they're doing. this is the most comforting and the most terrifying thing i have ever learned.",
+    "description": "nobody actually knows what they're doing. this is the most comforting and the most terrifying thing i have ever learned.\n\nthe adults i looked up to as a kid — turns out they were improvising. the people who seem like they have it together are doing a version of the same thing: waking up, making decisions with incomplete information, hoping for the best.\n\ngrowing up is less of a destination and more of a practice. you don't arrive. you just get better at handling the uncertainty, and occasionally you even get to enjoy it a little.\n\nsurprise list: the uncertainty, the grocery bills, how much you'll appreciate a good nap, how quickly you'll forgive people you love.",
+    "img": "",
+    "tags": ["REALIZATION", "PERSONAL"],
+    "rating": 4,
+    "meta": [
+      { "label": "Mood", "value": "wry, warm" },
+      { "label": "Length", "value": "medium" },
+      { "label": "Written", "value": "after a revelation at the grocery store" }
+    ],
+    "liked": false,
+    "reviews": [
+      { "user": "adultinprogress", "text": "the grocery bills line is painfully real.", "rating": 4 },
+      { "user": "figuring_it_out", "text": "i laughed, then immediately felt seen. thank you.", "rating": 5 }
+    ]
+  },
+  {
+    "id": "L012",
+    "title": "to whoever reads this",
+    "subtitle": "a stranger",
+    "date": "May 1, 2025",
+    "genre": "unsent",
+    "excerpt": "i don't know you. but i hope today was manageable. i hope you found at least one small thing that felt good.",
+    "description": "i don't know you. but i hope today was manageable. i hope you found at least one small thing that felt good.\n\ni'm writing this as a message in a bottle kind of thing. not for anyone specific. just for whoever needs it.\n\nif you're in a hard season: it passes. not quickly, sometimes. but it moves. if you're in a good one: notice it. write it down. let yourself be in it.\n\nand if today was just okay — unremarkable, neither good nor bad — then that's fine too. not every day needs to mean something. some days are just days.\n\ni hope your next one is a little kinder.",
+    "img": "",
+    "tags": ["UNSENT", "PERSONAL"],
+    "rating": 5,
+    "meta": [
+      { "label": "Mood", "value": "gentle, open" },
+      { "label": "Length", "value": "medium" },
+      { "label": "Written", "value": "May morning" }
+    ],
+    "liked": true,
+    "reviews": [
+      { "user": "stranger_reader", "text": "i needed this today specifically. thank you whoever you are.", "rating": 5 },
+      { "user": "bottled_message", "text": "not every day needs to mean something. keeping this.", "rating": 5 }
+    ]
+  }
+]

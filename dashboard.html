@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboardStyle.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-logo">LOGO</div>
+    <div class="nav-links">
+        <a href="dashboard.html" class="nav-active">Dashboard</a>
+        <span>|</span>
+        <a href="#">Logbook</a>
+        <span>|</span>
+        <a href="#">Discover</a>
+        <span>|</span>
+        <a href="profile.html">Profile</a>
+    </div>
+</nav>
+
+<div class="page-wrap">
+
+    <header class="top-area">
+        <div class="top-text">
+            <p class="small-label">timeline</p>
+            <h1>what's new?</h1>
+            <p class="top-copy">
+                smth smth yap yap bla bla
+            </p>
+
+            <div class="filters">
+                <button class="filter active" data-filter="all">all</button>
+                <button class="filter" data-filter="music">music</button>
+                <button class="filter" data-filter="film">films</button>
+                <button class="filter" data-filter="book">books</button>
+                <button class="filter" data-filter="entry">entries</button>
+            </div>
+        </div>
+
+        <div class="top-art">
+            <div class="top-card top-card-big"></div>
+            <div class="top-card top-card-small"></div>
+        </div>
+    </header>
+
+    <main class="main-layout">
+        <section class="feed" id="feed">
+
+       
+        </section>
+        
+
+        <aside class="side">
+
+            <section class="box users-box">
+                <div class="box-head">
+                    <h2>active now</h2>
+                    <span></span>
+                </div>
+
+                <div class="user-list">
+                </div>
+            </section>
+
+            <section class="box receipt-box">
+                <div class="box-head">
+                    <h2>recent activity</h2>
+                    <span></span>
+                </div>
+
+                <div class="receipt">
+                    <div class="receipt-top"></div>
+                        <div id="recent-activity-list">
+                        </div>
+                    <div class="receipt-total">
+                        <span>updates today</span>
+                        <strong id="updates-today-count">0</strong>
+                    </div>
+                    </div>
+                </div>
+
+                
+            </section>
+
+        </aside>
+    </main>
+</div>
+
+<script type="module" src="dashboard.js"></script>
+
+</body>
+</html>

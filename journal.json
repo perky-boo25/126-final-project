@@ -1,0 +1,54 @@
+{
+  "writings": [
+    {
+      "title": "Lorem Ipsum",
+      "author": "Rainbow Dash",
+      "label": "Essay",
+      "image": "",
+      "snippet": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
+    },
+    {
+      "title": "Lorem Ipsum",
+      "author": "Rainbow Dash",
+      "label": "Poem",
+      "image": "",
+      "snippet": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "title": "Lorem Ipsum",
+      "author": "Rainbow Dash",
+      "label": "Short Story",
+      "image": "",
+      "snippet": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+    }
+  ],
+  "entries": [
+    {
+      "title": "Lorem Ipsum",
+      "status": "Draft",
+      "meta": "Personal · 5 min read",
+      "image": "",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.",
+      "date": "May 20, 2026"
+    },
+    {
+      "title": "Lorem Ipsum",
+      "status": "Private",
+      "meta": "Reflection · 3 min read",
+      "image": "",
+      "desc": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis.",
+      "date": "May 14, 2026"
+    },
+    {
+      "title": "Lorem Ipsum",
+      "status": "Published",
+      "meta": "Creative · 8 min read",
+      "image": "",
+      "desc": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi.",
+      "date": "May 8, 2026"
+    }
+  ]
+}

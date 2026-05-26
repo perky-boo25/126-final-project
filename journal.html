@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Journal</title>
+  <link rel="stylesheet" href="journal.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="page-wrapper">
+
+    <!-- TOP HEADER -->
+    <header class="top-bar"></header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>My Journal</h1>
+        <p>
+          A quiet place for thoughts, reflections, and all the little things worth remembering.
+        </p>
+        <div class="palette">
+          <span class="color c1"></span>
+          <span class="color c2"></span>
+          <span class="color c3"></span>
+          <span class="color c4"></span>
+          <span class="color c5"></span>
+        </div>
+        <div class="hero-sub-links">
+          <a href="logbook.html">Logbook</a>
+          <a href="journal.html" class="hero-sub-active">Journal</a>
+        </div>
+        <button class="add-btn">+ Add to Journal</button>
+      </div>
+    </section>
+
+    <!-- TABS -->
+    <section class="tabs-section">
+      <div class="tabs-wrapper">
+
+        <!-- WRITINGS -->
+        <div class="tab-group writings">
+          <button class="tab-header">
+            <img src="images/journal_folder.png" alt="Writings">
+          </button>
+          <div class="folder-overlay">
+            <img class="folder-img" src="images/journal_folder.png" alt="">
+            <div class="folder-entries writings-folder-entries">
+              <div class="pinned-row" id="writing-pinned-row">
+                <!-- Populated by journal.js -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MY ENTRIES -->
+        <div class="tab-group entries">
+          <button class="tab-header">
+            <img src="images/entries_folder.png" alt="My Entries">
+          </button>
+          <div class="folder-overlay">
+            <img class="folder-img" src="images/entries_folder.png" alt="">
+            <div class="folder-entries entries-folder-entries">
+              <div class="pinned-row" id="entry-card-list">
+                <!-- Populated by journal.js -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- WRITING MODAL -->
+  <div class="modal-overlay" id="writingModalOverlay">
+    <div class="modal" id="writingModal">
+      <button class="modal-close" id="writingModalClose">✕</button>
+      <div class="modal-body">
+        <p class="modal-label" id="writingModalLabel"></p>
+        <p class="modal-title" id="writingModalTitle"></p>
+        <p class="modal-author" id="writingModalAuthor"></p>
+        <p class="modal-content" id="writingModalContent"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENTRY MODAL -->
+  <div class="modal-overlay" id="entryModalOverlay">
+    <div class="modal" id="entryModal">
+      <button class="modal-close" id="entryModalClose">✕</button>
+      <div class="modal-body">
+        <div class="modal-title-row">
+          <p class="modal-title" id="entryModalTitle"></p>
+          <span class="modal-badge" id="entryModalBadge"></span>
+        </div>
+        <p class="modal-author" id="entryModalMeta"></p>
+        <p class="modal-author" id="entryModalDate"></p>
+        <p class="modal-content" id="entryModalDesc"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="journal.js"></script>
+</body>
+</html>

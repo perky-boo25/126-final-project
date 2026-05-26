@@ -30,8 +30,11 @@
           <span class="color c3"></span>
           <span class="color c4"></span>
           <span class="color c5"></span>
-
-      </div>
+        </div>
+        <div class="hero-sub-links">
+          <a href="logbook.html" class="hero-sub-active">Logbook</a>
+          <a href="journal.html">Journal</a>
+        </div>
         <button class="add-btn">+ Add to Logbook</button>
       </div>
     </section>
@@ -42,64 +45,14 @@
 
         <!-- MUSIC -->
         <div class="tab-group music">
-          <!-- Original tab image button -->
           <button class="tab-header">
             <img src="images/music_tab.png" alt="Music">
           </button>
-          <!-- Folder overlay: sits on top of the tab button when open -->
           <div class="folder-overlay">
             <img class="folder-img" src="images/music_folder.png" alt="">
             <div class="folder-entries music-folder-entries">
-              <div class="music-card-list">
-
-                <div class="music-card">
-                  <div class="music-card-thumb">
-                    <span class="music-card-play">&#9654;</span>
-                  </div>
-                  <div class="music-card-body">
-                    <p class="music-card-title">Lorem Ipsum <span class="music-card-year">1997</span></p>
-                    <p class="music-card-artist">By Rainbow Dash </p>
-                    <div class="music-card-stars">★★★★★</div>
-                    <p class="music-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                  </div>
-                </div>
-
-                <div class="music-card">
-                  <div class="music-card-thumb">
-                    <span class="music-card-play">&#9654;</span>
-                  </div>
-                  <div class="music-card-body">
-                    <p class="music-card-title">Lorem Ipsum <span class="music-card-year">2015</span></p>
-                    <p class="music-card-artist">By Rainbow Dash </p>
-                    <div class="music-card-stars">★★★★★</div>
-                    <p class="music-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                  </div>
-                </div>
-
-                <div class="music-card">
-                  <div class="music-card-thumb">
-                    <span class="music-card-play">&#9654;</span>
-                  </div>
-                  <div class="music-card-body">
-                    <p class="music-card-title">Lorem Ipsum<span class="music-card-year">2023</span></p>
-                    <p class="music-card-artist">By Rainbow Dash</p>
-                    <div class="music-card-stars">★★★★☆</div>
-                    <p class="music-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                  </div>
-                </div>
-
-                <div class="music-card">
-                  <div class="music-card-thumb">
-                    <span class="music-card-play">&#9654;</span>
-                  </div>
-                  <div class="music-card-body">
-                    <p class="music-card-title">Lorem Ipsum <span class="music-card-year">2020</span></p>
-                    <p class="music-card-artist">By Rainbow Dash</p>
-                    <div class="music-card-stars">★★★★★</div>
-                    <p class="music-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                  </div>
-                </div>
-
+              <div class="music-card-list" id="music-card-list">
+                <!-- Populated by logbook.js -->
               </div>
             </div>
           </div>
@@ -113,62 +66,8 @@
           <div class="folder-overlay">
             <img class="folder-img" src="images/films_folder.png" alt="">
             <div class="folder-entries films-folder-entries">
-              <div class="film-card-list">
-
-                <div class="film-card">
-                  <div class="film-card-thumb"></div>
-                  <div class="film-card-body">
-                    <div class="film-card-header">
-                      <p class="film-card-title">Lorem Ipsum</p>
-                      <div class="film-card-stars">★★★★★</div>
-                    </div>
-                    <p class="film-card-director">By Rainbow Dash <span class="film-release-year">2001</span></p>
-                    <div class="film-card-genres">
-                      <span class="film-genre-tag">Genre 1</span>
-                      <span class="film-genre-tag">Genre 2</span>
-                      <span class="film-genre-tag">Genre 3</span>
-                    </div>
-                    <p class="film-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    <p class="film-card-date">Watched Feb 2025</p>
-                  </div>
-                </div>
-
-                <div class="film-card">
-                  <div class="film-card-thumb"></div>
-                  <div class="film-card-body">
-                    <div class="film-card-header">
-                      <p class="film-card-title">Lorem Ipsum</p>
-                      <div class="film-card-stars">★★★★★</div>
-                    </div>
-                    <p class="film-card-director">By Rainbow Dash <span class="film-release-year">2001</span></p>
-                    <div class="film-card-genres">
-                      <span class="film-genre-tag">Genre 1</span>
-                      <span class="film-genre-tag">Genre 2</span>
-                      <span class="film-genre-tag">Genre 3</span>
-                    </div>
-                    <p class="film-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    <p class="film-card-date">Watched Feb 2025</p>
-                  </div>
-                </div>
-
-                <div class="film-card">
-                  <div class="film-card-thumb"></div>
-                  <div class="film-card-body">
-                    <div class="film-card-header">
-                      <p class="film-card-title">Lorem Ipsum</p>
-                      <div class="film-card-stars">★★★★★</div>
-                    </div>
-                    <p class="film-card-director">By Rainbow Dash <span class="film-release-year">2001</span></p>
-                    <div class="film-card-genres">
-                      <span class="film-genre-tag">Genre 1</span>
-                      <span class="film-genre-tag">Genre 2</span>
-                      <span class="film-genre-tag">Genre 3</span>
-                    </div>
-                    <p class="film-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    <p class="film-card-date">Watched Feb 2025</p>
-                  </div>
-                </div>
-
+              <div class="film-card-list" id="film-card-list">
+                <!-- Populated by logbook.js -->
               </div>
             </div>
           </div>
@@ -182,53 +81,8 @@
           <div class="folder-overlay">
             <img class="folder-img" src="images/books_folder.png" alt="">
             <div class="folder-entries books-folder-entries">
-              <div class="book-card-list">
-
-                <div class="book-card">
-                  <div class="book-card-thumb"></div>
-                  <div class="book-card-body">
-                    <p class="book-card-title">Lorem Ipsum</p>
-                    <p class="book-card-author">By Rainbow Dash <span class="book-card-year">2020</span></p>
-                    <div class="book-card-stars">★★★★★</div>
-                    <div class="book-card-genres">
-                      <span class="book-genre-tag">Genre 1</span>
-                      <span class="book-genre-tag">Genre 2</span>
-                    </div>
-                    <p class="book-card-desc">heabfuedbfkjaebdfjhabfukyhwadfebuAfhbawkjdfehbdkaWUHdfebkwUAfehbkwuef</p>
-                    <p class="book-card-date">Read Dec 2024</p>
-                  </div>
-                </div>
-
-                <div class="book-card">
-                  <div class="book-card-thumb"></div>
-                  <div class="book-card-body">
-                    <p class="book-card-title">Lorem Ipsum</p>
-                    <p class="book-card-author">By Rainbow Dash <span class="book-card-year">2020</span></p>
-                    <div class="book-card-stars">★★★★★</div>
-                    <div class="book-card-genres">
-                      <span class="book-genre-tag">Genre 1</span>
-                      <span class="book-genre-tag">Genre 2</span>
-                    </div>
-                    <p class="book-card-desc">heabfuedbfkjaebdfjhabfukyhwadfebuAfhbawkjdfehbdkaWUHdfebkwUAfehbkwuef</p>
-                    <p class="book-card-date">Read Dec 2024</p>
-                  </div>
-                </div>
-
-                <div class="book-card">
-                  <div class="book-card-thumb"></div>
-                  <div class="book-card-body">
-                    <p class="book-card-title">Lorem Ipsum</p>
-                    <p class="book-card-author">By Rainbow Dash <span class="book-card-year">2020</span></p>
-                    <div class="book-card-stars">★★★★★</div>
-                    <div class="book-card-genres">
-                      <span class="book-genre-tag">Genre 1</span>
-                      <span class="book-genre-tag">Genre 2</span>
-                    </div>
-                    <p class="book-card-desc">heabfuedbfkjaebdfjhabfukyhwadfebuAfhbawkjdfehbdkaWUHdfebkwUAfehbkwuef</p>
-                    <p class="book-card-date">Read Dec 2024</p>
-                  </div>
-                </div>
-
+              <div class="book-card-list" id="book-card-list">
+                <!-- Populated by logbook.js -->
               </div>
             </div>
           </div>
@@ -242,78 +96,8 @@
           <div class="folder-overlay">
             <img class="folder-img" src="images/art_folder.png" alt="">
             <div class="folder-entries art-folder-entries">
-              <div class="art-masonry">
-
-                <div class="art-pin"
-                  data-title="Deer in Bloom"
-                  data-artist="Unknown"
-                  data-stars="4"
-                  data-review="There's something achingly tender about this — the deer's stillness against an explosion of pink petals. The oil texture gives it weight that digital work often lacks."
-                  data-tags="Painting,Oil,Nature,Animals">
-                  <img src="images/art/deer.jpg" alt="Deer in Bloom">
-                  <div class="art-pin-overlay"></div>
-                </div>
-
-                <div class="art-pin"
-                  data-title="Tulip Study"
-                  data-artist="Unknown"
-                  data-stars="5"
-                  data-review="Jewel-toned and almost baroque in its richness. The layering of reds and pinks against deep black feels dramatic without being overwrought — a perfect still life."
-                  data-tags="Painting,Floral,Realism">
-                  <img src="images/art/flower.jpg" alt="Tulip Study">
-                  <div class="art-pin-overlay"></div>
-                </div>
-
-                <div class="art-pin"
-                  data-title="Sea Angel Trifold"
-                  data-artist="Unknown"
-                  data-stars="4"
-                  data-review="Infographic design done beautifully — the dark palette and illustrated creatures give it the feel of a museum piece rather than an educational pamphlet. Information and aesthetics in harmony."
-                  data-tags="Design,Infographic,Ocean">
-                  <img src="images/art/paint.jpg" alt="Sea Angel Trifold">
-                  <div class="art-pin-overlay"></div>
-                </div>
-
-                <div class="art-pin"
-                  data-title="White Lily"
-                  data-artist="Unknown"
-                  data-stars="5"
-                  data-review="The light source is almost supernatural — petals rendered with such translucency you expect to see your hand through them. Quietly stunning botanical work."
-                  data-tags="Digital Art,Floral,Botanical">
-                  <img src="images/art/diva.jpg" alt="White Lily">
-                  <div class="art-pin-overlay"></div>
-                </div>
-
-                <div class="art-pin"
-                  data-title="Spade Fish Print"
-                  data-artist="Unknown"
-                  data-stars="3"
-                  data-review="Charming vintage-label energy with the stars and nautical typography. The soft blue palette keeps it from feeling kitschy — a nice piece of commercial folk art."
-                  data-tags="Print,Vintage,Typography">
-                  <img src="images/art/flower.jpg" alt="Spade Fish Print">
-                  <div class="art-pin-overlay"></div>
-                </div>
-
-                <div class="art-pin"
-                  data-title="Abstract Warm Gradient"
-                  data-artist="Unknown"
-                  data-stars="4"
-                  data-review="The kind of abstract work that rewards staring — amber and rust bleeding into dark violet with a softness that feels almost photographic. Would hang this in a heartbeat."
-                  data-tags="Abstract,Digital,Color Study">
-                  <img src="images/art/koring.jpg" alt="Abstract Gradient">
-                  <div class="art-pin-overlay"></div>
-                </div>
-
-                <div class="art-pin"
-                  data-title="Line Tattoo Study"
-                  data-artist="Unknown"
-                  data-stars="5"
-                  data-review="Tattoo as fine art — the linework is impossibly precise, botanical motifs winding up the arm like something grown rather than drawn. A masterclass in negative space."
-                  data-tags="Tattoo,Linework,Botanical">
-                  <img src="images/art/kuring.jpg" alt="Line Tattoo Study">
-                  <div class="art-pin-overlay"></div>
-                </div>
-
+              <div class="art-masonry" id="art-masonry">
+                <!-- Populated by logbook.js -->
               </div>
             </div>
           </div>
@@ -340,50 +124,5 @@
   </div>
 
   <script src="logbook.js"></script>
-  <script>
-    // ─── ART MODAL ───
-    const overlay   = document.getElementById('artModalOverlay');
-    const modalImg  = document.getElementById('artModalImg');
-    const modalTitle  = document.getElementById('artModalTitle');
-    const modalArtist = document.getElementById('artModalArtist');
-    const modalStars  = document.getElementById('artModalStars');
-    const modalTags   = document.getElementById('artModalTags');
-    const modalReview = document.getElementById('artModalReview');
-
-    document.querySelectorAll('.art-pin').forEach(pin => {
-      pin.addEventListener('click', () => {
-        const img    = pin.querySelector('img');
-        const stars  = parseInt(pin.dataset.stars, 10);
-        const tags   = pin.dataset.tags.split(',');
-
-        modalImg.src    = img ? img.src : '';
-        modalImg.alt    = pin.dataset.title;
-        modalTitle.textContent  = pin.dataset.title;
-        modalArtist.textContent = pin.dataset.artist;
-        modalStars.textContent  = '★'.repeat(stars) + '☆'.repeat(5 - stars);
-        modalReview.textContent = pin.dataset.review;
-
-        modalTags.innerHTML = '';
-        tags.forEach(tag => {
-          const span = document.createElement('span');
-          span.className = 'art-modal-tag';
-          span.textContent = tag.trim();
-          modalTags.appendChild(span);
-        });
-
-        overlay.classList.add('open');
-        document.body.style.overflow = 'hidden';
-      });
-    });
-
-    function closeModal() {
-      overlay.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    document.getElementById('artModalClose').addEventListener('click', closeModal);
-    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-  </script>
 </body>
 </html>

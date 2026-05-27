@@ -194,189 +194,361 @@ class PaletteCollection {
  * REDESIGNED POPUP MANAGER (STARS MOVED BELOW BUTTONS)
  */
 const PalettePopup = {
-  _reviews: {},
   _activeConfig: null,
+  _pickedRating: 0,
 
+  // ── Open: render shell immediately, then load Firestore aggregates ──
   open(config) {
-    const overlay = document.getElementById("palette-popup-overlay");
+    this._activeConfig = config;
+    this._pickedRating = 0;
+    this._renderPopup(config);
+    this._loadFirestoreData(config);
+  },
 
-    // Seed local cache with any reviews already in config
-    if (!this._reviews[config.title]) {
-      this._reviews[config.title] = config.reviews || [];
-    }
+  // ── Query Firestore for aggregated avg rating + review count + review docs ──
+  async _loadFirestoreData(config) {
+    if (!window.db) return;
+    try {
+      const {
+        collection,
+        query,
+        where,
+        getAggregateFromServer,
+        sum,
+        count,
+        average,
+        getDocs,
+        orderBy,
+        limit,
+      } =
+        await import("https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js");
 
-    // Render immediately with cached data, then refresh from Firestore
-    this._renderPopup(config, this._reviews[config.title]);
+      const postsRef = collection(window.db, "posts");
+      const itemQuery = query(
+        postsRef,
+        where("title", "==", config.title),
+        where("category", "==", config.type),
+      );
 
-    // Load fresh data from Firestore (rating + reviews)
-    if (window.PaletteDB) {
-      window.PaletteDB.getItemData(config.type, config.title).then((data) => {
-        // Update rating on the live popup stars
-        if (data.rating && data.rating !== config.rating) {
-          config.rating = data.rating;
-          const container = document.getElementById(
-            `pp-stars-${config.title.replace(/\s/g, "_")}`
-          );
-          if (container) {
-            container.innerHTML = [1, 2, 3, 4, 5]
-              .map(
-                (n) =>
-                  `<button class="pp-star ${n <= data.rating ? "pp-star--on" : ""}"
-                   onclick="PalettePopup._setRating('${config.title}',${n})">★</button>`
-              )
-              .join("");
-          }
-          // Sync back to engine
-          const engine = PaletteCollection.getInstance(config.type);
-          if (engine) {
-            const item = engine.items.find((i) => i.title === config.title);
-            if (item) item.rating = data.rating;
-          }
-        }
-        // Update reviews list with Firestore data
-        if (data.reviews && data.reviews.length) {
-          this._reviews[config.title] = data.reviews;
-          const list = document.getElementById("pp-reviews-list");
-          if (list) list.innerHTML = this._renderReviews(data.reviews);
-        }
+      // Firestore aggregation — cheap, no document downloads
+      const aggSnap = await getAggregateFromServer(itemQuery, {
+        totalReviews: count(),
+        avgRating: average("rating"),
       });
+      const totalReviews = aggSnap.data().totalReviews || 0;
+      const avgRating = aggSnap.data().avgRating || 0;
+
+      // Update the aggregate badge in the header
+      const badge = document.getElementById("pp-agg-badge");
+      if (badge) {
+        badge.innerHTML = `
+          <span class="pp-agg-stars">${this._starsDisplay(avgRating)}</span>
+          <span class="pp-agg-count">${avgRating.toFixed(1)} stars</span>
+          <span class="pp-agg-sep">·</span>
+          <span class="pp-agg-count">${totalReviews} review${totalReviews !== 1 ? "s" : ""}</span>`;
+      }
+
+      // Fetch up to 20 latest review docs
+      const revQuery = query(
+        itemQuery,
+        orderBy("datePosted", "desc"),
+        limit(20),
+      );
+      const revSnap = await getDocs(revQuery);
+      const reviews = revSnap.docs.map((d) => d.data());
+
+      const list = document.getElementById("pp-reviews-list");
+      if (list) list.innerHTML = this._renderReviews(reviews);
+    } catch (err) {
+      console.warn("[PalettePopup] Firestore load error:", err);
     }
   },
 
-  _renderPopup(config, reviews) {
+  // ── Stars display (read-only, yellow filled) ──
+  _starsDisplay(avg) {
+    const rounded = Math.round(avg);
+    return [1, 2, 3, 4, 5]
+      .map(
+        (n) =>
+          `<span class="${n <= rounded ? "pp-agg-star--on" : "pp-agg-star--off"}">★</span>`,
+      )
+      .join("");
+  },
+
+  // ── Interactive rate-this stars ──
+  _starPickHTML(config) {
+    const rating = config.rating || 0;
+    return [1, 2, 3, 4, 5]
+      .map(
+        (n) =>
+          `<button class="pp-star ${n <= rating ? "pp-star--on" : ""}"
+               onclick="PalettePopup._setRating('${config.title}',${n})">★</button>`,
+      )
+      .join("");
+  },
+
+  // ── Full popup HTML (matches wireframe: pink/white, stars top-right) ──
+  _renderPopup(config) {
     const overlay = document.getElementById("palette-popup-overlay");
-
-    const starHTML = (rating = config.rating || 0) =>
-      [1, 2, 3, 4, 5]
-        .map(
-          (n) =>
-            `<button class="pp-star ${n <= rating ? "pp-star--on" : ""}"
-          onclick="PalettePopup._setRating('${config.title}',${n})">★</button>`,
-        )
-        .join("");
-
     const tagsHTML = (config.tags || [])
       .map((t) => `<span class="pp-genre-tag">${t}</span>`)
       .join("");
 
     overlay.innerHTML = `
       <div class="pp-card">
+
+        <!-- HEADER — dark pink band -->
         <div class="pp-header">
-          <button class="pp-close-btn" onclick="PalettePopup.close()">✕</button>
+          <button class="pp-close-btn" onclick="PalettePopup.close()" aria-label="Close">✕</button>
+
           <div class="pp-header-inner">
+
+            <!-- Artwork -->
             <div class="pp-artwork">
-               ${config.img ? `<img src="${config.img}" style="width:100%;height:100%;object-fit:cover;">` : `<div class="pp-img-placeholder">${config.imgPlaceholder}</div>`}
+              ${
+                config.img
+                  ? `<img src="${config.img}" alt="${config.title}" style="width:100%;height:100%;object-fit:cover;">`
+                  : `<div class="pp-img-placeholder">${config.imgPlaceholder || "♪"}</div>`
+              }
             </div>
+
+            <!-- Right meta column -->
             <div class="pp-meta">
-              <div class="pp-meta-top">
-                <div class="pp-title-block">
-                  <h2 class="pp-title">${config.title}</h2>
-                  <p class="pp-subtitle">${config.subtitle}</p>
-                </div>
+
+              <!-- Title + subtitle -->
+              <div class="pp-title-block">
+                <h2 class="pp-title">${config.title}</h2>
+                <p class="pp-subtitle">${config.subtitle}</p>
               </div>
-              
+
+              <!-- Aggregate rating badge (populated by Firestore) -->
+              <div class="pp-agg-badge" id="pp-agg-badge">
+                <span class="pp-agg-stars">${this._starsDisplay(config.rating || 0)}</span>
+                <span class="pp-agg-count">${config.rating ? config.rating.toFixed(1) + " stars" : "No ratings yet"}</span>
+              </div>
+
+              <!-- Genre tags + action buttons -->
               <div class="pp-meta-bottom">
                 <div class="pp-tags">${tagsHTML}</div>
                 <div class="pp-actions">
-                  <button class="pp-like-btn ${config.liked ? "pp-like-btn--liked" : ""}" id="pp-like-btn" onclick="PalettePopup._toggleLike()">
+                  <button class="pp-like-btn ${config.liked ? "pp-like-btn--liked" : ""}"
+                          id="pp-like-btn"
+                          onclick="PalettePopup._toggleLike()">
                     ${config.liked ? "♥" : "♡"} Like
                   </button>
-                  <button class="pp-logbook-btn" onclick="PalettePopup._addToLogbook()">+ Add to Logbook</button>
+                  <button class="pp-logbook-btn" onclick="PalettePopup._addToLogbook()">
+                    + Add to Logbook
+                  </button>
                 </div>
               </div>
 
-              <div class="pp-stars-container">
-                <div class="pp-stars" id="pp-stars-${config.title.replace(/\s/g, "_")}">
-                  ${starHTML(config.rating)}
-                </div>
-                <span style="color:#aaa; font-size:11px; margin-left:10px; font-family:sans-serif;">Rate this palette</span>
-              </div>
-            </div>
-          </div>
-        </div>
+            </div><!-- /.pp-meta -->
+          </div><!-- /.pp-header-inner -->
+        </div><!-- /.pp-header -->
+
+        <!-- BODY — light cream -->
         <div class="pp-body">
+
+          <!-- About -->
           <section class="pp-section">
             <h3 class="pp-section-title">About</h3>
             <div class="pp-divider"></div>
             <p class="pp-description">${config.description || "No description available."}</p>
-            <div class="pp-meta-list">${config.meta.map((m) => `<span class="pp-meta-item"><strong>${m.label}:</strong> ${m.value}</span>`).join("")}</div>
-            ${config.link ? `<a class="pp-ext-link" href="${config.link.url}" target="_blank">${config.link.label} ↗</a>` : ""}
+            <div class="pp-meta-list">
+              ${(config.meta || [])
+                .map(
+                  (m) =>
+                    `<span class="pp-meta-item"><strong>${m.label}:</strong> ${m.value}</span>`,
+                )
+                .join("")}
+            </div>
+            ${
+              config.link
+                ? `<a class="pp-ext-link" href="${config.link.url}" target="_blank">${config.link.label} ↗</a>`
+                : ""
+            }
           </section>
+
+          <!-- Reviews -->
           <section class="pp-section">
             <h3 class="pp-section-title">Reviews</h3>
             <div class="pp-divider"></div>
-            <div class="pp-review-row pp-review-input-row">
+
+            <!-- Input row: avatar · star pick · text · send -->
+            <div class="pp-review-input-row">
               <div class="pp-avatar pp-avatar--you">you</div>
-              <input class="pp-review-input" id="pp-review-input" type="text" placeholder="Add reviews" onkeydown="if(event.key==='Enter') PalettePopup._submitReview('${config.title}')">
+              <div class="pp-input-area">
+                <input class="pp-review-input"
+                       id="pp-review-input"
+                       type="text"
+                       placeholder="Add a review…"
+                       onkeydown="if(event.key==='Enter') PalettePopup._submitReview()">
+                <div class="pp-input-stars" id="pp-input-stars">
+                  ${[1, 2, 3, 4, 5]
+                    .map(
+                      (n) =>
+                        `<button class="pp-spick-btn" onclick="PalettePopup._pickStar(${n})">★</button>`,
+                    )
+                    .join("")}
+                </div>
+              </div>
+              <button class="pp-send-btn" onclick="PalettePopup._submitReview()">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
             </div>
-            <div id="pp-reviews-list">${this._renderReviews(reviews)}</div>
+
+            <!-- Review list (populated by Firestore) -->
+            <div id="pp-reviews-list">
+              <p class="pp-no-reviews">Loading reviews…</p>
+            </div>
           </section>
-        </div>
-      </div>`;
+
+        </div><!-- /.pp-body -->
+      </div><!-- /.pp-card -->`;
 
     overlay.style.display = "flex";
-    this._activeConfig = config;
   },
 
-  _renderReviews(reviews) {
-    if (!reviews.length) return `<p class="pp-no-reviews">No reviews yet.</p>`;
-    return reviews
-      .map(
-        (r) => `
+  // ── Render review rows from Firestore posts docs ──
+  _renderReviews(docs) {
+    if (!docs || !docs.length)
+      return `<p class="pp-no-reviews">No reviews yet — be the first!</p>`;
+
+    return docs
+      .map((r) => {
+        const username = r.username || r.user || "user";
+        const avatar = r.userProfilePicture
+          ? `<img src="${r.userProfilePicture}" alt="${username}" class="pp-avatar-img">`
+          : `<div class="pp-avatar">${username[0].toUpperCase()}</div>`;
+        const stars = [1, 2, 3, 4, 5]
+          .map(
+            (n) =>
+              `<span class="${n <= (r.rating || 0) ? "pp-rv-star--on" : "pp-rv-star--off"}">★</span>`,
+          )
+          .join("");
+        const date = r.datePosted?.toDate
+          ? r.datePosted
+              .toDate()
+              .toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })
+          : "";
+
+        return `
       <div class="pp-review-row">
-        <div class="pp-avatar">${r.user[0].toUpperCase()}</div>
+        ${avatar}
         <div class="pp-review-content">
-          <span class="pp-review-user">${r.user}</span>
-          <p class="pp-review-text">${r.text}</p>
+          <div class="pp-review-meta-row">
+            <span class="pp-review-user">@${username}</span>
+            <span class="pp-review-stars">${stars}</span>
+            ${date ? `<span class="pp-review-date">${date}</span>` : ""}
+          </div>
+          <p class="pp-review-text">${r.body || r.text || ""}</p>
         </div>
-      </div>`,
-      )
+      </div>`;
+      })
       .join("");
   },
 
-  _submitReview(title) {
+  // ── Star pick for new review ──
+  _pickStar(n) {
+    this._pickedRating = n;
+    document
+      .querySelectorAll(".pp-spick-btn")
+      .forEach((b, i) => b.classList.toggle("pp-spick-btn--on", i < n));
+  },
+
+  // ── Submit new review to Firestore posts collection ──
+  async _submitReview() {
     const input = document.getElementById("pp-review-input");
-    const text = input.value.trim();
+    const text = (input?.value || "").trim();
     if (!text) return;
-    if (!this._reviews[title]) this._reviews[title] = [];
-    const review = { user: "you", text };
-    this._reviews[title].unshift(review);
+
+    const config = this._activeConfig;
+    const rating = this._pickedRating;
+
+    // Optimistic UI update
+    const list = document.getElementById("pp-reviews-list");
+    const placeholder = list?.querySelector(".pp-no-reviews");
+    if (placeholder) placeholder.remove();
+
+    const tempRow = document.createElement("div");
+    tempRow.className = "pp-review-row";
+    tempRow.innerHTML = `
+      <div class="pp-avatar pp-avatar--you">you</div>
+      <div class="pp-review-content">
+        <div class="pp-review-meta-row">
+          <span class="pp-review-user">@you</span>
+          <span class="pp-review-stars">
+            ${[1, 2, 3, 4, 5]
+              .map(
+                (n) =>
+                  `<span class="${n <= rating ? "pp-rv-star--on" : "pp-rv-star--off"}">★</span>`,
+              )
+              .join("")}
+          </span>
+        </div>
+        <p class="pp-review-text">${text}</p>
+      </div>`;
+    list?.prepend(tempRow);
+
     input.value = "";
-    document.getElementById("pp-reviews-list").innerHTML = this._renderReviews(
-      this._reviews[title],
-    );
-    // Persist to Firestore
-    if (window.PaletteDB && this._activeConfig) {
-      window.PaletteDB.addReview(this._activeConfig.type, title, review);
+    this._pickedRating = 0;
+    document
+      .querySelectorAll(".pp-spick-btn")
+      .forEach((b) => b.classList.remove("pp-spick-btn--on"));
+
+    // Persist to Firestore posts collection
+    if (window.db) {
+      try {
+        const { collection, addDoc, serverTimestamp } =
+          await import("https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js");
+        await addDoc(collection(window.db, "posts"), {
+          title: config.title,
+          category: config.type,
+          body: text,
+          rating: rating,
+          username: "you",
+          userId: "local",
+          userProfilePicture: null,
+          imageUrl: config.img || null,
+          item: config.title,
+          datePosted: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          stampCount: 0,
+        });
+        // Refresh aggregates
+        this._loadFirestoreData(config);
+      } catch (err) {
+        console.warn("[PalettePopup] Review save error:", err);
+      }
+    }
+
+    // Legacy PaletteDB fallback
+    if (window.PaletteDB && config) {
+      window.PaletteDB.addReview(config.type, config.title, {
+        user: "you",
+        text,
+        rating,
+      });
     }
   },
 
   _setRating(title, val) {
+    if (!this._activeConfig) return;
     this._activeConfig.rating = val;
-    // Update the local data in the engine
     const engine = PaletteCollection.getInstance(this._activeConfig.type);
-    const item = engine.items.find((i) => i.title === title);
+    const item = engine?.items.find((i) => i.title === title);
     if (item) item.rating = val;
-
-    const container = document.getElementById(
-      `pp-stars-${title.replace(/\s/g, "_")}`,
-    );
-    if (container) {
-      container.innerHTML = [1, 2, 3, 4, 5]
-        .map(
-          (n) =>
-            `<button class="pp-star ${n <= val ? "pp-star--on" : ""}" onclick="PalettePopup._setRating('${title}',${n})">★</button>`,
-        )
-        .join("");
-    }
-    // Persist to Firestore
-    if (window.PaletteDB) {
+    if (window.PaletteDB)
       window.PaletteDB.setRating(this._activeConfig.type, title, val);
-    }
   },
 
   _toggleLike() {
     const cfg = this._activeConfig;
+    if (!cfg) return;
     cfg.liked = !cfg.liked;
     if (cfg.onLike) cfg.onLike(cfg.liked);
     const btn = document.getElementById("pp-like-btn");
@@ -384,27 +556,25 @@ const PalettePopup = {
       btn.classList.toggle("pp-like-btn--liked", cfg.liked);
       btn.innerHTML = `${cfg.liked ? "♥" : "♡"} Like`;
     }
-    // Persist to Firestore
-    if (window.PaletteDB) {
+    if (window.PaletteDB)
       window.PaletteDB.setLiked(cfg.type, cfg.title, cfg.liked);
-    }
   },
 
   _addToLogbook() {
     const btn = document.querySelector(".pp-logbook-btn");
-    if (btn) {
-      btn.textContent = "✓ Added!";
-      btn.style.background = "#4caf50";
-      setTimeout(() => {
-        btn.textContent = "+ Add to Logbook";
-        btn.style.background = "";
-      }, 1800);
-    }
+    if (!btn) return;
+    btn.textContent = "✓ Added!";
+    btn.style.background = "#c97d87";
+    setTimeout(() => {
+      btn.textContent = "+ Add to Logbook";
+      btn.style.background = "";
+    }, 1800);
   },
 
   close() {
     document.getElementById("palette-popup-overlay").style.display = "none";
     this._activeConfig = null;
+    this._pickedRating = 0;
   },
 };
 
@@ -644,12 +814,10 @@ window.addEventListener("resize", () => {
 
     grid.innerHTML = this.items
       .map((item, index) => {
-        const tilt = TILTS[index % TILTS.length];
         const stamp = STAMPS[index % STAMPS.length];
 
         return `
         <div class="envelope-card"
-             style="transform: rotate(${tilt}deg);"
              onclick="PaletteCollection.getInstance('letters').openLetterPopup(${index})">
  
           <div class="envelope-body">
@@ -722,18 +890,8 @@ PaletteCollection.prototype.openLetterPopup = function (index) {
   const card = document.querySelectorAll(".envelope-card")[index];
 
   // Quick visual "open" pulse on the clicked card
-  if (card) {
-    card.style.transition = "transform 0.18s ease";
-    card.style.transform = "scale(1.06) rotate(0deg)";
-    setTimeout(() => {
-      card.style.transform = "";
-    }, 260);
-  }
-
-  // Delegate to standard openPopup after the micro-animation
-  setTimeout(() => {
-    this.openPopup(index);
-  }, 180);
+  // Open popup immediately (no animation)
+  this.openPopup(index);
 };
 
 (function patchLettersCarousel() {
@@ -749,12 +907,10 @@ PaletteCollection.prototype.openLetterPopup = function (index) {
 
     track.innerHTML = this.items
       .map((item, index) => {
-        const tilt = (index % 2 === 0 ? 1 : -1) * (1 + (index % 3));
         const stamp = stamps[index % stamps.length];
 
         return `
         <div class="envelope-card"
-             style="transform: rotate(${tilt}deg);"
              onclick="PaletteCollection.getInstance('letters').openLetterPopup(${index})">
           <div class="envelope-body">
             <div class="envelope-flap"></div>
@@ -810,18 +966,8 @@ PaletteCollection.prototype.openLetterPopup = function (index) {
   /* quick scale pulse on the clicked card */
   const cards = document.querySelectorAll("#letters-track .envelope-card");
   const card = cards[index];
-  if (card) {
-    card.style.transition = "transform 0.18s ease";
-    card.style.transform = "scale(1.07) rotate(0deg)";
-    setTimeout(() => {
-      card.style.transform = "";
-    }, 260);
-  }
-
-  /* open the letter-paper popup after the animation */
-  setTimeout(() => {
-    LetterPopup.open(this.items[index], index, this);
-  }, 180);
+  /* open the letter-paper popup immediately */
+  LetterPopup.open(this.items[index], index, this);
 };
 
 const LetterPopup = {
@@ -847,16 +993,19 @@ const LetterPopup = {
 
     // Load fresh data from Firestore (rating + reviews)
     if (window.PaletteDB) {
-      window.PaletteDB.getItemData('letters', item.title).then((data) => {
+      window.PaletteDB.getItemData("letters", item.title).then((data) => {
         // Update rating display
         if (data.rating && data.rating !== (item.rating || 0)) {
           item.rating = data.rating;
           if (instance) instance.items[index].rating = data.rating;
-          const ratingEl = overlay.querySelector('.letter-popup-rating');
+          const ratingEl = overlay.querySelector(".letter-popup-rating");
           if (ratingEl) {
             ratingEl.innerHTML = [1, 2, 3, 4, 5]
-              .map((i) => `<span class="${i <= data.rating ? "" : "off"}">★</span>`)
-              .join('');
+              .map(
+                (i) =>
+                  `<span class="${i <= data.rating ? "" : "off"}">★</span>`,
+              )
+              .join("");
           }
         }
         // Update reviews
@@ -1005,7 +1154,7 @@ const LetterPopup = {
 
     // Persist to Firestore
     if (window.PaletteDB) {
-      window.PaletteDB.addReview('letters', this._activeItem.title, review);
+      window.PaletteDB.addReview("letters", this._activeItem.title, review);
     }
   },
 
@@ -1027,7 +1176,7 @@ const LetterPopup = {
 
     // Persist to Firestore
     if (window.PaletteDB) {
-      window.PaletteDB.setLiked('letters', item.title, item.liked);
+      window.PaletteDB.setLiked("letters", item.title, item.liked);
     }
   },
 
@@ -1075,12 +1224,10 @@ const LetterPopup = {
           item.excerpt?.toLowerCase().includes(inst.searchQuery);
         if (!(matchGenre && matchQuery)) return "";
 
-        const tilt = (idx % 2 === 0 ? 1 : -1) * (1 + (idx % 3));
         const stamp = stamps[idx % stamps.length];
 
         return `
         <div class="envelope-card"
-             style="transform: rotate(${tilt}deg);"
              onclick="PaletteCollection.getInstance('letters').openLetterPopup(${idx})">
           <div class="envelope-body">
             <div class="envelope-flap"></div>
@@ -1761,8 +1908,7 @@ const MagicalPalette = (() => {
       /* Spin animation on the button icon */
       const btn = document.querySelector(".mp-refresh-btn");
       if (btn) {
-        btn.classList.add("spinning");
-        setTimeout(() => btn.classList.remove("spinning"), 520);
+        // spinning animation removed
       }
       render();
     },

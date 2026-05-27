@@ -1,1 +1,4 @@
 .env
+node_modules/
+Discover/config.js
+config.js

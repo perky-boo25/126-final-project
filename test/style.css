@@ -1,0 +1,62 @@
+body {
+  font-family: monospace;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+  background: #fff;
+  color: #111;
+}
+
+h1 { font-size: 22px; margin-bottom: 16px; }
+h2 { font-size: 16px; margin: 0 0 8px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+.tabs button { padding: 6px 14px; cursor: pointer; font-size: 13px; }
+
+/* Section */
+.tab { border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; border-radius: 4px; }
+.tab p, .tab label { font-size: 12px; margin-bottom: 12px; display: block; }
+.tab input[type="text"] { padding: 6px 10px; font-size: 13px; width: 280px; border: 1px solid #bbb; }
+.tab button { padding: 6px 16px; font-size: 13px; cursor: pointer; margin-left: 6px; }
+
+/* Results area */
+#books-results, #art-results, #films-results { margin-top: 20px; }
+
+/* Each result card */
+.result-card {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.result-card img {
+  max-width: 80px;
+  max-height: 110px;
+  float: left;
+  margin-right: 12px;
+  object-fit: cover;
+}
+
+.result-card .info { overflow: hidden; }
+.result-card strong { font-size: 13px; display: block; margin-bottom: 4px; }
+.result-card .clear { clear: both; }
+
+/* Raw JSON dump */
+.raw-dump {
+  background: #f4f4f4;
+  border: 1px solid #ddd;
+  padding: 12px;
+  font-size: 11px;
+  overflow-x: auto;
+  white-space: pre;
+  max-height: 320px;
+  overflow-y: auto;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+
+.error { color: red; font-size: 12px; margin-top: 10px; }
+.loading { font-size: 12px; color: #666; margin-top: 10px; }

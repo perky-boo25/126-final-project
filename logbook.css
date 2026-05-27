@@ -350,6 +350,66 @@ html, body {
     transform: scale(1.12);
 }
 
+/* ─── DELETE BUTTON ─── */
+
+.card-delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background: rgba(220, 80, 80, 0.15);
+    border: 1.5px solid rgba(220, 80, 80, 0.35);
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
+    z-index: 10;
+    box-shadow: 0 2px 6px rgba(200, 60, 60, 0.15);
+    line-height: 1;
+}
+
+.music-card:hover .card-delete-btn,
+.film-card:hover .card-delete-btn,
+.book-card:hover .card-delete-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.card-delete-btn:hover {
+    background: rgba(220, 80, 80, 0.85) !important;
+    border-color: transparent !important;
+    transform: scale(1.15) !important;
+    box-shadow: 0 4px 12px rgba(200, 60, 60, 0.35);
+}
+
+.card-delete-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Art pins: delete shows on hover, sits above overlay */
+.art-delete-btn {
+    top: 8px;
+    right: 8px;
+    opacity: 0;
+}
+
+.art-pin:hover .art-delete-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Music card needs relative positioning for the button */
+.music-card {
+    position: relative;
+}
+
 /* ─── MUSIC CARDS — horizontal rows with small thumb ─── */
 
 .music-folder-entries {
@@ -469,11 +529,21 @@ html, body {
     padding-top: 8px;
 }
 
+.music-card-added {
+    font-size: 10px;
+    color: #b89898;
+    font-weight: 300;
+    margin-top: 6px;
+    text-align: right;
+    align-self: flex-end;
+    letter-spacing: 0.2px;
+}
+
 /* ─── FILM CARDS — vertical grid with poster thumb ─── */
 
 .films-folder-entries {
     padding: 28px 32px 32px 32px;
-    margin-top: 30px;
+    margin-top: 50px;
 }
 
 .film-card-list {
@@ -603,7 +673,7 @@ html, body {
 
 .books-folder-entries {
     padding: 28px 32px 32px 32px;
-    margin-top: 55px;
+    margin-top: 90px;
 }
 
 .book-card-list {
@@ -862,6 +932,16 @@ html, body {
     color: #4a3038;
     line-height: 1.8;
     margin-top: 2px;
+}
+
+.art-modal-added {
+    font-size: 11px;
+    color: #b89898;
+    font-weight: 300;
+    margin-top: 8px;
+    border-top: 1px solid #f0e4e6;
+    padding-top: 10px;
+    letter-spacing: 0.2px;
 }
 
 .art-modal-close {

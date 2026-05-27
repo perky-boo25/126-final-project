@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>API Explorer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <h1>API Explorer</h1>
+
+  <!-- ── TAB BUTTONS ─────────────────────── -->
+  <div class="tabs">
+    <button onclick="showTab('books')">📚 Books</button>
+    <button onclick="showTab('art')">🖼 Art</button>
+    <button onclick="showTab('films')">🎬 Films</button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       BOOKS — Open Library (no key needed)
+  ══════════════════════════════════════ -->
+  <section id="tab-books" class="tab">
+    <h2>Open Library — No API Key Required</h2>
+    <p>Endpoint: <code>https://openlibrary.org/search.json?q=QUERY&limit=10</code></p>
+
+    <input id="books-input" type="text" placeholder="e.g. Dune, Tolkien, 1984" />
+    <button onclick="searchBooks()">Search</button>
+
+    <div id="books-results"></div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       ART — Art Institute of Chicago (no key needed)
+  ══════════════════════════════════════ -->
+  <section id="tab-art" class="tab" style="display:none">
+    <h2>Art Institute of Chicago — No API Key Required</h2>
+    <p>Endpoint: <code>https://api.artic.edu/api/v1/artworks/search?q=QUERY&limit=10</code></p>
+
+    <input id="art-input" type="text" placeholder="e.g. Monet, Picasso, landscape" />
+    <button onclick="searchArt()">Search</button>
+
+    <div id="art-results"></div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       FILMS — OMDB (free key required)
+       Get your free key at: https://www.omdbapi.com/apikey.aspx
+  ══════════════════════════════════════ -->
+  <section id="tab-films" class="tab" style="display:none">
+    <h2>OMDB (IMDb data) — Free Key Required</h2>
+    <p>
+      Endpoint: <code>https://www.omdbapi.com/?apikey=YOUR_KEY&s=QUERY</code><br/>
+      Get a free key (1000 req/day) at:
+      <a href="https://www.omdbapi.com/apikey.aspx" target="_blank">omdbapi.com/apikey.aspx</a>
+    </p>
+
+    <label>
+      API Key: <input id="omdb-key" type="text" placeholder="Paste your OMDB key here" size="30" />
+    </label>
+    <br/>
+    <input id="films-input" type="text" placeholder="e.g. Blade Runner, Parasite" />
+    <button onclick="searchFilms()">Search</button>
+
+    <div id="films-results"></div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>

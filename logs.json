@@ -1,148 +1,31 @@
 {
-  "music": [
+  "writings": [
     {
-      "title": "Lorem Ipsum",
-      "year": 1997,
-      "artist": "Rainbow Dash",
-      "stars": 5,
-      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    },
-    {
-      "title": "Lorem Ipsum",
-      "year": 2015,
-      "artist": "Rainbow Dash",
-      "stars": 5,
-      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    },
-    {
-      "title": "Lorem Ipsum",
-      "year": 2023,
-      "artist": "Rainbow Dash",
-      "stars": 4,
-      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    },
-    {
-      "title": "Lorem Ipsum",
-      "year": 2020,
-      "artist": "Rainbow Dash",
-      "stars": 5,
-      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    }
-  ],
-  "films": [
-    {
-      "title": "Lorem Ipsum",
-      "director": "Rainbow Dash",
-      "year": 2001,
-      "stars": 5,
-      "genres": ["Genre 1", "Genre 2", "Genre 3"],
-      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "watchedDate": "Feb 2025"
-    },
-    {
-      "title": "Lorem Ipsum",
-      "director": "Rainbow Dash",
-      "year": 2001,
-      "stars": 5,
-      "genres": ["Genre 1", "Genre 2", "Genre 3"],
-      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "watchedDate": "Feb 2025"
-    },
-    {
-      "title": "Lorem Ipsum",
-      "director": "Rainbow Dash",
-      "year": 2001,
-      "stars": 5,
-      "genres": ["Genre 1", "Genre 2", "Genre 3"],
-      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "watchedDate": "Feb 2025"
-    }
-  ],
-  "books": [
-    {
+      "id": "w_seed_1",
       "title": "Lorem Ipsum",
       "author": "Rainbow Dash",
-      "year": 2020,
-      "stars": 5,
-      "genres": ["Genre 1", "Genre 2"],
-      "desc": "heabfuedbfkjaebdfjhabfukyhwadfebuAfhbawkjdfehbdkaWUHdfebkwUAfehbkwuef",
-      "readDate": "Dec 2024"
+      "label": "Essay",
+      "image": "https://picsum.photos/seed/writing1/600/300",
+      "snippet": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
     },
     {
+      "id": "w_seed_2",
       "title": "Lorem Ipsum",
       "author": "Rainbow Dash",
-      "year": 2020,
-      "stars": 5,
-      "genres": ["Genre 1", "Genre 2"],
-      "desc": "heabfuedbfkjaebdfjhabfukyhwadfebuAfhbawkjdfehbdkaWUHdfebkwUAfehbkwuef",
-      "readDate": "Dec 2024"
+      "label": "Poem",
+      "image": "https://picsum.photos/seed/writing2/600/300",
+      "snippet": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     },
     {
+      "id": "w_seed_3",
       "title": "Lorem Ipsum",
       "author": "Rainbow Dash",
-      "year": 2020,
-      "stars": 5,
-      "genres": ["Genre 1", "Genre 2"],
-      "desc": "heabfuedbfkjaebdfjhabfukyhwadfebuAfhbawkjdfehbdkaWUHdfebkwUAfehbkwuef",
-      "readDate": "Dec 2024"
-    }
-  ],
-  "art": [
-    {
-      "title": "Deer in Bloom",
-      "artist": "Unknown",
-      "stars": 4,
-      "review": "There's something achingly tender about this — the deer's stillness against an explosion of pink petals. The oil texture gives it weight that digital work often lacks.",
-      "tags": ["Painting", "Oil", "Nature", "Animals"],
-      "image": "images/art/deer.jpg"
-    },
-    {
-      "title": "Tulip Study",
-      "artist": "Unknown",
-      "stars": 5,
-      "review": "Jewel-toned and almost baroque in its richness. The layering of reds and pinks against deep black feels dramatic without being overwrought — a perfect still life.",
-      "tags": ["Painting", "Floral", "Realism"],
-      "image": "images/art/flower.jpg"
-    },
-    {
-      "title": "Sea Angel Trifold",
-      "artist": "Unknown",
-      "stars": 4,
-      "review": "Infographic design done beautifully — the dark palette and illustrated creatures give it the feel of a museum piece rather than an educational pamphlet. Information and aesthetics in harmony.",
-      "tags": ["Design", "Infographic", "Ocean"],
-      "image": "images/art/paint.jpg"
-    },
-    {
-      "title": "White Lily",
-      "artist": "Unknown",
-      "stars": 5,
-      "review": "The light source is almost supernatural — petals rendered with such translucency you expect to see your hand through them. Quietly stunning botanical work.",
-      "tags": ["Digital Art", "Floral", "Botanical"],
-      "image": "images/art/diva.jpg"
-    },
-    {
-      "title": "Spade Fish Print",
-      "artist": "Unknown",
-      "stars": 3,
-      "review": "Charming vintage-label energy with the stars and nautical typography. The soft blue palette keeps it from feeling kitschy — a nice piece of commercial folk art.",
-      "tags": ["Print", "Vintage", "Typography"],
-      "image": "images/art/flower.jpg"
-    },
-    {
-      "title": "Abstract Warm Gradient",
-      "artist": "Unknown",
-      "stars": 4,
-      "review": "The kind of abstract work that rewards staring — amber and rust bleeding into dark violet with a softness that feels almost photographic. Would hang this in a heartbeat.",
-      "tags": ["Abstract", "Digital", "Color Study"],
-      "image": "images/art/koring.jpg"
-    },
-    {
-      "title": "Line Tattoo Study",
-      "artist": "Unknown",
-      "stars": 5,
-      "review": "Tattoo as fine art — the linework is impossibly precise, botanical motifs winding up the arm like something grown rather than drawn. A masterclass in negative space.",
-      "tags": ["Tattoo", "Linework", "Botanical"],
-      "image": "images/art/kuring.jpg"
+      "label": "Short Story",
+      "image": "",
+      "snippet": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
     }
   ]
 }

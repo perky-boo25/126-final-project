@@ -42,7 +42,7 @@
     <section class="tabs-section">
       <div class="tabs-wrapper">
 
-        <!-- WRITINGS -->
+        <!-- WRITINGS (fetched from addedjournals.json — journals you liked in the Logbook) -->
         <div class="tab-group writings">
           <button class="tab-header">
             <img src="images/journal_folder.png" alt="Writings">
@@ -51,13 +51,13 @@
             <img class="folder-img" src="images/books_folder.png" alt="">
             <div class="folder-entries writings-folder-entries">
               <div class="pinned-row" id="writing-pinned-row">
-                <!-- Populated by journal.js -->
+                <!-- Populated by journal.js from addedjournals.json -->
               </div>
             </div>
           </div>
         </div>
 
-        <!-- MY ENTRIES -->
+        <!-- MY ENTRIES (fetched from myentries.json / localStorage) -->
         <div class="tab-group entries">
           <button class="tab-header">
             <img src="images/entries_folder.png" alt="My Entries">
@@ -77,7 +77,9 @@
 
   </div>
 
-  <!-- WRITING MODAL -->
+  <!-- ═══════════════════════════════════════════
+       WRITING MODAL (read-only, from logbook)
+  ═══════════════════════════════════════════ -->
   <div class="modal-overlay" id="writingModalOverlay">
     <div class="modal" id="writingModal">
       <button class="modal-close" id="writingModalClose">✕</button>
@@ -101,7 +103,9 @@
     </div>
   </div>
 
-  <!-- ENTRY MODAL -->
+  <!-- ═══════════════════════════════════════════
+       ENTRY VIEW MODAL (with Edit + Delete)
+  ═══════════════════════════════════════════ -->
   <div class="modal-overlay" id="entryModalOverlay">
     <div class="modal" id="entryModal">
       <button class="modal-close" id="entryModalClose">✕</button>
@@ -124,14 +128,35 @@
         <p class="modal-author" id="entryModalMeta"></p>
         <p class="modal-author" id="entryModalDate"></p>
         <p class="modal-content" id="entryModalDesc"></p>
+
+        <!-- CRUD actions -->
+        <div class="entry-modal-actions">
+          <button class="entry-action-btn entry-edit-btn" id="entryModalEdit">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right:5px;vertical-align:-1px">
+              <path d="M9.5 2L12 4.5 4.5 12H2V9.5L9.5 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="none"/>
+            </svg>
+            Edit
+          </button>
+          <button class="entry-action-btn entry-delete-btn" id="entryModalDelete">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right:5px;vertical-align:-1px">
+              <path d="M2 3.5h10M5.5 3.5V2.5h3v1M5 5.5l.5 5M9 5.5l-.5 5M3.5 3.5l.5 8h6l.5-8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ADD ENTRY MODAL -->
+  <!-- ═══════════════════════════════════════════
+       ADD / EDIT ENTRY MODAL
+  ═══════════════════════════════════════════ -->
   <div class="modal-overlay" id="addEntryOverlay">
     <div class="modal add-entry-modal" id="addEntryModal">
       <button class="modal-close" id="addEntryClose">✕</button>
+
+      <!-- Mode tag (New Entry / Edit Entry) -->
+      <div class="add-entry-mode-tag" id="addEntryModeTag">New Entry</div>
 
       <!-- Thumbnail zone -->
       <div class="add-entry-thumb" id="addEntryThumb">
@@ -150,6 +175,7 @@
       </div>
 
       <div class="add-entry-body">
+
         <!-- Title -->
         <input
           class="add-entry-title-input"
@@ -174,10 +200,11 @@
             <button class="add-entry-btn post-btn"  id="addEntryPost">Post</button>
           </div>
         </div>
+
       </div>
     </div>
   </div>
 
-  <script src="journal.js"></script>
+  <script type="module" src="journal.js"></script>
 </body>
 </html>

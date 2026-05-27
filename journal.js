@@ -1,228 +1,382 @@
-// ─── SHARED POLAROID RENDERER ────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════
+//  journal.js  —  Firebase/Firestore backend  (schema-aligned)
+//
+//  COLLECTION: posts  (single collection for everything)
+//
+//  DATA SOURCES
+//  ┌─ Writings folder ── posts where type == "log"    (read-only; liked via logbook)
+//  └─ My Entries folder  posts where type == "entry"  (full CRUD; only current user's)
+//
+//  CRUD (My Entries only)
+//  ┌─ Create ── "+ Add to Journal" → addDoc() to posts
+//  ├─ Read ──── onSnapshot() filtered by type=="entry" + userId==currentUser
+//  ├─ Update ── "Edit" button → updateDoc()
+//  └─ Delete ── "Delete" button (two-tap confirm) → deleteDoc()
+// ═══════════════════════════════════════════════════════════════════════════
+
+import { db } from './firebase.js';
+// firebase-auth unused in test mode
+// import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js';
+import {
+  collection,
+  doc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  onSnapshot,
+  query,
+  where,
+  serverTimestamp,
+  increment,
+} from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
+
+// ─── AUTH (TEMPORARY — no-auth test mode) ────────────────────────────────────
+// TODO: replace TEST_UID with real auth when login is ready.
+// This bypasses Firebase Auth so you can test Firestore writes directly.
+
+const TEST_UID      = 'test123';   // ← matches the userId already in your DB
+const TEST_USERNAME = 'testuser';
+const TEST_PHOTO    = '';
+
+// authReady immediately resolves with a fake user object
+const authReady = Promise.resolve({
+  uid:         TEST_UID,
+  displayName: TEST_USERNAME,
+  photoURL:    TEST_PHOTO,
+});
+
+// Kick off data loading straight away
+subscribeEntries(TEST_UID);
+loadWritings(TEST_UID);
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+
+// ─── MODULE STATE ─────────────────────────────────────────────────────────────
+
+let entriesCache      = [];
+let applyTabPositions = () => {};
+let currentEntryId    = null;   // Firestore doc id open in view modal
+let editingEntryId    = null;   // Firestore doc id being edited (null = new)
+let _openFormModal    = null;
+
+// ─── SHARED PIN-CARD RENDERER ─────────────────────────────────────────────────
 
 function renderPinCards(containerId, items, cardMapper) {
   const row = document.getElementById(containerId);
+  if (!row) return;
   row.innerHTML = items.map(item => {
     const { imgSrc, imgAlt, title, sub, snippet, dataset } = cardMapper(item);
-    const dataAttrs = Object.entries(dataset)
-      .map(([k, v]) => `data-${k}="${v}"`)
+    const attrs = Object.entries(dataset)
+      .map(([k, v]) => `data-${k}="${String(v).replace(/"/g, '&quot;')}"`)
       .join(' ');
     return `
-      <div class="pin-card" ${dataAttrs}>
+      <div class="pin-card" ${attrs}>
         <div class="pin-card-img">
           ${imgSrc ? `<img src="${imgSrc}" alt="${imgAlt || ''}">` : ''}
         </div>
         <p class="pin-card-title">${title}</p>
         <p class="pin-card-sub">${sub || ''}</p>
         <p class="pin-card-snippet">${snippet || ''}</p>
-      </div>
-    `;
+      </div>`;
   }).join('');
 }
 
-// ─── RENDERERS ───────────────────────────────────────────────────────────────
+// ─── WRITINGS  (posts where type == "log" — liked posts from logbook) ─────────
+//
+
+function loadWritings(uid) {
+  // No orderBy — avoids composite index requirement. Sorted client-side.
+  const q = query(
+    collection(db, 'posts'),
+    where('type',   '==', 'log'),
+    where('category', '==', 'journal'),
+    where('userId', '==', uid)
+  );
+
+  onSnapshot(q,
+    snap => {
+      const writings = snap.docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => (b.datePosted?.seconds ?? 0) - (a.datePosted?.seconds ?? 0));
+      console.log('Writings loaded:', writings.length);
+      renderWritings(writings);
+    },
+    err => {
+      console.error('Writings query error:', err.message, err);
+      renderWritings([]);
+    }
+  );
+}
 
 function renderWritings(writings) {
   renderPinCards('writing-pinned-row', writings, w => ({
-    imgSrc:  w.image,
+    imgSrc:  w.imageUrl  || '',
     imgAlt:  w.title,
     title:   w.title,
-    sub:     `by ${w.author}`,
-    snippet: w.snippet || '',
+    sub:     `by ${w.username || 'Unknown'}`,
+    snippet: w.body ? w.body.slice(0, 100) : '',
     dataset: {
-      title:   w.title,
-      author:  w.author,
-      label:   w.label || 'Writing',
-      content: w.content.replace(/"/g, '&quot;'),
-      image:   w.image || '',
+      title:    w.title,
+      author:   w.username    || 'Unknown',
+      label:    w.tagType     || w.category || 'Log',
+      content:  w.body        || '',
+      image:    w.imageUrl    || '',
     }
   }));
-  initModal('writing-pinned-row', 'writingModalOverlay', pin => {
-    const wHeroImg = document.getElementById('writingModalHeroImg');
-    const wHeroPlaceholder = document.getElementById('writingModalHeroPlaceholder');
+  bindWritingModal();
+  applyTabPositions();
+}
+
+function bindWritingModal() {
+  const overlay = document.getElementById('writingModalOverlay');
+
+  function open(pin) {
+    const img = document.getElementById('writingModalHeroImg');
+    const ph  = document.getElementById('writingModalHeroPlaceholder');
     if (pin.dataset.image) {
-      wHeroImg.src = pin.dataset.image;
-      wHeroImg.style.display = 'block';
-      wHeroPlaceholder.style.display = 'none';
+      img.src = pin.dataset.image; img.style.display = 'block'; ph.style.display = 'none';
     } else {
-      wHeroImg.style.display = 'none';
-      wHeroImg.src = '';
-      wHeroPlaceholder.style.display = 'flex';
+      img.style.display = 'none'; img.src = ''; ph.style.display = 'flex';
     }
-    document.getElementById('writingModalLabel').textContent  = pin.dataset.label;
-    document.getElementById('writingModalTitle').textContent  = pin.dataset.title;
-    document.getElementById('writingModalAuthor').textContent = `by ${pin.dataset.author}`;
+    document.getElementById('writingModalLabel').textContent   = pin.dataset.label;
+    document.getElementById('writingModalTitle').textContent   = pin.dataset.title;
+    document.getElementById('writingModalAuthor').textContent  = `by ${pin.dataset.author}`;
     document.getElementById('writingModalContent').textContent = pin.dataset.content;
-  }, 'writingModalClose');
-}
-
-function renderEntries(entries) {
-  renderPinCards('entry-card-list', entries, e => ({
-    imgSrc:  e.image,
-    imgAlt:  e.title,
-    title:   e.title,
-    sub:     e.date,
-    snippet: e.desc,
-    dataset: {
-      title:  e.title,
-      date:   e.date,
-      status: e.status,
-      meta:   (e.meta || '').replace(/"/g, '&quot;'),
-      desc:   e.desc.replace(/"/g, '&quot;'),
-      image:  e.image || '',
-    }
-  }));
-  initModal('entry-card-list', 'entryModalOverlay', pin => {
-    const heroImg = document.getElementById('entryModalHeroImg');
-    const heroPlaceholder = document.getElementById('entryModalHeroPlaceholder');
-    if (pin.dataset.image) {
-      heroImg.src = pin.dataset.image;
-      heroImg.style.display = 'block';
-      heroPlaceholder.style.display = 'none';
-    } else {
-      heroImg.style.display = 'none';
-      heroImg.src = '';
-      heroPlaceholder.style.display = 'flex';
-    }
-    document.getElementById('entryModalTitle').textContent = pin.dataset.title;
-    document.getElementById('entryModalMeta').textContent  = pin.dataset.meta;
-    document.getElementById('entryModalDate').textContent  = pin.dataset.date;
-    document.getElementById('entryModalDesc').textContent  = pin.dataset.desc;
-    const badge = document.getElementById('entryModalBadge');
-    badge.textContent = pin.dataset.status;
-    badge.className   = `modal-badge ${pin.dataset.status.toLowerCase()}`;
-  }, 'entryModalClose');
-}
-
-// ─── SHARED MODAL LOGIC ──────────────────────────────────────────────────────
-
-function initModal(rowId, overlayId, populate, closeBtnId) {
-  const overlay = document.getElementById(overlayId);
-
-  function openModal(pin) {
-    populate(pin);
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
 
-  function closeModal() {
+  function close() {
     overlay.classList.remove('open');
     document.body.style.overflow = '';
   }
 
-  document.querySelectorAll(`#${rowId} .pin-card`).forEach(pin => {
-    pin.addEventListener('click', () => openModal(pin));
+  document.querySelectorAll('#writing-pinned-row .pin-card').forEach(p => {
+    p.addEventListener('click', () => open(p));
   });
-
-  document.getElementById(closeBtnId).addEventListener('click', closeModal);
-  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  document.getElementById('writingModalClose').addEventListener('click', close);
+  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
 }
 
-// ─── TAB ACCORDION ───────────────────────────────────────────────────────────
-function initTabs() {
-  const tabGroups = Array.from(document.querySelectorAll('.tab-group'));
-  const wrapper   = document.querySelector('.tabs-wrapper');
+// ─── MY ENTRIES  (posts where type == "entry" + userId == me — real-time) ─────
 
-  const baseTops = tabGroups.map(g => g.offsetTop);
+function subscribeEntries(uid) {
+  // No orderBy — avoids composite index requirement. Sorted client-side.
+  const q = query(
+    collection(db, 'posts'),
+    where('type',   '==', 'entry'),
+    where('userId', '==', uid)
+  );
 
-  // How much the next tab slides UP to cover the transparent bottom of the folder PNG
-  const OVERLAP = 40;
-  // Extra breathing room below the last entry card before the next tab starts
-  const BOTTOM_PADDING = 10;
+  onSnapshot(q,
+    snap => {
+      entriesCache = snap.docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => (b.datePosted?.seconds ?? 0) - (a.datePosted?.seconds ?? 0));
+      console.log('Entries loaded:', entriesCache.length);
+      renderEntries(entriesCache);
+    },
+    err => {
+      console.error('Entries query error:', err.message, err);
+    }
+  );
+}
 
-  function getEntriesHeight(group) {
-    const entries = group.querySelector('.folder-entries');
-    return entries ? entries.scrollHeight : 0;
+function renderEntries(entries) {
+  renderPinCards('entry-card-list', entries, e => ({
+    imgSrc:  e.imageUrl || '',
+    imgAlt:  e.title,
+    title:   e.title,
+    sub:     e.activityDate || '',
+    snippet: e.body || '',
+    dataset: {
+      id:     e.id,
+      title:  e.title,
+      type:   e.tagType  || 'entry001',    // tagType from schema e.g. "entry001"
+      date:   e.activityDate || '',
+      status: e.status   || 'Private',
+      image:  e.imageUrl || '',
+      body:   e.body     || '',
+    }
+  }));
+  bindEntriesModal();
+  applyTabPositions();
+}
+
+function bindEntriesModal() {
+  document.querySelectorAll('#entry-card-list .pin-card').forEach(p => {
+    p.addEventListener('click', () => openEntryViewModal(p));
+  });
+}
+
+// ─── ENTRY VIEW MODAL ─────────────────────────────────────────────────────────
+
+function openEntryViewModal(pin) {
+  currentEntryId = pin.dataset.id;
+
+  const img = document.getElementById('entryModalHeroImg');
+  const ph  = document.getElementById('entryModalHeroPlaceholder');
+  if (pin.dataset.image) {
+    img.src = pin.dataset.image; img.style.display = 'block'; ph.style.display = 'none';
+  } else {
+    img.style.display = 'none'; img.src = ''; ph.style.display = 'flex';
   }
 
-  function getTabHeaderHeight(group) {
-    const tabHeader = group.querySelector('.tab-header');
-    return tabHeader ? tabHeader.offsetHeight : 0;
+  document.getElementById('entryModalTitle').textContent = pin.dataset.title;
+  document.getElementById('entryModalMeta').textContent  = '';
+  document.getElementById('entryModalDate').textContent  = pin.dataset.date;
+  document.getElementById('entryModalDesc').textContent  = pin.dataset.body;
+
+  const badge = document.getElementById('entryModalBadge');
+  badge.textContent = pin.dataset.status;
+  badge.className   = `modal-badge ${pin.dataset.status.toLowerCase()}`;
+
+  resetDeleteState();
+  document.getElementById('entryModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeEntryViewModal() {
+  document.getElementById('entryModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  currentEntryId = null;
+  resetDeleteState();
+}
+
+function resetDeleteState() {
+  const btn = document.getElementById('entryModalDelete');
+  if (!btn) return;
+  btn.innerHTML = `
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right:5px;vertical-align:-1px">
+      <path d="M2 3.5h10M5.5 3.5V2.5h3v1M5 5.5l.5 5M9 5.5l-.5 5M3.5 3.5l.5 8h6l.5-8"
+        stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>Delete`;
+  btn.dataset.confirm = '';
+  btn.classList.remove('confirming');
+}
+
+// ─── ENTRY MODAL: Edit + Delete ───────────────────────────────────────────────
+
+function initEntryModalActions() {
+  const overlay = document.getElementById('entryModalOverlay');
+
+  document.getElementById('entryModalClose').addEventListener('click', closeEntryViewModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeEntryViewModal(); });
+
+  // ── Edit ──
+  document.getElementById('entryModalEdit').addEventListener('click', () => {
+    const entry = entriesCache.find(e => e.id === currentEntryId);
+    if (!entry) return;
+    closeEntryViewModal();
+    if (_openFormModal) _openFormModal(entry);
+  });
+
+  // ── Delete (two-tap confirm) ──
+  document.getElementById('entryModalDelete').addEventListener('click', function () {
+    if (this.dataset.confirm === '1') {
+      const idToDelete = currentEntryId;
+      closeEntryViewModal();
+      deleteEntry(idToDelete);
+    } else {
+      this.innerHTML = 'Confirm delete?';
+      this.dataset.confirm = '1';
+      this.classList.add('confirming');
+      setTimeout(() => resetDeleteState(), 3500);
+    }
+  });
+}
+
+// ─── CRUD ─────────────────────────────────────────────────────────────────────
+
+/**
+ * CREATE — writes a new post (type="entry") to Firestore.
+ * Also increments entryCount on the user's profile document.
+ */
+async function createEntry(data) {
+  // Await auth resolution — fixes null-user race on first page load
+  const user = await authReady;
+  if (!user) {
+    console.error('createEntry: no authenticated user.');
+    return;
   }
 
-  function applyPositions() {
-    let cumulativeShift = 0;
+  const dateStr = new Date().toLocaleDateString('en-US', {
+    month: 'long', day: 'numeric', year: 'numeric',
+  });
 
-    tabGroups.forEach((group, i) => {
-      group.style.top = (baseTops[i] + cumulativeShift) + 'px';
+  try {
+    const docRef = await addDoc(collection(db, 'posts'), {
+      // identity
+      userId:             user.uid,
+      username:           user.displayName || '',
+      userProfilePicture: user.photoURL    || '',
 
-      const overlay = group.querySelector('.folder-overlay');
+      // type flags (schema)
+      type:               'entry',
+      tagType:            'entry001',
+      category:           '',
 
-      if (group.classList.contains('open')) {
-        const tabH     = getTabHeaderHeight(group);
-        const entriesH = getEntriesHeight(group);
-        // Total visible folder height = tab header + entries content + bottom padding
-        const totalH   = tabH + entriesH + BOTTOM_PADDING;
+      // content
+      title:              data.title  || 'Untitled',
+      body:               data.body   || '',
+      imageUrl:           data.image  || '',
+      status:             data.status || 'Private',
 
-        // Explicitly size the overlay so folder-img (position:absolute inset:0) fills it
-        if (overlay) overlay.style.height = totalH + 'px';
+      // entry-specific defaults
+      activityDate:       dateStr,
+      rating:             0,
+      item:               {},
 
-        const slotHeight = i + 1 < baseTops.length
-          ? baseTops[i + 1] - baseTops[i]
-          : 0;
-
-        cumulativeShift += Math.max(0, totalH - slotHeight - OVERLAP - 300);
-      } else {
-        if (overlay) overlay.style.height = '';
-      }
+      // counters & timestamps
+      stampCount:         0,
+      datePosted:         serverTimestamp(),
+      updatedAt:          serverTimestamp(),
     });
 
-    // Calculate wrapper height from the actual bottom of the last tab
-    const last    = tabGroups[tabGroups.length - 1];
-    const lastTop = parseFloat(last.style.top) || baseTops[tabGroups.length - 1];
-    let lastH = 0;
-    if (last.classList.contains('open')) {
-      lastH = getTabHeaderHeight(last) + getEntriesHeight(last) + BOTTOM_PADDING - OVERLAP;
-    } else {
-      // Use the actual rendered height of the tab header image
-      const lastHeader = last.querySelector('.tab-header');
-      lastH = lastHeader ? lastHeader.offsetHeight : 0;
-    }
-    wrapper.style.height = (lastTop + lastH) + 'px';
+    console.log('Entry created:', docRef.id);
+
+    // Increment entryCount on user profile
+    await updateDoc(doc(db, 'users', user.uid), {
+      entryCount: increment(1),
+    });
+  } catch (err) {
+    console.error('createEntry failed:', err.message, err);
   }
-
-  function toggleTab(group) {
-    group.classList.toggle('open');
-    applyPositions();
-  }
-
-  tabGroups.forEach(group => {
-    const header = group.querySelector('.tab-header');
-    header.addEventListener('click', () => toggleTab(group));
-
-    const overlay = group.querySelector('.folder-overlay');
-    if (overlay) {
-      overlay.addEventListener('click', () => toggleTab(group));
-
-      const entries = overlay.querySelector('.folder-entries');
-      if (entries) entries.addEventListener('click', e => e.stopPropagation());
-
-      const closeBtn     = document.createElement('button');
-      closeBtn.className = 'close-hint';
-      closeBtn.innerHTML = '&times;';
-      closeBtn.title     = 'Close';
-      closeBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        toggleTab(group);
-      });
-      overlay.appendChild(closeBtn);
-    }
-
-    // Re-measure whenever content size changes (async card load)
-    const entries = group.querySelector('.folder-entries');
-    if (entries && typeof ResizeObserver !== 'undefined') {
-      const ro = new ResizeObserver(() => {
-        if (group.classList.contains('open')) applyPositions();
-      });
-      ro.observe(entries);
-    }
-  });
-
-  return applyPositions;
 }
 
-// ─── ADD ENTRY MODAL ─────────────────────────────────────────────────────────
+/**
+ * UPDATE — merges changed content fields into the existing post doc.
+ */
+async function updateEntry(id, data) {
+  try {
+    await updateDoc(doc(db, 'posts', id), {
+      title:     data.title  || 'Untitled',
+      body:      data.body   || '',
+      imageUrl:  data.image  !== undefined ? data.image : '',
+      status:    data.status || 'Private',
+      updatedAt: serverTimestamp(),
+    });
+    console.log('Entry updated:', id);
+  } catch (err) {
+    console.error('updateEntry failed:', err.message, err);
+  }
+}
+
+async function deleteEntry(id) {
+  const user = await authReady;
+  if (!user) return;
+  try {
+    await deleteDoc(doc(db, 'posts', id));
+    await updateDoc(doc(db, 'users', user.uid), {
+      entryCount: increment(-1),
+    });
+    console.log('Entry deleted:', id);
+  } catch (err) {
+    console.error('deleteEntry failed:', err.message, err);
+  }
+}
+
+// ─── ADD / EDIT ENTRY MODAL ───────────────────────────────────────────────────
 
 function initAddEntryModal() {
   const overlay      = document.getElementById('addEntryOverlay');
@@ -235,141 +389,198 @@ function initAddEntryModal() {
   const thumbArea    = document.getElementById('addEntryThumb');
   const thumbPreview = document.getElementById('addEntryThumbPreview');
   const thumbHolder  = document.getElementById('addEntryThumbPlaceholder');
+  const modeTag      = document.getElementById('addEntryModeTag');
   const addBtn       = document.querySelector('.add-btn');
 
   let thumbnailDataUrl = '';
+  let selectedType     = 'Personal';
 
-  function openModal() {
+  function setType(type) {
+    selectedType = type || 'Personal';
+  }
+
+  function resetForm() {
+    titleInput.value           = '';
+    bodyInput.value            = '';
+    thumbnailDataUrl           = '';
+    thumbPreview.src           = '';
+    thumbPreview.style.display = 'none';
+    thumbHolder.style.display  = 'flex';
+    setType('Personal');
+    editingEntryId             = null;
+    if (modeTag) modeTag.textContent = 'New Entry';
+  }
+
+  function openFormModal(prefill) {
+    resetForm();
+    if (prefill) {
+      editingEntryId   = prefill.id;
+      titleInput.value = prefill.title    || '';
+      bodyInput.value  = prefill.body     || '';
+      // tagType stored in Firestore, shown as chip selection label
+      setType(prefill.tagType || prefill.type || 'Personal');
+      if (prefill.imageUrl) {
+        thumbnailDataUrl           = prefill.imageUrl;
+        thumbPreview.src           = prefill.imageUrl;
+        thumbPreview.style.display = 'block';
+        thumbHolder.style.display  = 'none';
+      }
+      if (modeTag) modeTag.textContent = 'Edit Entry';
+    }
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     setTimeout(() => titleInput.focus(), 320);
   }
 
-  function closeModal() {
+  _openFormModal = openFormModal;
+
+  function closeFormModal() {
     overlay.classList.remove('open');
     document.body.style.overflow = '';
+    editingEntryId = null;
   }
 
-  function resetForm() {
-    titleInput.value  = '';
-    bodyInput.value   = '';
-    thumbnailDataUrl  = '';
-    thumbPreview.src  = '';
-    thumbPreview.style.display  = 'none';
-    thumbHolder.style.display   = 'flex';
-  }
-
-  // Thumbnail click → file picker
   thumbArea.addEventListener('click', () => imgInput.click());
-
   imgInput.addEventListener('change', () => {
     const file = imgInput.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = e => {
-      thumbnailDataUrl = e.target.result;
-      thumbPreview.src = thumbnailDataUrl;
+    reader.onload = ev => {
+      thumbnailDataUrl           = ev.target.result;
+      thumbPreview.src           = thumbnailDataUrl;
       thumbPreview.style.display = 'block';
       thumbHolder.style.display  = 'none';
     };
     reader.readAsDataURL(file);
   });
 
-  function submitEntry(status) {
-    const title = titleInput.value.trim() || 'Untitled';
-    const desc  = bodyInput.value.trim()  || '';
-
-    const today = new Date();
-    const dateStr = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
-    const newEntry = {
-      title,
+  async function submitEntry(status) {
+    const data = {
+      title:  titleInput.value.trim(),
+      type:   selectedType,
       status,
-      meta:  'Personal · just now',
-      image: thumbnailDataUrl,
-      desc,
-      date:  dateStr,
+      image:  thumbnailDataUrl,
+      body:   bodyInput.value.trim(),
     };
 
-    // Inject into the DOM immediately
-    const row = document.getElementById('entry-card-list');
-    const card = document.createElement('div');
-    card.className = 'pin-card';
+    // Capture before resetForm() clears editingEntryId
+    const idToEdit = editingEntryId;
 
-    // Assign dataset for modal use
-    card.dataset.title  = newEntry.title;
-    card.dataset.date   = newEntry.date;
-    card.dataset.status = newEntry.status;
-    card.dataset.meta   = newEntry.meta;
-    card.dataset.desc   = newEntry.desc;
-
-    card.innerHTML = `
-      <div class="pin-card-img">
-        ${newEntry.image ? `<img src="${newEntry.image}" alt="${newEntry.title}">` : ''}
-      </div>
-      <p class="pin-card-title">${newEntry.title}</p>
-      <p class="pin-card-sub">${newEntry.date}</p>
-      <p class="pin-card-snippet">${newEntry.desc}</p>
-    `;
-
-    // Prepend so newest shows first
-    row.insertBefore(card, row.firstChild);
-
-    // Wire up the new card to the existing entry modal
-    card.addEventListener('click', () => {
-      const heroImg2 = document.getElementById('entryModalHeroImg');
-      const heroPlaceholder2 = document.getElementById('entryModalHeroPlaceholder');
-      if (card.dataset.image) {
-        heroImg2.src = card.dataset.image;
-        heroImg2.style.display = 'block';
-        heroPlaceholder2.style.display = 'none';
-      } else {
-        heroImg2.style.display = 'none';
-        heroImg2.src = '';
-        heroPlaceholder2.style.display = 'flex';
-      }
-      document.getElementById('entryModalTitle').textContent = card.dataset.title;
-      document.getElementById('entryModalMeta').textContent  = card.dataset.meta;
-      document.getElementById('entryModalDate').textContent  = card.dataset.date;
-      document.getElementById('entryModalDesc').textContent  = card.dataset.desc;
-      const badge = document.getElementById('entryModalBadge');
-      badge.textContent = card.dataset.status;
-      badge.className   = `modal-badge ${card.dataset.status.toLowerCase()}`;
-      document.getElementById('entryModalOverlay').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    });
-
-    closeModal();
+    closeFormModal();
     resetForm();
+
+    if (idToEdit) {
+      await updateEntry(idToEdit, data);
+    } else {
+      await createEntry(data);
+    }
   }
 
-  addBtn.addEventListener('click', openModal);
-  closeBtn.addEventListener('click', closeModal);
-  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  addBtn.addEventListener('click',  () => openFormModal(null));
+  closeBtn.addEventListener('click', closeFormModal);
+  overlay.addEventListener('click',  e => { if (e.target === overlay) closeFormModal(); });
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closeFormModal();
+  });
+  privBtn.addEventListener('click', () => submitEntry('Private'));
+  postBtn.addEventListener('click', () => submitEntry('Published'));
+}
+
+// ─── TAB ACCORDION ────────────────────────────────────────────────────────────
+
+function initTabs() {
+  const tabGroups = Array.from(document.querySelectorAll('.tab-group'));
+  const wrapper   = document.querySelector('.tabs-wrapper');
+  const baseTops  = tabGroups.map(g => g.offsetTop);
+  const OVERLAP        = 40;
+  const BOTTOM_PADDING = 10;
+
+  function getEntriesHeight(group) {
+    const el = group.querySelector('.folder-entries');
+    return el ? el.scrollHeight : 0;
+  }
+  function getTabHeaderHeight(group) {
+    const el = group.querySelector('.tab-header');
+    return el ? el.offsetHeight : 0;
+  }
+
+  function applyPositions() {
+    let shift = 0;
+    tabGroups.forEach((group, i) => {
+      group.style.top = (baseTops[i] + shift) + 'px';
+      const overlay = group.querySelector('.folder-overlay');
+      if (group.classList.contains('open')) {
+        const tabH     = getTabHeaderHeight(group);
+        const entriesH = getEntriesHeight(group);
+        const totalH   = tabH + entriesH + BOTTOM_PADDING;
+        if (overlay) overlay.style.height = totalH + 'px';
+        const slotH = i + 1 < baseTops.length ? baseTops[i + 1] - baseTops[i] : 0;
+        shift += Math.max(0, totalH - slotH - OVERLAP - 300);
+      } else {
+        if (overlay) overlay.style.height = '';
+      }
+    });
+
+    const last    = tabGroups[tabGroups.length - 1];
+    const lastTop = parseFloat(last.style.top) || baseTops[tabGroups.length - 1];
+    let lastH = 0;
+    if (last.classList.contains('open')) {
+      lastH = getTabHeaderHeight(last) + getEntriesHeight(last) + BOTTOM_PADDING - OVERLAP;
+    } else {
+      const h = last.querySelector('.tab-header');
+      lastH = h ? h.offsetHeight : 0;
+    }
+    wrapper.style.height = (lastTop + lastH) + 'px';
+  }
+
+  function toggleTab(group) {
+    group.classList.toggle('open');
+    applyPositions();
+  }
+
+  tabGroups.forEach(group => {
+    group.querySelector('.tab-header').addEventListener('click', () => toggleTab(group));
+
+    const overlay = group.querySelector('.folder-overlay');
+    if (overlay) {
+      overlay.addEventListener('click', () => toggleTab(group));
+      const entries = overlay.querySelector('.folder-entries');
+      if (entries) entries.addEventListener('click', e => e.stopPropagation());
+
+      const closeBtn     = document.createElement('button');
+      closeBtn.className = 'close-hint';
+      closeBtn.innerHTML = '&times;';
+      closeBtn.title     = 'Close';
+      closeBtn.addEventListener('click', e => { e.stopPropagation(); toggleTab(group); });
+      overlay.appendChild(closeBtn);
+    }
+
+    const entries = group.querySelector('.folder-entries');
+    if (entries && typeof ResizeObserver !== 'undefined') {
+      const ro = new ResizeObserver(() => {
+        if (group.classList.contains('open')) applyPositions();
+      });
+      ro.observe(entries);
+    }
   });
 
-  privBtn.addEventListener('click',      () => submitEntry('Private'));
-  postBtn.addEventListener('click',      () => submitEntry('Published'));
+  return applyPositions;
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
-  const applyPositions = initTabs();
+  applyTabPositions = initTabs();
   initAddEntryModal();
+  initEntryModalActions();
 
-  fetch('journal.json')
-    .then(res => {
-      if (!res.ok) throw new Error(`Failed to load data: ${res.status}`);
-      return res.json();
-    })
-    .then(data => {
-      renderWritings(data.writings);
-      renderEntries(data.entries);
-      // Re-run layout after all cards are in the DOM
-      applyPositions();
-    })
-    .catch(err => console.error('Journal data error:', err));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if (document.getElementById('entryModalOverlay').classList.contains('open')) {
+        closeEntryViewModal();
+      }
+    }
+  });
+
+  // Auth-gated data loading is handled inside onAuthStateChanged above
 });

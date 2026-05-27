@@ -1,8 +1,12 @@
 //import the firestore database from firebase.js
-import {db} from "./firebase.js";
+import {db, auth} from "./firebase.js";
 
 //import helper functions
 import{ formatDate, formatTime, getMiniText, isToday} from "./helpers.js";
+
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+let currentUserId = null;
 
 
 //import the firestore functions needed to read posts
@@ -21,10 +25,20 @@ const recentActivityList = document.getElementById("recent-activity-list");
 const updatesTodayCount = document.getElementById("updates-today-count");
 let allPosts = [];
 
-//loads posts as soon as the page opens
-loadDashboardPosts();
-loadActiveUsers();
-loadRecentActivity();
+onAuthStateChanged(auth, async function(user) {
+    if (!user){
+        window.location.href = "log-in.html";
+        return;
+    }
+
+    currentUserId = user.uid;
+
+    console.log("current user:", currentUserId);
+
+    await loadDashboardPosts();
+    await loadActiveUsers();
+    await loadRecentActivity();
+});
 
 
 //function to get all posts from db

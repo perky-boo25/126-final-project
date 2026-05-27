@@ -4,7 +4,7 @@
 
 import { auth } from "../../firebase.js";
 import { db } from "../../firebase.js";
-import { doc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { doc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -12,7 +12,7 @@ import {
     sendPasswordResetEmail,
     onAuthStateChanged,
     updateProfile
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 // USERNAME VERIFICATION
 async function isUsernameTaken(username) {
@@ -32,10 +32,28 @@ export async function signUp(email, password, username) {
         
         // saves user info to firestore
         await setDoc(doc(db, "users", user.uid), {
-            username:   username,
-            email:      email,
-            createdAt:  new Date()
+            username: username,
+            name: "",
+            email: email,
+            bio: "",
+            profilePicture: "no-profile.png",
+            dateJoined: new Date(),
+            logCount: 0,
+            entryCount: 0,
+            stampCount: 0,
+            favorites: [],
+            recommendations: [],
+            bookmarks: {
+                toRead: []
+            },
+            pinnedPostId: ""
         });
+
+        await setDoc(doc(db, "usernames", username), {
+            userId: user.uid
+
+        });
+
 
         console.log("Account created and saved to database!", user.uid);
 

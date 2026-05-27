@@ -1,6 +1,8 @@
 //import firestore db
-import {db} from "./firebase.js";
+import {db, auth} from "./firebase.js";
 import{ formatDate, formatTime, getMiniText} from "./helpers.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
 
 //import firebase functions
 import{
@@ -9,9 +11,8 @@ import{
     updateDoc
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-
-//temp user id
-const currentUserId = "YEuX9j21SCA08FPVEkux"
+let currentUserId = null;
+let currentUserData = null;
 
 const tmdbApiKey = "YOUR_TMDB_API_KEY";
 
@@ -45,10 +46,18 @@ let editBookmarks = {
     toListen: []
 };
 
-//loads profile
-loadProfile();
+onAuthStateChanged(auth, async function(user) {
+    if (!user) {
+        window.location.href = "log-in.html";
+        return;
+    }
 
-async function loadProfile(){
+    currentUserId = user.uid;
+
+    await loadProfile(currentUserId);
+});
+
+async function loadProfile(currentUserId){
     const userRef = doc(db, "users", currentUserId);
     const userSnap = await getDoc(userRef);
 
@@ -74,7 +83,7 @@ async function loadProfile(){
         toListen: []
     };
     renderBookmarks(editBookmarks);
-    loadPinnedPost(user.pinnedPostId);
+    await loadPinnedPost(user.pinnedPostId);
     
 
     profilePicture.src = user.profilePicture || "no-profile.png";

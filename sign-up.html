@@ -29,7 +29,7 @@
             <!--FIELDS-->
             <div class="card-body">
                 <div class="field">
-                    <input type="text" id="name" placeholder="Name">
+                    <input type="text" id="username" placeholder="Username">
                 </div>
                 <div class="field">
                     <input type="email" id="email" placeholder="Email">
@@ -37,7 +37,8 @@
                 <div class="field">
                     <input type="password" id="password" placeholder="Password">
                 </div>
-                <button type="submit">Create Account</button>
+                <p id="error-msg" style="color: red; font-size: 0.85rem; display: none;"></p>
+                <button id="signup-btn">Create Account</button>
                 <p>Already have an account?&nbsp;<a href="log-in.html" class="login-link">Log-in.</a></p>
             </div>
 
@@ -47,5 +48,6 @@
             </div>
         </div>
     </div>
+    <script type="module" src="./assets/js/auth-forms.js"></script>
 </body>
 </html>

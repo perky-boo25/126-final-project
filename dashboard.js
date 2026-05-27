@@ -1,6 +1,10 @@
 //import the firestore database from firebase.js
 import {db} from "./firebase.js";
 
+//import helper functions
+import{ formatDate, formatTime, getMiniText, isToday} from "./helpers.js";
+
+
 //import the firestore functions needed to read posts
 import {
     collection,
@@ -45,6 +49,8 @@ async function loadDashboardPosts(){
         allPosts.push(post);
     });
 
+    
+
     renderPosts(allPosts);
 }
 
@@ -53,8 +59,13 @@ function renderPosts(posts) {
     feed.innerHTML = "";
 
     posts.forEach(function(post) {
+    try {
         const postElement = createPostElement(post);
         feed.appendChild(postElement);
+    } catch(error) {
+        console.log("failed post:", post);
+        console.error(error);
+    }
     });
 }
 
@@ -77,7 +88,7 @@ async function loadActiveUsers(){
         userCard.className = "user-card";
 
         userCard.innerHTML = `
-            <img class="active-profile" src="${user.userProfilePicture || "no-profile.png"}" alt="profile">
+            <img class="active-profile" src="${user.profilePicture || "no-profile.png"}" alt="profile">
             <span class="active-username">@${user.username || "username"}</span>
             `;
 
@@ -89,7 +100,7 @@ async function loadActiveUsers(){
 
 //get newest activity from posts
 async function loadRecentActivity(){
-    const postRef = collection(db, "posts");
+    const postsRef = collection(db, "posts");
 
     const q = query (
         postsRef,
@@ -122,20 +133,6 @@ async function loadRecentActivity(){
     updatesTodayCount.textContent = String(countToday).padStart(2, "0");
 }
 
-function isToday(timestamp){
-    if(!timestamp){
-        return false;
-    }
-
-    const date = timestamp.toDate();
-    const today = new Date();
-
-    return(
-        date.getFullYear() == today.getFullYear()&&
-        date.getMonth() == today.getMonth()&&
-        date.getDate() == today.getDate()
-    );
-}
 
 
 // makes the filter buttons work
@@ -179,12 +176,10 @@ function createPostElement(post){
     const article = document.createElement("article");
 
     //adds classes
-    article.className = `post ${post.category}--post`;
+    article.className = `post ${(post.category || "general")}--post`;
 
     article.innerHTML = `
-        <div class="float-img ${post.category}-img">
-            <img src="${getAsset(post.category, post.type)}" alt="post asset">
-        </div>
+        
 
         <div class="post-main">
             <div class="post-head">
@@ -197,8 +192,8 @@ function createPostElement(post){
                 </div>
 
                 <div class="post-meta">
-                    <p>${post.activityDate || ""}</p>
-                    <p>${formatTime(post.datePosted)}</p>
+                    <p>${post.datePosted ? formatDate(post.datePosted) : ""}</p>
+                    <p>${post.datePosted ? formatTime(post.datePosted) : ""}</p>
                 </div>
             </div>
 
@@ -220,10 +215,11 @@ function createPostElement(post){
         </div>
 
         <aside class="stub">
-            <div class="stub-cut"></div>
+    <div class="stub-cut"></div>
 
-            <div class="stub-icon">${getStubIcon(post.category, post.type)}</div>
+    
 
+    <div class="stub-icon">${getStubIcon(post.category, post.type)}</div>
             <p class="stub-type">${post.category || post.type || "post"}</p>
 
             <p class="stub-code">${post.tagType || ""}</p>
@@ -264,28 +260,6 @@ function getAsset(category, type) {
 }
 
 
-// choose the post detail
-function getMiniText(post) {
-    if (post.type === "entry") {
-        return "posted a journal entry";
-    }
-
-    if (post.category === "book") {
-        return "logged a book";
-    }
-
-    if (post.category === "movie" || post.category === "film") {
-        return "logged a film";
-    }
-
-    if (post.category === "song" || post.category === "album" || post.category === "music") {
-        return "shared a listening log";
-    }
-
-    return "posted an update";
-}
-
-
 // chooses the letter inside the ticket stub
 function getStubIcon(category, type) {
     if (type === "entry") {
@@ -322,19 +296,7 @@ function formatRating(rating, type) {
 }
 
 
-// converts firestore timestamp into readable time
-function formatTime(timestamp) {
-    if (!timestamp) {
-        return "";
-    }
 
-    const date = timestamp.toDate();
-
-    return date.toLocaleTimeString([], {
-        hour: "numeric",
-        minute: "2-digit"
-    });
-}
 
 
 // adds stamp effect

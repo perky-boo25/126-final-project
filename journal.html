@@ -19,7 +19,7 @@
     <!-- HERO SECTION -->
     <section class="hero">
       <div class="hero-content">
-        <h1>My Journal</h1>
+        <h1>My Logbook & Journal</h1>
         <p>
           A quiet place for thoughts, reflections, and all the little things worth remembering.
         </p>
@@ -48,7 +48,7 @@
             <img src="images/journal_folder.png" alt="Writings">
           </button>
           <div class="folder-overlay">
-            <img class="folder-img" src="images/journal_folder.png" alt="">
+            <img class="folder-img" src="images/books_folder.png" alt="">
             <div class="folder-entries writings-folder-entries">
               <div class="pinned-row" id="writing-pinned-row">
                 <!-- Populated by journal.js -->
@@ -63,7 +63,7 @@
             <img src="images/entries_folder.png" alt="My Entries">
           </button>
           <div class="folder-overlay">
-            <img class="folder-img" src="images/entries_folder.png" alt="">
+            <img class="folder-img" src="images/art_folder.png" alt="">
             <div class="folder-entries entries-folder-entries">
               <div class="pinned-row" id="entry-card-list">
                 <!-- Populated by journal.js -->
@@ -81,6 +81,17 @@
   <div class="modal-overlay" id="writingModalOverlay">
     <div class="modal" id="writingModal">
       <button class="modal-close" id="writingModalClose">✕</button>
+      <div class="entry-modal-hero" id="writingModalHero">
+        <img id="writingModalHeroImg" src="" alt="" style="display:none; width:100%; height:100%; object-fit:cover;">
+        <div class="entry-modal-hero-placeholder" id="writingModalHeroPlaceholder">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <rect x="6" y="10" width="36" height="28" rx="4" stroke="#c7828e" stroke-width="1.8" fill="none" opacity="0.4"/>
+            <circle cx="16.5" cy="20.5" r="3.5" fill="#c7828e" opacity="0.4"/>
+            <path d="M6 32l10-9 7 7 6-5 9 6" stroke="#c7828e" stroke-width="1.8" fill="none" stroke-linejoin="round" opacity="0.4"/>
+          </svg>
+          <span>No image attached</span>
+        </div>
+      </div>
       <div class="modal-body">
         <p class="modal-label" id="writingModalLabel"></p>
         <p class="modal-title" id="writingModalTitle"></p>
@@ -94,6 +105,17 @@
   <div class="modal-overlay" id="entryModalOverlay">
     <div class="modal" id="entryModal">
       <button class="modal-close" id="entryModalClose">✕</button>
+      <div class="entry-modal-hero" id="entryModalHero">
+        <img id="entryModalHeroImg" src="" alt="" style="display:none; width:100%; height:100%; object-fit:cover;">
+        <div class="entry-modal-hero-placeholder" id="entryModalHeroPlaceholder">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <rect x="6" y="10" width="36" height="28" rx="4" stroke="#c7828e" stroke-width="1.8" fill="none" opacity="0.4"/>
+            <circle cx="16.5" cy="20.5" r="3.5" fill="#c7828e" opacity="0.4"/>
+            <path d="M6 32l10-9 7 7 6-5 9 6" stroke="#c7828e" stroke-width="1.8" fill="none" stroke-linejoin="round" opacity="0.4"/>
+          </svg>
+          <span>No image attached</span>
+        </div>
+      </div>
       <div class="modal-body">
         <div class="modal-title-row">
           <p class="modal-title" id="entryModalTitle"></p>
@@ -102,6 +124,56 @@
         <p class="modal-author" id="entryModalMeta"></p>
         <p class="modal-author" id="entryModalDate"></p>
         <p class="modal-content" id="entryModalDesc"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD ENTRY MODAL -->
+  <div class="modal-overlay" id="addEntryOverlay">
+    <div class="modal add-entry-modal" id="addEntryModal">
+      <button class="modal-close" id="addEntryClose">✕</button>
+
+      <!-- Thumbnail zone -->
+      <div class="add-entry-thumb" id="addEntryThumb">
+        <input type="file" accept="image/*" id="addEntryImgInput" style="display:none">
+        <div class="add-entry-thumb-placeholder" id="addEntryThumbPlaceholder">
+          <div class="add-entry-thumb-icon">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+              <rect x="6" y="10" width="32" height="24" rx="3" stroke="#aaa" stroke-width="2" fill="none"/>
+              <circle cx="15" cy="19" r="3" fill="#aaa"/>
+              <path d="M6 30l8-7 6 6 5-4 7 5" stroke="#aaa" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="add-entry-thumb-label">+ Add a thumbnail</span>
+        </div>
+        <img id="addEntryThumbPreview" src="" alt="" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:12px 12px 0 0;">
+      </div>
+
+      <div class="add-entry-body">
+        <!-- Title -->
+        <input
+          class="add-entry-title-input"
+          id="addEntryTitle"
+          type="text"
+          placeholder="Title your entry"
+          maxlength="80"
+        >
+        <div class="add-entry-divider"></div>
+
+        <!-- Body -->
+        <textarea
+          class="add-entry-textarea"
+          id="addEntryBody"
+          placeholder="Start writing..."
+        ></textarea>
+
+        <!-- Footer row -->
+        <div class="add-entry-footer">
+          <div class="add-entry-footer-right">
+            <button class="add-entry-btn priv-btn" id="addEntryPrivate">Private</button>
+            <button class="add-entry-btn post-btn"  id="addEntryPost">Post</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

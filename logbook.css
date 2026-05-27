@@ -18,6 +18,7 @@ html, body {
     flex-direction: column;
     min-height: 100vh;
     width: 100%;
+    padding-bottom: 0;
 }
 
 /* ─── TOP BAR ─── */
@@ -129,7 +130,8 @@ html, body {
 
 .tabs-section {
     flex: 1;
-    padding-bottom: 40px;
+    padding-bottom: 0;
+    overflow: visible;
 }
 
 /* ─── TABS WRAPPER ─────────────────────────────────────────────────────────
@@ -140,10 +142,10 @@ html, body {
 .tabs-wrapper {
     position: relative;
     margin-top: 0;
-    /* Height grows when a folder is open; JS will adjust this */
     height: 600px;
     width: 100%;
     transition: height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
 }
 
 /* ─── TAB GROUP ─────────────────────────────────────────────────────────────
@@ -155,8 +157,8 @@ html, body {
     display: block;
     width: 100%;
     position: absolute;
-    /* z-index mirrors original .tab stacking */
     transition: top 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: visible;
 }
 
 .tab-group.music { top: 0%;  z-index: 1; }
@@ -166,7 +168,7 @@ html, body {
 
 /* When any tab is open, bump the open one to the top */
 .tab-group.open {
-    z-index: 10;
+    z-index: 5;
 }
 
 /* When a folder is open, push ALL non-open tab groups behind it */
@@ -250,23 +252,18 @@ html, body {
     position: absolute;
     inset: 0;
     z-index: 0;
-    min-height: 100%;
+    min-height: 50%;
 }
 
 /* ─── FOLDER ENTRIES — layer above the folder image ─── */
 
 .folder-entries {
-    margin-top: 20px;
-    
     position: relative;
-    z-index: 1;          /* sits above .folder-img */
-    padding: 36px 48px 32px 48px;
-    min-height: 280px;
+    z-index: 1;          
+    min-height: 200px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding-bottom: 48px;  /* increase bottom padding */
-
+    gap: 0px;
 }
 
 .folder-entries h2 {
@@ -357,7 +354,7 @@ html, body {
 
 .music-folder-entries {
     padding: 28px 32px 32px 32px;
-    margin-top: 50px;
+    margin-top: 45px;
 }
 
 .music-card-list {
@@ -476,6 +473,7 @@ html, body {
 
 .films-folder-entries {
     padding: 28px 32px 32px 32px;
+    margin-top: 30px;
 }
 
 .film-card-list {
@@ -605,6 +603,7 @@ html, body {
 
 .books-folder-entries {
     padding: 28px 32px 32px 32px;
+    margin-top: 55px;
 }
 
 .book-card-list {
@@ -709,7 +708,7 @@ html, body {
 /* ─── ART TAB — Pinterest masonry grid ─── */
 
 .art-folder-entries {
-    margin-top: 65px;
+    margin-top: 95px;
     padding: 28px 32px 32px 32px;
 }
 
@@ -895,8 +894,18 @@ html, body {
 /* the wrapper's own background showing through. Colour the wrapper  */
 /* to match whichever folder is open — the tab images on top cover   */
 /* everything else, so only the gap area is actually visible.        */
+.tabs-wrapper:has(.tab-group.music.open) .tab-group.films,
+.tabs-wrapper:has(.tab-group.music.open) .tab-group.books,
+.tabs-wrapper:has(.tab-group.music.open) .tab-group.art   { z-index: 6; }
 
-.tabs-wrapper:has(.tab-group.music.open) {  }
-.tabs-wrapper:has(.tab-group.films.open) {  }
-.tabs-wrapper:has(.tab-group.books.open) {  }
-.tabs-wrapper:has(.tab-group.art.open)   {  }
+.tabs-wrapper:has(.tab-group.films.open) .tab-group.books,
+.tabs-wrapper:has(.tab-group.films.open) .tab-group.art   { z-index: 6; }
+
+.tabs-wrapper:has(.tab-group.books.open) .tab-group.art   { z-index: 6; }
+
+.tabs-wrapper:has(.tab-group.films.open) .tab-group.music,
+.tabs-wrapper:has(.tab-group.books.open) .tab-group.music,
+.tabs-wrapper:has(.tab-group.books.open) .tab-group.films,
+.tabs-wrapper:has(.tab-group.art.open)   .tab-group.music,
+.tabs-wrapper:has(.tab-group.art.open)   .tab-group.films,
+.tabs-wrapper:has(.tab-group.art.open)   .tab-group.books { z-index: 0; }

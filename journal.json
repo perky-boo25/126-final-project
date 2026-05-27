@@ -4,7 +4,7 @@
       "title": "Lorem Ipsum",
       "author": "Rainbow Dash",
       "label": "Essay",
-      "image": "",
+      "image": "https://picsum.photos/seed/writing1/600/300",
       "snippet": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
       "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
     },
@@ -12,7 +12,7 @@
       "title": "Lorem Ipsum",
       "author": "Rainbow Dash",
       "label": "Poem",
-      "image": "",
+      "image": "https://picsum.photos/seed/writing2/600/300",
       "snippet": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
       "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     },
@@ -28,9 +28,9 @@
   "entries": [
     {
       "title": "Lorem Ipsum",
-      "status": "Draft",
+      "status": "Private",
       "meta": "Personal · 5 min read",
-      "image": "",
+      "image": "https://picsum.photos/seed/entry1/600/300",
       "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.",
       "date": "May 20, 2026"
     },
@@ -46,7 +46,7 @@
       "title": "Lorem Ipsum",
       "status": "Published",
       "meta": "Creative · 8 min read",
-      "image": "",
+      "image": "https://picsum.photos/seed/entry3/600/300",
       "desc": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi.",
       "date": "May 8, 2026"
     }

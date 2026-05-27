@@ -77,7 +77,6 @@ function renderArt(artItems) {
     </div>
   `).join('');
 
-  // Re-attach art modal listeners after rendering
   initArtModal();
 }
 
@@ -133,15 +132,24 @@ function initArtModal() {
 // ─── TAB ACCORDION ──────────────────────────────────────────────────────────
 
 function initTabs() {
-  const tabGroups  = Array.from(document.querySelectorAll('.tab-group'));
-  const wrapper    = document.querySelector('.tabs-wrapper');
-  const BASE_HEIGHT = 600;
+  const tabGroups = Array.from(document.querySelectorAll('.tab-group'));
+  const wrapper   = document.querySelector('.tabs-wrapper');
 
   const baseTops = tabGroups.map(g => g.offsetTop);
 
-  function getFolderHeight(group) {
-    const overlay = group.querySelector('.folder-overlay');
-    return overlay ? overlay.scrollHeight : 280;
+  // How much the next tab slides UP to cover the transparent bottom of the folder PNG
+  const OVERLAP = 60;
+  // Extra breathing room below the last entry card before the next tab starts
+  const BOTTOM_PADDING = 10;
+
+  function getEntriesHeight(group) {
+    const entries = group.querySelector('.folder-entries');
+    return entries ? entries.scrollHeight : 0;
+  }
+
+  function getTabHeaderHeight(group) {
+    const tabHeader = group.querySelector('.tab-header');
+    return tabHeader ? tabHeader.offsetHeight : 0;
   }
 
   function applyPositions() {
@@ -150,16 +158,35 @@ function initTabs() {
     tabGroups.forEach((group, i) => {
       group.style.top = (baseTops[i] + cumulativeShift) + 'px';
 
+      const overlay = group.querySelector('.folder-overlay');
+
       if (group.classList.contains('open')) {
-        const folderH    = getFolderHeight(group);
+        const tabH     = getTabHeaderHeight(group);
+        const entriesH = getEntriesHeight(group);
+        // Total visible folder height = tab header + entries content + bottom padding
+        const totalH   = tabH + entriesH + BOTTOM_PADDING;
+
+        // Explicitly size the overlay so folder-img (position:absolute inset:0) fills it
+        if (overlay) overlay.style.height = totalH + 'px';
+
         const slotHeight = i + 1 < baseTops.length
           ? baseTops[i + 1] - baseTops[i]
-          : 120;
-        cumulativeShift += Math.max(0, folderH + 20 - slotHeight);
+          : 0;
+
+        cumulativeShift += Math.max(0, totalH - slotHeight - OVERLAP - 200);
+      } else {
+
+        if (overlay) overlay.style.height = '';
       }
     });
 
-    wrapper.style.height = (BASE_HEIGHT + cumulativeShift) + 'px';
+    const last    = tabGroups[tabGroups.length - 1];
+    const lastTop = parseFloat(last.style.top) || baseTops[tabGroups.length - 1];
+    let lastH = 0;
+    if (last.classList.contains('open')) {
+      lastH = getTabHeaderHeight(last) + getEntriesHeight(last) + BOTTOM_PADDING - OVERLAP;
+    }
+    wrapper.style.height = (lastTop + lastH) + 'px';
   }
 
   function toggleTab(group) {
@@ -188,16 +215,25 @@ function initTabs() {
       });
       overlay.appendChild(closeBtn);
     }
+
+    // Re-measure whenever content size changes (async card load)
+    const entries = group.querySelector('.folder-entries');
+    if (entries && typeof ResizeObserver !== 'undefined') {
+      const ro = new ResizeObserver(() => {
+        if (group.classList.contains('open')) applyPositions();
+      });
+      ro.observe(entries);
+    }
   });
+
+  return applyPositions;
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Tab accordion runs immediately — it only needs the tab-group shells in the HTML.
-  initTabs();
+  const applyPositions = initTabs();
 
-  // Fetch data separately; cards render async without blocking tab behaviour.
   fetch('logs.json')
     .then(res => {
       if (!res.ok) throw new Error(`Failed to load data: ${res.status}`);
@@ -207,7 +243,9 @@ document.addEventListener('DOMContentLoaded', () => {
       renderMusic(data.music);
       renderFilms(data.films);
       renderBooks(data.books);
-      renderArt(data.art);   // also calls initArtModal() internally
+      renderArt(data.art);
+      // Re-run layout after all cards are in the DOM
+      applyPositions();
     })
     .catch(err => console.error('Logbook data error:', err));
 });

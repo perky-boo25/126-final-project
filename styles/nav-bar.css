@@ -1,0 +1,54 @@
+
+@import url('variables.css');
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  padding: 0 48px;
+  height: 56px;
+  background: #c97d87;
+  border-bottom: 1px solid rgba(196, 120, 120, 0.25);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+  text-decoration: none;
+}
+
+.nav-logo img {
+  filter: brightness(0) invert(1);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+}
+
+.nav-links a {
+  padding: 6px 16px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  color: #5a3a3a;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-links a:hover {
+  background: rgba(42, 26, 26, 0.1);
+  color: #2a1a1a;
+}
+
+.nav-links a.active {
+  background: #2a1a1a;
+  color: #f5efe0;
+}

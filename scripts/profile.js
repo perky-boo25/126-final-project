@@ -91,39 +91,39 @@ async function loadProfile(currentUserId){
 }
 
 
-async function searchDeezerTracks(searchText){
+async function searchItunesTracks(searchText){
     const query = searchText.trim();
 
     if (query.length < 2){
-        deezerSearchResults.innerHTML = "";
+        itunesSearchResults.innerHTML = "";
         return;
     }
 
-    deezerSearchResults.innerHTML = "<p>searching songs...</p>";
-
-    const deezerUrl = `https://api.deezer.com/search/track?q=${encodeURIComponent(query)}&limit=6`;
+    itunesSearchResults.innerHTML = "<p>searching songs...</p>";
 
     try {
-        const response = await fetch(deezerUrl);
-        const data = await response.json();
+        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=song&limit=8`;
 
-        renderDeezerResults(data.data || []);
-    } catch(error) {
-        console.log("direct deezer search failed, using proxy", error);
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
 
-        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(deezerUrl)}`;
         const response = await fetch(proxyUrl);
         const data = await response.json();
 
-        renderDeezerResults(data.data || []);
+        renderItunesResults(data.results || []);
+    } catch(error) {
+        console.error("itunes search failed:", error);
+
+        itunesSearchResults.innerHTML = `
+            <p>failed to search songs :(</p>
+        `;
     }
 }
 
-function renderDeezerResults(tracks){
-    deezerSearchResults.innerHTML = "";
+function renderItunesResults(tracks){
+    itunesSearchResults.innerHTML = "";
 
     if (tracks.length === 0){
-        deezerSearchResults.innerHTML = "<p>no songs found</p>";
+        itunesSearchResults.innerHTML = "<p>no songs found</p>";
         return;
     }
 
@@ -132,11 +132,11 @@ function renderDeezerResults(tracks){
         card.type = "button";
         card.className = "search-result-card";
 
-        const title = track.title || "untitled";
-        const artist = track.artist ? track.artist.name : "unknown artist";
-        const album = track.album ? track.album.title : "";
-        const cover = track.album ? track.album.cover_medium : "no-image.jpg";
-        const previewUrl = track.preview || "";
+        const title = track.trackName || "untitled";
+        const artist = track.artistName || "unknown artist";
+        const album = track.collectionName || "";
+        const cover = track.artworkUrl100 || "no-image.jpg";
+        const previewUrl = track.previewUrl || "";
 
         card.innerHTML = `
             <img src="${cover}" alt="album cover">
@@ -158,11 +158,11 @@ function renderDeezerResults(tracks){
             editCurrentTrackTitle.value = selectedCurrentTrack.title;
             editCurrentTrackMeta.value = selectedCurrentTrack.meta;
 
-            deezerSearchInput.value = "";
-            deezerSearchResults.innerHTML = "";
+            itunesSearchInput.value = "";
+            itunesSearchResults.innerHTML = "";
         });
 
-        deezerSearchResults.appendChild(card);
+        itunesSearchResults.appendChild(card);
     });
 }
 
@@ -353,9 +353,9 @@ const editNotesList = document.getElementById("edit-notes-list");
 const editProfilePictureFile = document.getElementById("edit-profile-picture-file");
 const editProfilePicturePreview = document.getElementById("edit-profile-picture-preview");
 
-const deezerSearchInput = document.getElementById("deezer-search-input");
-const deezerSearchBtn = document.getElementById("deezer-search-btn");
-const deezerSearchResults = document.getElementById("deezer-search-results");
+const itunesSearchInput = document.getElementById("itunes-search-input");
+const itunesSearchBtn = document.getElementById("itunes-search-btn");
+const itunesSearchResults = document.getElementById("itunes-search-results");
 
 const removePinnedPostBtn = document.getElementById("remove-pinned-post-btn");
 
@@ -402,17 +402,19 @@ let searchTimer;
 
 
 
-deezerSearchBtn.addEventListener("click", function(){
-    searchDeezerTracks(deezerSearchInput.value);
-});
+if (itunesSearchBtn && itunesSearchInput) {
+    itunesSearchBtn.addEventListener("click", function(){
+        searchItunesTracks(itunesSearchInput.value);
+    });
 
-deezerSearchInput.addEventListener("input", function(){
-    clearTimeout(searchTimer);
+    itunesSearchInput.addEventListener("input", function(){
+        clearTimeout(searchTimer);
 
-    searchTimer = setTimeout(function(){
-        searchDeezerTracks(deezerSearchInput.value);
-    }, 700);
-});
+        searchTimer = setTimeout(function(){
+            searchItunesTracks(itunesSearchInput.value);
+        }, 350);
+    });
+}
 
 closeSearchModalBtn.addEventListener("click", closeSearchModal);
 
@@ -718,16 +720,16 @@ function toggleVinylPlay() {
         return;
     }
 
-    if (!currentAudio){
+    if (!currentAudio || currentAudio.src !== selectedCurrentTrack.previewUrl){
         currentAudio = new Audio(selectedCurrentTrack.previewUrl);
 
         currentAudio.addEventListener("ended", function(){
             vinylRecord.classList.remove("spinning");
-            currentAudio = null;
+            currentAudio.currentTime = 0;
         });
     }
 
-    if (currentAudio.paused){
+    if (currentAudio.paused) {
         currentAudio.play();
         vinylRecord.classList.add("spinning");
     } else {
@@ -738,9 +740,3 @@ function toggleVinylPlay() {
 
 vinylToggle.addEventListener("click", toggleVinylPlay);
 
-vinylToggle.addEventListener("keydown", function(event) {
-    if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        toggleVinylPlay();
-    }
-});

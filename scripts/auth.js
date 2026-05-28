@@ -36,7 +36,7 @@ export async function signUp(email, password, username) {
             name: "",
             email: email,
             bio: "",
-            profilePicture: "no-profile.png",
+            profilePicture: "/assets/images/no-profile.png",
             dateJoined: new Date(),
             logCount: 0,
             entryCount: 0,

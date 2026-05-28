@@ -1,3 +1,5 @@
+@import url('variables.css');
+
 *, *::before, *::after {
     margin: 0;
     padding: 0;
@@ -21,7 +23,7 @@ nav {
     align-items: center;
     justify-content: space-between;
     padding: 0 40px;
-    background: white;
+    background: var(--color-white);
 }
 
 .logo img {
@@ -35,11 +37,11 @@ nav {
 
 .nav-cta {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     letter-spacing: 0.08em;
-    color: pink;
+    color: var(--color-terracotta);
     text-decoration: none;
-    border: 2px solid pink;
+    border: 2px solid var(--color-terracotta);
     padding: 10px 28px;
     border-radius: 100px;
     transition: background 0.2s, color 0.2s;
@@ -47,8 +49,8 @@ nav {
 }
 
 .nav-cta:hover {
-    background: pink;
-    color: white;
+    background: var(--color-surface);
+    color: var(--color-text-default);
 }
 
 /* --- HERO --- */
@@ -61,7 +63,7 @@ nav {
 #hero > div {
     width: 100%;
     height: 100%;
-    background-image: url(../images/hero-bg-2.png);
+    background-image: url(../images/hero-bg-3.png);
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
@@ -74,9 +76,10 @@ nav {
 
 #hero h1 {
     font-size: clamp(36px, 5vw, 64px);
-    font-weight: 600;
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-extra);
     text-align: center;
-    color: black;
+    color: var(--color-text-default);
     margin-bottom: 40px;
     line-height: 1.15;
     max-width: 780px;
@@ -85,11 +88,11 @@ nav {
 
 .cta-button a {
     font-size: 15px;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     letter-spacing: 0.1em;
     text-decoration: none;
-    color: black;
-    background: pink;
+    color: var(--color-text-default);
+    background: var(--color-pink);
     padding: 18px 48px;
     border-radius: 100px;
     display: inline-block;
@@ -97,14 +100,15 @@ nav {
 }
 
 .cta-button a:hover {
-    background: darksalmon;
+    background: var(--color-terracotta);
 }
 
 #notes h1 {
     font-size: clamp(50px, 5vw, 30px);
-    font-weight: 550;
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-bold);
     text-align: center;
-    color: black;
+    color: var(--color-text-default);
     margin-top: 80px;
     margin-bottom: 20px;
     line-height: 1.15;
@@ -113,9 +117,9 @@ nav {
 
 .notes-subtitle {
     font-size: 20px;
-    font-weight: 300;
+    font-weight: var(--font-weight-regular);
     text-align: center;
-    color: #555;
+    color: var(--color-text-muted);
     line-height: 1.2;
     padding: 0 24px;
     margin-top: 50px;
@@ -147,26 +151,26 @@ nav {
 
 /* -- NOTE COLORS -- */
 #note-1 {
-    background: #b5b76b;
-    color: #1a1714;
+    background: var(--color-pink);
+    color: var(--color-text-default);
     transform: rotate(-3deg);
 }
 
 #note-2 {
-    background: #f2cdd5;
-    color: #1a1714;
+    background: var(--color-olive);
+    color: var(--color-text-default);
     transform: rotate(1.5deg);
 }
 
 #note-3 {
-    background: #6f9893;
-    color: #1a1714;
+    background: var(--color-teal);
+    color: var(--color-text-default);
     transform: rotate(-5deg) translateY(-16px);
 }
 
 #note-4 {
-    background: rgb(236, 225, 125);
-    color: #1a1714;
+    background: var(--color-gold);
+    color: var(--color-text-default);
     transform: rotate(2.5deg);
 }
 
@@ -239,9 +243,10 @@ nav {
 
 .social-text-div h1 {
     font-size: clamp(50px, 5vw, 30px);
-    font-weight: 550;
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-bold);
     text-align: left;
-    color: black;
+    color: var(--color-text-default);
     margin-top: 80px;
     margin-bottom: 20px;
     line-height: 1.15;
@@ -250,9 +255,9 @@ nav {
 
 .social-subtitle {
     font-size: 20px;
-    font-weight: 300;
+    font-weight: var(--font-weight-regular);
     text-align: left;
-    color: #555;
+    color: var(--color-text-muted);
     line-height: 1.2;
     padding: 0 24px;
     margin-top: 50px;
@@ -290,7 +295,7 @@ nav {
 .lanyard {
     width: 56px;
     height: 180px;
-    background: #ececec;
+    background: var(--color-cream);
     border-radius: 3px 3px 0 0;
     position: relative;
     display: flex;
@@ -308,35 +313,32 @@ nav {
     height: 30px;
     border-radius: 50%;
     border: 3px solid #6d6d6d;
-    background: #d8d7d2;
+    background: var(--color-cream);
 }
 
 .badge-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #bc7b70;
-
+    background: var(--color-terracotta);
     padding: 1rem;
-
     width: 220px;
     min-height: 200px;
-
-    border: 1px solid #ececec;
+    border: 1px solid var(--color-teal);
     border-radius: 12px;
     margin-top: 2px;
 }
 
 .badge-avatar {
-    background: #f9f5ec; 
-    color: black;
+    background: var(--color-cream);
+    color: var(--color-text-default);
     width: 120px;
     height: 120px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: var(--font-weight-bold);
     margin-top: 20px;
     margin-bottom: 10px;
 }
@@ -344,13 +346,13 @@ nav {
 .badge-name {
     margin-top: 20px;
     font-size: 16px;
-    font-weight: 500;
-    color: #f9f5ec;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-on-dark);
 }
 
 .badge-handle {
     font-size: 12px;
-    color: #ececec;
+    color: var(--color-cream);
     margin-bottom: 50px;
 }
 
@@ -381,7 +383,7 @@ nav {
 }
 
 .paper-back {
-    background: #b5b76b;
+    background: var(--color-olive);
     top: 30px;
     left: 100px;
     transform: rotate(-14deg);
@@ -403,9 +405,9 @@ nav {
     margin-left: 5%;
     display: flex;
     flex-direction: column;
-    color: #1a1a1a;
-
+    color: var(--color-text-default);
 }
+
 .personal-text-div {
     flex: 1;
     display: flex;
@@ -421,9 +423,10 @@ nav {
 
 .personal-text-div h1 {
     font-size: clamp(50px, 5vw, 30px);
-    font-weight: 550;
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-bold);
     text-align: right;
-    color: black;
+    color: var(--color-text-default);
     margin-top: 80px;
     margin-bottom: 20px;
     line-height: 1.15;
@@ -432,9 +435,9 @@ nav {
 
 .personal-subtitle {
     font-size: 20px;
-    font-weight: 300;
+    font-weight: var(--font-weight-regular);
     text-align: right;
-    color: #555;
+    color: var(--color-text-muted);
     line-height: 1.2;
     padding: 0 24px;
     margin-top: 50px;
@@ -454,9 +457,10 @@ nav {
 
 #end-cta h2 {
     font-size: clamp(32px, 5vw, 58px);
-    font-weight: 550;
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-extra);
     text-align: center;
-    color: black;
+    color: var(--color-text-default);
     margin-bottom: 2.5rem;
     line-height: 1.15;
     max-width: 700px;
@@ -465,10 +469,10 @@ nav {
 
 .end-cta-button {
     font-size: 15px;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     letter-spacing: 0.1em;
-    color: black;
-    background: pink;
+    color: var(--color-text-default);
+    background: var(--color-pink);
     padding: 18px 48px;
     border-radius: 100px;
     display: inline-block;
@@ -477,19 +481,21 @@ nav {
 
 .end-cta-button a {
     text-decoration: none;
-    color: black;
+    color: var(--color-text-default);
 }
+
 .end-cta-button:hover {
-    background: darksalmon;
+    background: var(--color-terracotta);
 }
 
 footer {
-    background: #ffffff;
+    background: var(--color-white);
     padding: 1.5rem 3rem;
     display: flex;
     align-items: center;
     gap: 2rem;
 }
+
 .footer-links {
     display: flex;
     gap: 2rem;
@@ -499,14 +505,14 @@ footer {
 
 .footer-links a {
     font-size: 14px;
-    font-weight: 700;
-    color: #1a1a1a;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-default);
     text-decoration: none;
 }
 
 .footer-copy {
     font-size: 14px;
-    color: #1a1a1a;
+    color: var(--color-text-default);
     white-space: nowrap;
     margin-left: auto;
 }

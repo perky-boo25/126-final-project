@@ -1,5 +1,5 @@
 //import the firestore database from firebase.js
-import {db, auth} from "./firebase.js";
+import {db, auth} from "/firebase.js";
 
 //import helper functions
 import{ formatDate, formatTime, getMiniText, isToday} from "/scripts/helpers.js";

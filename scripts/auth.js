@@ -4,7 +4,7 @@
 
 import { auth } from "../firebase.js";
 import { db } from "../firebase.js";
-import { doc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -16,10 +16,10 @@ import {
 
 // USERNAME VERIFICATION
 async function isUsernameTaken(username) {
-    const usersRef  = collection(db, "users");
-    const q         = query(usersRef,where("username", "==", username));
-    const snapshot  = await getDocs(q);
-    return !snapshot.empty;     // returns true if un already exists
+    const usernameRef = doc(db, "usernames", username);
+    const usernameSnap = await getDoc(usernameRef);
+
+    return usernameSnap.exists();
 }
 // SIGN-UP
 export async function signUp(email, password, username) {
@@ -42,10 +42,6 @@ export async function signUp(email, password, username) {
             entryCount: 0,
             stampCount: 0,
             favorites: [],
-            recommendations: [],
-            bookmarks: {
-                toRead: []
-            },
             pinnedPostId: ""
         });
 

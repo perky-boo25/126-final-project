@@ -1204,15 +1204,14 @@ const LetterPopup = {
 
   PaletteSheet.renderGrid = function () {
     const inst = this.activeInstance;
+    // Only intercept if we are rendering the 'letters' (Journals) collection
     if (!inst || inst.type !== "letters") return _origRenderGrid();
 
     const container = document.getElementById("sheet-grid-container");
     if (!container) return;
 
-    /* Override the grid class to the letters flex layout */
-    container.className = "letters-sheet-grid";
-
-    const stamps = ["🌸", "✉️", "🌿", "☁️", "🕊️", "★", "♡", "🌙"];
+    /* Override the grid class to our new view-all layout */
+    container.className = "view-all-grid";
 
     container.innerHTML = inst.items
       .map((item, idx) => {
@@ -1222,30 +1221,33 @@ const LetterPopup = {
           !inst.searchQuery ||
           item.title.toLowerCase().includes(inst.searchQuery) ||
           item.excerpt?.toLowerCase().includes(inst.searchQuery);
+
         if (!(matchGenre && matchQuery)) return "";
 
-        const stamp = stamps[idx % stamps.length];
+        // Map data fields safely
+        const imgSrc = item.img || "";
+        const title = item.title || "Untitled";
+        const sub = item.date || item.subtitle || "";
+        const snippet =
+          item.excerpt ||
+          (item.description ? item.description.slice(0, 100) + "…" : "");
 
         return `
-        <div class="envelope-card"
-             onclick="PaletteCollection.getInstance('letters').openLetterPopup(${idx})">
-          <div class="envelope-body">
-            <div class="envelope-flap"></div>
-            <div class="envelope-stamp">${stamp}</div>
-            <div class="envelope-postmark">palette<br>★<br>post</div>
-            <div class="envelope-seal">✦</div>
-            <div class="envelope-content">
-              <p class="envelope-title">${item.title}</p>
-              <p class="envelope-excerpt">${item.excerpt || item.description.slice(0, 100) + "…"}</p>
-              <div class="envelope-footer">
-                <span class="envelope-date">${item.date}</span>
-                <button class="envelope-heart ${item.liked ? "liked" : ""}"
-                        onclick="event.stopPropagation();
-                                 PaletteCollection.getInstance('letters').toggleLike(null, ${idx})"
-                        aria-label="Like">${item.liked ? "♥" : "♡"}</button>
-              </div>
-            </div>
+        <div class="static-pin-card"
+             onclick="PaletteCollection.getInstance('letters').openPopup(${idx})">
+          
+          <div class="static-pin-card-img">
+              ${imgSrc ? `<img src="${imgSrc}" alt="${title}">` : ""}
           </div>
+          
+          <p class="static-pin-card-title">${title}</p>
+          <p class="static-pin-card-sub">${sub}</p>
+          <p class="static-pin-card-snippet">${snippet}</p>
+
+          <button class="heart-btn ${item.liked ? "liked" : ""}"
+                  onclick="event.stopPropagation();
+                           PaletteCollection.getInstance('letters').toggleLike(null, ${idx})"
+                  aria-label="Like">${item.liked ? "♥" : "♡"}</button>
         </div>`;
       })
       .join("");

@@ -48,47 +48,6 @@ button {
     cursor: pointer;
 }
 
-.navbar {
-    height: 48px;
-    background: rgba(249, 245, 236, 0.92);
-    border-bottom: 1px solid rgba(201, 123, 138, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 24px;
-    backdrop-filter: blur(6px);
-}
-
-.nav-logo {
-    padding: 5px 16px;
-    border-radius: 999px;
-    border: 1px solid rgba(201, 123, 138, 0.16);
-    background: rgba(255,255,255,0.82);
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.nav-links a {
-    text-decoration: none;
-    font-size: 13px;
-    color: var(--text);
-}
-
-.nav-links a:hover,
-.nav-active {
-    color: var(--pink-deep);
-}
-
-.nav-links span {
-    color: rgba(155, 125, 136, 0.55);
-}
-
 .profile-shell {
     display: grid;
     grid-template-columns: 248px minmax(0, 1fr);
@@ -835,17 +794,6 @@ button {
 
     .postcard-carousel {
         grid-template-columns: 34px minmax(0, 1fr) 34px;
-    }
-
-    .navbar {
-        padding: 0 14px;
-        gap: 10px;
-    }
-
-    .nav-links {
-        gap: 8px;
-        flex-wrap: wrap;
-        justify-content: flex-end;
     }
 }
 

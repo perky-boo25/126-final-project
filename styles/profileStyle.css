@@ -48,6 +48,47 @@ button {
     cursor: pointer;
 }
 
+.navbar {
+    height: 48px;
+    background: rgba(249, 245, 236, 0.92);
+    border-bottom: 1px solid rgba(201, 123, 138, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    backdrop-filter: blur(6px);
+}
+
+.nav-logo {
+    padding: 5px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(201, 123, 138, 0.16);
+    background: rgba(255,255,255,0.82);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-size: 13px;
+    color: var(--text);
+}
+
+.nav-links a:hover,
+.nav-active {
+    color: var(--pink-deep);
+}
+
+.nav-links span {
+    color: rgba(155, 125, 136, 0.55);
+}
+
 .profile-shell {
     display: grid;
     grid-template-columns: 248px minmax(0, 1fr);
@@ -392,7 +433,7 @@ button {
 
 .showcase-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 18px;
 }
 
@@ -795,6 +836,17 @@ button {
     .postcard-carousel {
         grid-template-columns: 34px minmax(0, 1fr) 34px;
     }
+
+    .navbar {
+        padding: 0 14px;
+        gap: 10px;
+    }
+
+    .nav-links {
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
 }
 
 /*edit profile*/
@@ -1098,4 +1150,64 @@ body.edit-modal-open .profile-shell {
 
 .edit-photo-preview + input[type="file"] {
     margin-top: 8px;
+}
+
+.empty-favorite-slot .cover-placeholder {
+    min-height: 220px;
+    border-style: dashed;
+    opacity: 0.75;
+}
+
+.empty-favorite-slot p {
+    text-align: center;
+}
+
+.empty-edit-text {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.favorite-slide-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.favorite-slot .cover-placeholder {
+    min-height: 150px;
+    padding: 8px;
+}
+
+.favorite-slot .postcard-title {
+    font-size: 13px;
+}
+
+.favorite-slot .postcard-meta {
+    font-size: 11px;
+}
+
+.empty-favorite-slot {
+    opacity: 0.7;
+}
+
+.empty-favorite-slot .cover-placeholder {
+    border-style: dashed;
+}
+
+.pinned-media-box {
+    margin-top: 14px;
+    max-width: 50%;
+    max-height: 50%;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1.5px dashed var(--line);
+    background: rgba(255,255,255,0.48);
+    box-shadow: var(--shadow-soft);
+}
+
+.pinned-media-box img {
+    width: auto;
+    height: auto;
+    object-fit: contain;
 }

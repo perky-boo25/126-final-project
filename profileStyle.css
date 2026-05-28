@@ -433,7 +433,7 @@ button {
 
 .showcase-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 18px;
 }
 
@@ -1150,4 +1150,47 @@ body.edit-modal-open .profile-shell {
 
 .edit-photo-preview + input[type="file"] {
     margin-top: 8px;
+}
+
+.empty-favorite-slot .cover-placeholder {
+    min-height: 220px;
+    border-style: dashed;
+    opacity: 0.75;
+}
+
+.empty-favorite-slot p {
+    text-align: center;
+}
+
+.empty-edit-text {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.favorite-slide-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.favorite-slot .cover-placeholder {
+    min-height: 150px;
+    padding: 8px;
+}
+
+.favorite-slot .postcard-title {
+    font-size: 13px;
+}
+
+.favorite-slot .postcard-meta {
+    font-size: 11px;
+}
+
+.empty-favorite-slot {
+    opacity: 0.7;
+}
+
+.empty-favorite-slot .cover-placeholder {
+    border-style: dashed;
 }

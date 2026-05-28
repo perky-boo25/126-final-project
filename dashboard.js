@@ -15,7 +15,8 @@ import {
     query,
     orderBy,
     getDocs,
-    limit
+    doc,
+    updateDoc
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 const feed = document.getElementById("feed");
@@ -45,28 +46,27 @@ onAuthStateChanged(auth, async function(user) {
 async function loadDashboardPosts(){
     const postsRef = collection(db, "posts");
 
-    //newest posts first
     const q = query(
         postsRef,
         orderBy("datePosted", "desc")
-    )
-
+    );
 
     const snapshot = await getDocs(q);
 
-    feed.innerHTML ="";
+    feed.innerHTML = "";
+    allPosts = [];
 
-    //create one post card for each document
     snapshot.forEach(function(docSnap) {
         const post = docSnap.data();
+
+        post.id = docSnap.id;
 
         allPosts.push(post);
     });
 
-    
-
     renderPosts(allPosts);
 }
+
 
 // shows the posts on the dashboard
 function renderPosts(posts) {
@@ -229,6 +229,7 @@ function createPostElement(post){
         </div>
 
         <aside class="stub">
+        <button class="pin-post-btn" type="button" title="pin post">⌖</button>
     <div class="stub-cut"></div>
 
     

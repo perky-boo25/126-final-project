@@ -45,9 +45,7 @@
             <p class="joined-text" id="joined-text">palette member since: --</p>
         </section>
 
-        <div class="sidebar-actions">
-            <button class="soft-button" id="open-bookmarks" type="button">open bookmarks</button>
-        </div>
+        
     </aside>
 
     <main class="profile-main">
@@ -108,19 +106,7 @@
                     <button class="carousel-btn next-btn" type="button" aria-label="next favorite">&#8250;</button>
                 </div>
             </article>
-
-            <article class="card postcard-carousel-card">
-                <div class="section-topline">
-                    <h2>recos</h2>
-                    <span>carousel</span>
-                </div>
-                <div class="postcard-carousel" data-carousel="recos">
-                    <button class="carousel-btn prev-btn" type="button" aria-label="previous recommendation">&#8249;</button>
-                    <div class="carousel-window"><div class="carousel-track" id="recos-track"></div></div>
-                    <button class="carousel-btn next-btn" type="button" aria-label="next recommendation">&#8250;</button>
-                </div>
-            </article>
-        </section>
+        </section> 
 
         <section class="profile-bottom-grid">
             <article class="card pinned-card">
@@ -167,28 +153,6 @@
     </main>
 </div>
 
-<div class="bookmark-overlay" id="bookmark-overlay"></div>
-<aside class="bookmark-panel" id="bookmark-panel">
-    <div class="bookmark-header">
-        <p class="bookmark-title">saved lists</p>
-        <button class="bookmark-close" id="close-bookmarks" type="button">&#10005;</button>
-    </div>
-
-    <section class="bookmark-section">
-        <p class="bookmark-label">to watch</p>
-        <ul id="bookmark-watch-list"></ul>
-    </section>
-
-    <section class="bookmark-section">
-        <p class="bookmark-label">to read</p>
-        <ul id="bookmark-read-list"></ul>
-    </section>
-
-    <section class="bookmark-section">
-        <p class="bookmark-label">to listen</p>
-        <ul id="bookmark-listen-list"></ul>
-    </section>
-</aside>
 
 <div class="modal-overlay" id="modal-overlay"></div>
 <div class="edit-modal" id="edit-modal" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title">
@@ -214,26 +178,34 @@
                 </label>
             </section>
 
-            <section class="edit-section music-edit-card">
+           <section class="edit-section music-edit-card">
                 <h3>currently listening</h3>
+
                 <div class="music-preview">
-                    <p class="music-label">now playing</p>
-                    <input id="edit-current-track-title" type="text" placeholder="track title">
-                    <input id="edit-current-track-meta" type="text" placeholder="artist • album">
+                    <p class="music-label">search song</p>
+
+                    <div class="api-search-box">
+                        <input id="deezer-search-input" type="text" placeholder="search song title or artist">
+                        <button class="mini-button" id="deezer-search-btn" type="button">search</button>
+                    </div>
+
+                    <div class="edit-result-grid" id="deezer-search-results"></div>
+
+                    <input id="edit-current-track-title" type="text" placeholder="track title" readonly>
+                    <input id="edit-current-track-meta" type="text" placeholder="artist • album" readonly>
                 </div>
-            </section>
+        </section>
 
             <section class="edit-section edit-section--wide">
-                <div class="section-edit-topline"><h3>favorites</h3><span>mixed items</span></div>
-                <button class="soft-button" id="open-favorites-search" type="button">search favorites</button>
+                <div class="section-edit-topline"><h3>favorites</h3><span>remove items</span></div>
                 <div class="chosen-items" id="edit-favorites-list"></div>
             </section>
-
+<!--
             <section class="edit-section edit-section--wide">
                 <div class="section-edit-topline"><h3>recommendations</h3><span>mixed items</span></div>
                 <button class="soft-button" id="open-recos-search" type="button">search recommendations</button>
                 <div class="chosen-items" id="edit-recos-list"></div>
-            </section>
+            </section> -->
 
             <section class="edit-section edit-section--wide">
                 <div class="section-edit-topline"><h3>notes</h3><span>small reminders</span></div>

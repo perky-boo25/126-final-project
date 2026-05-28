@@ -14,7 +14,6 @@ import{
 let currentUserId = null;
 let currentUserData = null;
 
-const tmdbApiKey = "YOUR_TMDB_API_KEY";
 
 //gets profile elements from html
 const profilePicture = document.getElementById("profile-picture");
@@ -28,7 +27,7 @@ const entryCount = document.getElementById("entry-count");
 const currentTrackTitle = document.getElementById("current-track-title");
 const currentTrackMeta = document.getElementById("current-track-meta");
 const favoritesTrack = document.getElementById("favorites-track");
-const recosTrack = document.getElementById("recos-track");
+
 const notesList = document.getElementById("notes-list");
 const pinnedProfilePicture = document.getElementById("pinned-post-profile");
 const pinnedUsername = document.getElementById("pinned-username");
@@ -36,15 +35,7 @@ const pinnedType = document.getElementById("pinned-type");
 const pinnedDate = document.getElementById("pinned-date");
 const pinnedTime = document.getElementById("pinned-time");
 const pinnedBody = document.getElementById("pinned-body");
-const bookmarkWatchList = document.getElementById("bookmark-watch-list");
-const bookmarkReadList = document.getElementById("bookmark-read-list");
-const bookmarkListenList = document.getElementById("bookmark-listen-list");
 
-let editBookmarks = {
-    toWatch: [],
-    toRead: [],
-    toListen: []
-};
 
 onAuthStateChanged(auth, async function(user) {
     if (!user) {
@@ -70,19 +61,10 @@ async function loadProfile(currentUserId){
 
     const user = userSnap.data()
     editFavorites = user.favorites || [];
-    editRecos = user.recommendations || [];
     editNotes = user.notes || [];
     renderCarousel(user.favorites || [], favoritesTrack);
-    renderCarousel(user.recommendations || [], recosTrack);
     initCarousel("favorites-track");
-    initCarousel("recos-track");
     renderNotes(user.notes || []);
-    editBookmarks = user.bookmarks || {
-        toWatch: [],
-        toRead: [],
-        toListen: []
-    };
-    renderBookmarks(editBookmarks);
     await loadPinnedPost(user.pinnedPostId);
     
 
@@ -95,64 +77,96 @@ async function loadProfile(currentUserId){
     bookCount.textContent = user.bookCount || 0;
     entryCount.textContent = user.entryCount || 0;
     currentTrackTitle.textContent = user.currentTrackTitle || "no song yet";
-    currentTrackMeta.textContent = user.currentTrackMeta || "----"
-    
+    currentTrackMeta.textContent = user.currentTrackMeta || "----";
+
+    selectedCurrentTrack = {
+        title: user.currentTrackTitle || "",
+        meta: user.currentTrackMeta || "",
+        previewUrl: user.currentTrackPreviewUrl || "",
+        cover: user.currentTrackCover || ""
+    };
     
     
 }
 
 
+async function searchDeezerTracks(searchText){
+    const query = searchText.trim();
 
-async function removeBookmark(category, index){
-    editBookmarks[category].splice(index, 1);
-
-    renderBookmarks(editBookmarks);
-
-    const userRef = doc(db, "users", currentUserId);
-
-    await updateDoc(userRef, {
-        bookmarks: editBookmarks
-    });
-}
-
-// shows bookmark lists in the bookmark panel
-function renderBookmarks(bookmarks){
-    renderBookmarkList(bookmarks.toWatch || [], bookmarkWatchList, "toWatch");
-    renderBookmarkList(bookmarks.toRead || [], bookmarkReadList, "toRead");
-    renderBookmarkList(bookmarks.toListen || [], bookmarkListenList, "toListen");
-}
-
-
-// shows one bookmark category
-function renderBookmarkList(items, container, category){
-    container.innerHTML = "";
-
-    if(items.length === 0){
-        container.innerHTML = "<li>nothing saved yet</li>";
+    if (query.length < 2){
+        deezerSearchResults.innerHTML = "";
         return;
     }
 
-    items.forEach(function(item, index){
-        const li = document.createElement("li");
+    deezerSearchResults.innerHTML = "<p>searching songs...</p>";
 
-        const title = typeof item === "string"
-            ? item
-            : `${item.title} ${item.type ? "(" + item.type + ")" : ""}`;
+    const deezerUrl = `https://api.deezer.com/search/track?q=${encodeURIComponent(query)}&limit=6`;
 
-        li.innerHTML = `
-            <span>${title}</span>
-            <button class="remove-bookmark-btn" type="button">&#10005;</button>
+    try {
+        const response = await fetch(deezerUrl);
+        const data = await response.json();
+
+        renderDeezerResults(data.data || []);
+    } catch(error) {
+        console.log("direct deezer search failed, using proxy", error);
+
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(deezerUrl)}`;
+        const response = await fetch(proxyUrl);
+        const data = await response.json();
+
+        renderDeezerResults(data.data || []);
+    }
+}
+
+function renderDeezerResults(tracks){
+    deezerSearchResults.innerHTML = "";
+
+    if (tracks.length === 0){
+        deezerSearchResults.innerHTML = "<p>no songs found</p>";
+        return;
+    }
+
+    tracks.forEach(function(track){
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "search-result-card";
+
+        const title = track.title || "untitled";
+        const artist = track.artist ? track.artist.name : "unknown artist";
+        const album = track.album ? track.album.title : "";
+        const cover = track.album ? track.album.cover_medium : "no-image.jpg";
+        const previewUrl = track.preview || "";
+
+        card.innerHTML = `
+            <img src="${cover}" alt="album cover">
+
+            <div>
+                <p>${title}</p>
+                <p>${artist}${album ? " • " + album : ""}</p>
+            </div>
         `;
 
-        const removeBtn = li.querySelector(".remove-bookmark-btn");
+        card.addEventListener("click", function(){
+            selectedCurrentTrack = {
+                title: title,
+                meta: album ? `${artist} • ${album}` : artist,
+                previewUrl: previewUrl,
+                cover: cover
+            };
 
-        removeBtn.addEventListener("click", function(){
-            removeBookmark(category, index);
+            editCurrentTrackTitle.value = selectedCurrentTrack.title;
+            editCurrentTrackMeta.value = selectedCurrentTrack.meta;
+
+            deezerSearchInput.value = "";
+            deezerSearchResults.innerHTML = "";
         });
 
-        container.appendChild(li);
+        deezerSearchResults.appendChild(card);
     });
 }
+
+
+
 
 //loads user pinned post
 async function loadPinnedPost(pinnedPostId){
@@ -188,35 +202,50 @@ async function loadPinnedPost(pinnedPostId){
 function renderCarousel(items, track){
     track.innerHTML = "";
 
-    if (items.length === 0){
-        track.innerHTML = `
-            <article class="postcard-slide">
-                <div class="postcard-surface">
-                    <p class="postcard-title"> ? </p>
-                    <p class = "postcard-meta"> nope </p>
-                </div>
-            </article>
-        `;
-        return;
-    }
+    const totalSlots = Math.ceil(Math.max(items.length, 4) / 4) * 4;
 
-    items.forEach(function(item){
+    for (let i = 0; i < totalSlots; i += 4){
         const slide = document.createElement("article");
         slide.className = "postcard-slide";
 
+        let slotHTML = "";
+
+        for (let j = i; j < i + 4; j++){
+            const item = items[j];
+
+            if (item){
+                slotHTML += `
+                    <div class="favorite-slot">
+                        <div class="cover-placeholder">
+                            <img src="${item.cover || "no-image.jpg"}" alt="cover">
+                        </div>
+                        <p class="postcard-title">${item.title || "untitled"}</p>
+                        <p class="postcard-meta">${item.type || ""}</p>
+                    </div>
+                `;
+            } else {
+                slotHTML += `
+                    <div class="favorite-slot empty-favorite-slot">
+                        <div class="cover-placeholder">
+                            <p>empty</p>
+                        </div>
+                        <p class="postcard-title">favorite</p>
+                        <p class="postcard-meta">empty slot</p>
+                    </div>
+                `;
+            }
+        }
+
         slide.innerHTML = `
-            <div class="postcard-surface">
-                <div class="cover-placeholder">
-                    <img src=${item.cover || "no-image.jpg"} alt="cover">
-                </div>
-                <p class="postcard-title">${item.title || "untitled"}</p>
-                <p class="postcard-meta">${item.type || ""}</p>
-           </div>
-           `;
+            <div class="postcard-surface favorite-slide-grid">
+                ${slotHTML}
+            </div>
+        `;
 
         track.appendChild(slide);
-    });
+    }
 }
+
 
 
 //carousel buttons
@@ -303,15 +332,12 @@ const searchModalInput = document.getElementById("search-modal-input");
 const searchModalBtn = document.getElementById("search-modal-btn");
 const searchModalResults = document.getElementById("search-modal-results");
 
-const openFavoritesSearchBtn = document.getElementById("open-favorites-search");
-const openRecosSearchBtn = document.getElementById("open-recos-search");
 
 const searchModal = document.getElementById("search-modal");
 const closeSearchModalBtn = document.getElementById("close-search-modal");
 const searchModalTitle = document.getElementById("search-modal-title");
 
 const editFavoritesList = document.getElementById("edit-favorites-list");
-const editRecosList = document.getElementById("edit-recos-list");
 
 const newNoteInput = document.getElementById("new-note-input");
 const addNoteBtn = document.getElementById("add-note-btn");
@@ -320,7 +346,18 @@ const editNotesList = document.getElementById("edit-notes-list");
 const editProfilePictureFile = document.getElementById("edit-profile-picture-file");
 const editProfilePicturePreview = document.getElementById("edit-profile-picture-preview");
 
+const deezerSearchInput = document.getElementById("deezer-search-input");
+const deezerSearchBtn = document.getElementById("deezer-search-btn");
+const deezerSearchResults = document.getElementById("deezer-search-results");
 
+let selectedCurrentTrack = {
+    title: "",
+    meta: "",
+    previewUrl: "",
+    cover: ""
+};
+
+let currentAudio = null;
 let currentSearchTarget = "";
 let selectedProfilePictureDataUrl = "";
 
@@ -346,19 +383,26 @@ if (editProfilePictureFile) {
 
 
 
+
 let editFavorites = [];
-let editRecos = [];
+
 let editNotes = [];
 
 
 let searchTimer;
 
-openFavoritesSearchBtn.addEventListener("click", function() {
-    openSearchModal("favorites");
+
+
+deezerSearchBtn.addEventListener("click", function(){
+    searchDeezerTracks(deezerSearchInput.value);
 });
 
-openRecosSearchBtn.addEventListener("click", function() {
-    openSearchModal("recos");
+deezerSearchInput.addEventListener("input", function(){
+    clearTimeout(searchTimer);
+
+    searchTimer = setTimeout(function(){
+        searchDeezerTracks(deezerSearchInput.value);
+    }, 700);
 });
 
 closeSearchModalBtn.addEventListener("click", closeSearchModal);
@@ -372,7 +416,7 @@ searchModalInput.addEventListener("input", function() {
 
     searchTimer = setTimeout(function() {
         searchMixedMedia(searchModalInput.value, searchModalResults, currentSearchTarget);
-    }, 800);
+    }, 350);
 });
 
 function openSearchModal(target) {
@@ -493,17 +537,7 @@ function renderSearchResults(results, container, targetList){
                 renderEditChosenItems(editFavorites, editFavoritesList, "favorites");
         }
 
-        if (targetList === "recos") {
-            const alreadyExists = editRecos.some(function(reco) {
-                return reco.sourceId === item.sourceId && reco.type === item.type;
-            });
-
-            if (!alreadyExists) {
-                editRecos.push(item);
-            }
-
-            renderEditChosenItems(editRecos, editRecosList, "recos");
-        }
+        
 
        searchModalInput.value = "";
         searchModalResults.innerHTML = "";
@@ -535,10 +569,12 @@ function fillEditModalFromProfile() {
     editProfilePicturePreview.src = profilePicture.src || "no-profile.png";
     editCurrentTrackTitle.value = currentTrackTitle.textContent || "";
     editCurrentTrackMeta.value = currentTrackMeta.textContent || "";
+    selectedCurrentTrack.title = currentTrackTitle.textContent || "";
+selectedCurrentTrack.meta = currentTrackMeta.textContent || "";
 
     
     renderEditChosenItems(editFavorites, editFavoritesList, "favorites");
-    renderEditChosenItems(editRecos, editRecosList, "recos");
+    
     renderEditNotes();
 }
 
@@ -547,14 +583,19 @@ function fillEditModalFromProfile() {
 function renderEditChosenItems(items, container, targetList) {
     container.innerHTML = "";
 
+    if (items.length === 0){
+        container.innerHTML = "<p class='empty-edit-text'>no favorites yet</p>";
+        return;
+    }
+
     items.forEach(function(item, index) {
         const chip = document.createElement("div");
         chip.className = "chosen-chip";
 
         chip.innerHTML = `
             <div>
-                <p class="chosen-title">${item.title}</p>
-                <p class="chosen-meta">${item.type}</p>
+                <p class="chosen-title">${item.title || "untitled"}</p>
+                <p class="chosen-meta">${item.type || ""}</p>
             </div>
             <button class="remove-item-btn" type="button">&#10005;</button>
         `;
@@ -563,12 +604,7 @@ function renderEditChosenItems(items, container, targetList) {
 
         removeBtn.addEventListener("click", function() {
             items.splice(index, 1);
-
-            if (targetList === "favorites") {
-                renderEditChosenItems(editFavorites, editFavoritesList, "favorites");
-            } else {
-                renderEditChosenItems(editRecos, editRecosList, "recos");
-            }
+            renderEditChosenItems(editFavorites, editFavoritesList, "favorites");
         });
 
         container.appendChild(chip);
@@ -623,10 +659,11 @@ if (saveProfileChangesBtn) {
             username: editUsername.value,
             bio: editBio.value,
             profilePicture: profilePictureUrl,
-            currentTrackTitle: editCurrentTrackTitle.value,
-            currentTrackMeta: editCurrentTrackMeta.value,
+            currentTrackTitle: selectedCurrentTrack.title || editCurrentTrackTitle.value,
+            currentTrackMeta: selectedCurrentTrack.meta || editCurrentTrackMeta.value,
+            currentTrackPreviewUrl: selectedCurrentTrack.previewUrl || "",
+            currentTrackCover: selectedCurrentTrack.cover || "",
             favorites: editFavorites,
-            recommendations: editRecos,
             notes: editNotes
         });
         
@@ -634,13 +671,12 @@ if (saveProfileChangesBtn) {
         profileUsername.textContent = "@" + editUsername.value;
         profileBio.textContent = editBio.value;
         profilePicture.src = profilePictureUrl;
-        currentTrackTitle.textContent = editCurrentTrackTitle.value;
-        currentTrackMeta.textContent = editCurrentTrackMeta.value;
-
+        currentTrackTitle.textContent = selectedCurrentTrack.title || editCurrentTrackTitle.value;
+        currentTrackMeta.textContent = selectedCurrentTrack.meta || editCurrentTrackMeta.value;
         renderCarousel(editFavorites, favoritesTrack);
-        renderCarousel(editRecos, recosTrack);
+     
         initCarousel("favorites-track");
-        initCarousel("recos-track");
+  
         renderNotes(editNotes);
 
         closeEditModal();
@@ -653,36 +689,38 @@ cancelEditModalBtn.addEventListener("click", closeEditModal);
 modalOverlay.addEventListener("click", closeEditModal);
 
 
-    const vinylToggle = document.getElementById('vinyl-toggle');
-    const vinylRecord = document.querySelector('.vinyl-record');
+    const vinylToggle = document.getElementById("vinyl-toggle");
+    const vinylRecord = document.querySelector(".vinyl-record");
 
-    function toggleVinylSpin() {
-        vinylRecord.classList.toggle('spinning');
+function toggleVinylPlay() {
+    if (!selectedCurrentTrack.previewUrl){
+        console.log("no preview url for current track");
+        return;
     }
 
-    vinylToggle.addEventListener('click', toggleVinylSpin);
-    vinylToggle.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-            toggleVinylSpin();
-        }
-    });
+    if (!currentAudio){
+        currentAudio = new Audio(selectedCurrentTrack.previewUrl);
 
-    const bookmarkPanel = document.getElementById('bookmark-panel');
-    const bookmarkOverlay = document.getElementById('bookmark-overlay');
-    const openBookmarksBtn = document.getElementById('open-bookmarks');
-    const closeBookmarksBtn = document.getElementById('close-bookmarks');
-
-    function openBookmarks() {
-        bookmarkPanel.classList.add('open');
-        bookmarkOverlay.classList.add('visible');
+        currentAudio.addEventListener("ended", function(){
+            vinylRecord.classList.remove("spinning");
+            currentAudio = null;
+        });
     }
 
-    function closeBookmarks() {
-        bookmarkPanel.classList.remove('open');
-        bookmarkOverlay.classList.remove('visible');
+    if (currentAudio.paused){
+        currentAudio.play();
+        vinylRecord.classList.add("spinning");
+    } else {
+        currentAudio.pause();
+        vinylRecord.classList.remove("spinning");
     }
+}
 
-    openBookmarksBtn.addEventListener('click', openBookmarks);
-    closeBookmarksBtn.addEventListener('click', closeBookmarks);
-    bookmarkOverlay.addEventListener('click', closeBookmarks);
+vinylToggle.addEventListener("click", toggleVinylPlay);
+
+vinylToggle.addEventListener("keydown", function(event) {
+    if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggleVinylPlay();
+    }
+});

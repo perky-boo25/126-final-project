@@ -717,3 +717,33 @@ button {
 .remove-bookmark-btn {
     font-family: inherit;
 }
+
+.pin-post-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 4;
+    border: 0;
+    border-radius: 999px;
+    width: 24px;
+    height: 24px;
+    background: rgba(255,255,255,0.78);
+    color: var(--pink3);
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    box-shadow: var(--shadow2);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.stub:hover .pin-post-btn,
+.post.is-pinned .pin-post-btn {
+    opacity: 1;
+}
+
+.pin-post-btn:hover {
+    transform: scale(1.08);
+    background: var(--yellow);
+    color: var(--text);
+}

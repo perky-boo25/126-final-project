@@ -8,7 +8,7 @@ html, body {
     height: 100%;
     width: 100%;
     background: white;
-    font-family: 'Poppins', sans-serif;
+    font-family: sans-serif;
 }
 
 /* ─── LAYOUT WRAPPER ─── */
@@ -43,7 +43,7 @@ html, body {
 }
 
 .hero h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-family-base);
     font-size: 75px;
     color: black;
     margin-bottom: 1px;
@@ -107,7 +107,7 @@ html, body {
     border: none;
     border-radius: 30px;
     padding: 14px 28px;
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font-family-base);
     font-size: 1rem;
     cursor: pointer;
     transition: background 0.25s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
@@ -267,7 +267,7 @@ html, body {
 }
 
 .folder-entries h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-family-base);
     font-size: 30px;
     color: #3a2230;
     margin-bottom: 4px;
@@ -894,7 +894,7 @@ html, body {
 }
 
 .art-modal-title {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-family-base);
     font-size: 22px;
     color: #2c1a1e;
     line-height: 1.3;

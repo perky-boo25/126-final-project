@@ -1,3 +1,6 @@
+
+@import url('variables.css');
+
 .navbar {
   position: sticky;
   top: 0;
@@ -32,7 +35,7 @@
   padding: 6px 16px;
   border-radius: 30px;
   font-size: 16px;
-  font-family: 'Life Savers', 700 !important;
+  font-family: var(--font-family-base);
   font-weight: 700;
   color: #5a3a3a;
   text-decoration: none;

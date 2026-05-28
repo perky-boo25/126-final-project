@@ -5,17 +5,70 @@
 // ============================================================
 
 // ============================================================
-//  MUSIC — Local songs.json (Discover/data/songs.json)
+//  MUSIC — iTunes Search API (no key, no CORS issues)
 // ============================================================
 MusicEngine.initialize = async function () {
-  console.log("[MUSIC] Fetching tracks from local songs.json...");
+  console.log("[MUSIC] Fetching tracks from iTunes...");
   try {
-    const res = await fetch(this.endpoint);
-    if (!res.ok) throw new Error(`HTTP fetch error: ${res.status}`);
-    this.items = await res.json();
+    const letters = "abcdefghijklmnopqrstuvwxyz".split("");
+    const shuffled = [...letters].sort(() => Math.random() - 0.5);
+    const searches = shuffled.slice(0, 8);
+
+    const responses = await Promise.all(
+      searches.map((term) =>
+        fetch(
+          `https://itunes.apple.com/search?term=${encodeURIComponent(term)}&entity=song&limit=6`,
+        ).then((r) => {
+          if (!r.ok) throw new Error(`HTTP error: ${r.status}`);
+          return r.json();
+        }),
+      ),
+    );
+
+    const seen = new Set();
+    const allTracks = [];
+
+    responses.forEach((data) => {
+      (data.results || []).forEach((track) => {
+        if (seen.has(track.trackId)) return;
+        seen.add(track.trackId);
+
+        const minutes = Math.floor(track.trackTimeMillis / 60000);
+        const seconds = Math.floor((track.trackTimeMillis % 60000) / 1000)
+          .toString()
+          .padStart(2, "0");
+
+        const genre = (track.primaryGenreName || "pop").toLowerCase();
+
+        allTracks.push({
+          title: track.trackName,
+          subtitle: track.artistName,
+          img: track.artworkUrl100.replace("100x100bb", "600x600bb"),
+          genre: genre.includes("pop")
+            ? "pop"
+            : genre.includes("indie") || genre.includes("alternative")
+            ? "indie"
+            : "pop",
+          liked: false,
+          description: `${track.trackName} by ${track.artistName}, from the album "${track.collectionName}".`,
+          meta: [
+            { label: "Album", value: track.collectionName || "—" },
+            { label: "Genre", value: track.primaryGenreName || "—" },
+            { label: "Released", value: track.releaseDate?.slice(0, 4) || "—" },
+            { label: "Duration", value: `${minutes}:${seconds}` },
+          ],
+          link: {
+            label: "Open in iTunes",
+            url: track.trackViewUrl,
+          },
+        });
+      });
+    });
+
+    this.items = allTracks;
     this.buildCarousel();
   } catch (error) {
-    console.error("[MUSIC] Failed to load songs.json:", error);
+    console.error("[MUSIC] Failed to fetch from iTunes:", error);
   }
 };
 
@@ -202,7 +255,7 @@ ArtEngine.initialize = async function () {
 // ============================================================
 //  FILMS — TMDB  (broad popular fetch, full genre map)
 // ============================================================
-const TMDB_API_KEY = ""; // ← Replace with your actual TMDB key
+const TMDB_API_KEY = "301a5df652724057f68fabc019706dbf"; // ← Replace with your actual TMDB key
 
 MovieEngine.initialize = async function () {
   if (!TMDB_API_KEY || TMDB_API_KEY === "API KEY HERE") {
@@ -379,13 +432,10 @@ LettersEngine._fetchFromFirestore = async function () {
 
 // ── Override initialize — replaces base class fetch (letters.json) ──
 LettersEngine.initialize = async function () {
-  // Guard: if discoveruifx.js already called this once via the base class,
-  // _firestoreReady will be set — skip the duplicate call.
   if (this._firestoreReady) return;
 
   console.log("[JOURNALS] Waiting for window.db...");
 
-  // Wait for Firebase db (max 8s)
   await new Promise((resolve, reject) => {
     if (window.db) return resolve();
     let elapsed = 0;
@@ -409,13 +459,10 @@ LettersEngine.initialize = async function () {
     this.items = journals;
     this.activeFilter = "all";
     this.searchQuery = "";
-    this._firestoreReady = true; // prevent double-run
+    this._firestoreReady = true;
 
-    // Build the carousel (envelope cards via patchLettersCarousel in discoveruifx.js)
     this.buildCarousel();
 
-    // If the sheet is already open (user clicked View All before data landed),
-    // re-render it now that items exist.
     const sheetOverlay = document.getElementById("palette-sheet-overlay");
     if (
       sheetOverlay &&
@@ -434,13 +481,11 @@ LettersEngine.openSheet = function () {
   this.activeFilter = "all";
   this.searchQuery = "";
 
-  // If data is already loaded, open normally
   if (this._firestoreReady && this.items.length > 0) {
     PaletteSheet.open(this);
     return;
   }
 
-  // Open the sheet immediately with a loading placeholder
   PaletteSheet.open(this);
 
   const container = document.getElementById("sheet-grid-container");
@@ -453,7 +498,6 @@ LettersEngine.openSheet = function () {
       </div>`;
   }
 
-  // Poll until initialize() finishes, then re-render the grid
   let waited = 0;
   const poll = setInterval(() => {
     waited += 200;
@@ -475,8 +519,6 @@ LettersEngine.openSheet = function () {
 
 // ============================================================
 //  BOOTSTRAP — all engines launched in parallel via Promise.allSettled
-//  IMPORTANT: delete or comment out the 5 initialize() calls
-//  at the very bottom of discoveruifx.js — only initAll() should boot them.
 // ============================================================
 
 function waitForDb(timeout = 8000) {
@@ -502,8 +544,6 @@ async function initAll() {
     BookEngine.initialize(),
     MovieEngine.initialize(),
     ArtEngine.initialize(),
-    // Letters waits for db internally now, but we still guard here
-    // so the allSettled log shows the right result.
     LettersEngine.initialize(),
   ]);
 
@@ -520,53 +560,6 @@ async function initAll() {
 initAll();
 
 // ============================================================
-//  FIX 1 — View All button: re-render grid AFTER Firestore resolves
-//  Problem: PaletteSheet.open() calls renderGrid() synchronously,
-//  but LettersEngine.items is still [] while Firestore is fetching.
-//  Solution: patch openSheet() so it shows a loader, then re-renders
-//  once buildCarousel() (called at end of initialize) signals items are ready.
-// ============================================================
-LettersEngine.openSheet = function () {
-  // If items already loaded (e.g. user clicks View All after page settled), open normally.
-  if (this.items && this.items.length > 0) {
-    PaletteSheet.open(this);
-    return;
-  }
-
-  // Items not ready yet — open the sheet with a loading state
-  // and poll until initialize() finishes populating this.items.
-  PaletteSheet.open(this); // opens modal; grid will be empty initially
-
-  const container = document.getElementById("sheet-grid-container");
-  if (container) {
-    container.innerHTML = `
-      <div style="grid-column:1/-1;text-align:center;padding:40px;
-                  font-family:'Life Savers';color:#8a6a4a;font-size:18px;">
-        ✉ Loading journals…
-      </div>`;
-  }
-
-  // Poll every 200ms until items land (max 10s)
-  let waited = 0;
-  const poll = setInterval(() => {
-    waited += 200;
-    if (this.items && this.items.length > 0) {
-      clearInterval(poll);
-      PaletteSheet.renderGrid(); // re-render now that items exist
-    } else if (waited >= 10000) {
-      clearInterval(poll);
-      if (container) {
-        container.innerHTML = `
-          <div style="grid-column:1/-1;text-align:center;padding:40px;
-                      font-family:'Life Savers';color:#c97d87;font-size:16px;">
-            Could not load journals. Check your connection and try again.
-          </div>`;
-      }
-    }
-  }, 200);
-};
-
-// ============================================================
 //  FIX 2 — Letters reviews: only fetch reviews scoped to
 //  category="journals" so other categories don't bleed in.
 //  Patches LetterPopup.open() to load Firestore reviews filtered
@@ -575,11 +568,7 @@ LettersEngine.openSheet = function () {
 const _origLetterPopupOpen = LetterPopup.open.bind(LetterPopup);
 
 LetterPopup.open = function (item, index, instance) {
-  // Run the original open (builds the HTML, shows overlay)
   _origLetterPopupOpen(item, index, instance);
-
-  // Now load reviews scoped strictly to this journal doc
-  // by querying the sub-collection or by docId match.
   this._loadJournalReviews(item);
 };
 
@@ -590,16 +579,10 @@ LetterPopup._loadJournalReviews = async function (item) {
     const { collection, query, where, orderBy, limit, getDocs } =
       await import("https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js");
 
-    // Query reviews that are:
-    //   - linked to this exact journal doc by its Firestore ID
-    //   - category = "journals" (prevents cross-category bleed)
-    // Your groupmates store reviews as separate posts with a parentId / postId field.
-    // Adjust the where() field name below to match their schema:
-    //   common names: "postId", "parentId", "journalId", "entryId"
     const reviewsQuery = query(
       collection(window.db, "posts"),
-      where("postId", "==", item.id), // ← links review to this journal
-      where("category", "==", "journals"), // ← scopes to journals only
+      where("postId", "==", item.id),
+      where("category", "==", "journals"),
       orderBy("datePosted", "desc"),
       limit(30),
     );
@@ -616,13 +599,11 @@ LetterPopup._loadJournalReviews = async function (item) {
       });
     });
 
-    // Update the reviews list in the open popup
     const list = document.getElementById("letter-reviews-list");
     if (list) {
       list.innerHTML = LetterPopup._renderReviews(reviews);
     }
 
-    // Cache so _submit() can prepend optimistically
     this._reviews[item.id] = reviews;
   } catch (err) {
     console.warn("[JOURNALS] Review load error:", err);
@@ -631,10 +612,6 @@ LetterPopup._loadJournalReviews = async function (item) {
 
 // ============================================================
 //  FAVORITES SYNC — users/{uid}.favorite array
-//  Rules:
-//    - Published journals (carousel + View All) = public, no login needed
-//    - toggleLike / heart button = logged-in users only
-//    - loadUserFavorites = only runs when a user IS logged in
 // ============================================================
 
 const FavoritesSync = (() => {
@@ -650,15 +627,13 @@ const FavoritesSync = (() => {
     };
   }
 
-  // Returns uid if a user is currently logged in, otherwise null (guest).
-  // No waiting — synchronous snapshot of auth state.
   function getCurrentUid() {
     if (window.firebaseAuth?.currentUser?.uid)
       return window.firebaseAuth.currentUser.uid;
     if (window._auth?.currentUser?.uid) return window._auth.currentUser.uid;
     if (typeof firebase !== "undefined" && firebase.auth?.().currentUser?.uid)
       return firebase.auth().currentUser.uid;
-    return null; // not logged in — guest
+    return null;
   }
 
   async function addFavorite(type, item) {
@@ -711,9 +686,7 @@ const FavoritesSync = (() => {
 })();
 
 // ============================================================
-//  PATCH — PaletteCollection.toggleLike (music, books, movies, art)
-//  Heart button works for everyone UI-wise; Firestore sync only
-//  fires when a user is logged in.
+//  PATCH — PaletteCollection.toggleLike
 // ============================================================
 const _origToggleLike = PaletteCollection.prototype.toggleLike;
 
@@ -723,7 +696,6 @@ PaletteCollection.prototype.toggleLike = function (event, index) {
   const item = this.items[index];
   if (!item) return;
 
-  // Firestore sync — silently skipped if not logged in
   if (item.liked) {
     FavoritesSync.addFavorite(this.type, item);
   } else {
@@ -732,7 +704,7 @@ PaletteCollection.prototype.toggleLike = function (event, index) {
 };
 
 // ============================================================
-//  PATCH — LetterPopup._toggleLike (letters / journals)
+//  PATCH — LetterPopup._toggleLike
 // ============================================================
 const _origLetterToggleLike = LetterPopup._toggleLike.bind(LetterPopup);
 
@@ -742,7 +714,6 @@ LetterPopup._toggleLike = function () {
   const item = this._activeItem;
   if (!item) return;
 
-  // Firestore sync — silently skipped if not logged in
   if (item.liked) {
     FavoritesSync.addFavorite("letters", item);
   } else {
@@ -752,15 +723,10 @@ LetterPopup._toggleLike = function () {
 
 // ============================================================
 //  RESTORE LIKED HEARTS — only when a user IS logged in
-//  Reads users/{uid}.favorite and marks matching engine items
-//  as liked so hearts are filled on page load.
-//  Guests see all cards with hearts unfilled — no fetch needed.
 // ============================================================
 async function loadUserFavorites() {
   if (!window.db) return;
 
-  // Snapshot check — no polling, no waiting.
-  // Journals are public; only the heart state is user-specific.
   const uid = FavoritesSync.getCurrentUid();
 
   if (!uid) {
@@ -798,8 +764,6 @@ async function loadUserFavorites() {
       });
     }
 
-    // Apply immediately for engines already loaded,
-    // then once more after 3s to catch slower engines (Firestore / APIs).
     applyFavorites();
     setTimeout(applyFavorites, 3000);
   } catch (err) {
@@ -808,3 +772,108 @@ async function loadUserFavorites() {
 }
 
 loadUserFavorites();
+// ============================================================
+//  LOGBOOK SYNC — writes a logbook entry to Firestore "posts"
+//  Called by PalettePopup._addToLogbook() and
+//  LetterPopup._addToLogbook() in discoveruifx.js.
+// ============================================================
+const LogbookSync = (() => {
+
+  // Maps PaletteCollection type → Firestore category value
+  const TYPE_CATEGORY_MAP = {
+    music:   "music",
+    books:   "book",
+    movies:  "film",
+    art:     "art",
+    letters: "journal",
+  };
+
+  function getCurrentUid() {
+    if (window.firebaseAuth?.currentUser?.uid)
+      return window.firebaseAuth.currentUser.uid;
+    if (window._auth?.currentUser?.uid)
+      return window._auth.currentUser.uid;
+    if (typeof firebase !== "undefined" && firebase.auth?.().currentUser?.uid)
+      return firebase.auth().currentUser.uid;
+    return null;
+  }
+
+  function getCurrentUsername() {
+    const user =
+      window.firebaseAuth?.currentUser ||
+      window._auth?.currentUser ||
+      (typeof firebase !== "undefined" && firebase.auth?.().currentUser);
+    return user?.displayName || user?.email || "you";
+  }
+
+  function buildEntry(type, item) {
+    const now = new Date();
+    const activityDate = now.toLocaleDateString("en-US", {
+      year: "numeric", month: "long", day: "numeric",
+    });
+
+    return {
+      // ── Identity ──────────────────────────────────────────
+      category:    TYPE_CATEGORY_MAP[type] || type,
+      status:      "Published",
+      type:        "log",
+      tagType:     "entry" + String(Date.now()).slice(-6), // e.g. "entry482910"
+
+      // ── Content ───────────────────────────────────────────
+      title:       item.title       || "Untitled",
+      body:        item.description || "",
+      imageUrl:    item.img         || "",
+      username:    getCurrentUsername(),
+
+      // ── Timestamps ────────────────────────────────────────
+      activityDate,                         // "May 28, 2026"
+      // datePosted filled by caller with serverTimestamp()
+
+      // ── Stats ─────────────────────────────────────────────
+      rating:      item.rating   || 0,
+      stampCount:  0,
+
+      // ── Raw fetched item stored as a single-element array ─
+      item: [
+        {
+          id:          item.id || item.title,
+          title:       item.title       || "Untitled",
+          subtitle:    item.subtitle    || "",
+          img:         item.img         || null,
+          genre:       item.genre       || "other",
+          description: item.description || "",
+          meta:        item.meta        || [],
+          link:        item.link        || null,
+          type,
+        },
+      ],
+    };
+  }
+
+  /**
+   * Public entry point.
+   * @param {string} type  - "music" | "books" | "movies" | "art" | "letters"
+   * @param {object} item  - the full item object from the engine / popup config
+   * @returns {string}     - new Firestore doc ID
+   */
+  async function addToLogbook(type, item) {
+    const uid = getCurrentUid();
+    if (!uid) {
+      alert("Log in to add items to your logbook.");
+      throw new Error("Not authenticated");
+    }
+    if (!window.db) throw new Error("Firestore db not ready");
+
+    const { collection, addDoc, serverTimestamp } =
+      await import("https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js");
+
+    const entry = buildEntry(type, item);
+    entry.datePosted = serverTimestamp();
+
+    const docRef = await addDoc(collection(window.db, "posts"), entry);
+    console.log(`[LOGBOOK] +added "${item.title}" (${type}) → ${docRef.id}`);
+    return docRef.id;
+  }
+
+  return { addToLogbook };
+})();

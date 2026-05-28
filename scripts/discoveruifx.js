@@ -196,6 +196,7 @@ class PaletteCollection {
 const PalettePopup = {
   _activeConfig: null,
   _pickedRating: 0,
+  _logbookRating: 0,
 
   // ── Open: render shell immediately, then load Firestore aggregates ──
   open(config) {
@@ -339,6 +340,11 @@ const PalettePopup = {
                   <button class="pp-logbook-btn" onclick="PalettePopup._addToLogbook()">
                     + Add to Logbook
                   </button>
+                  <div class="pp-logbook-rating-row">
+                    ${[1,2,3,4,5].map(n =>
+                      `<button class="pp-log-star" onclick="PalettePopup._setLogbookRating(${n})">★</button>`
+                    ).join('')}
+                  </div>
                 </div>
               </div>
 
@@ -374,9 +380,9 @@ const PalettePopup = {
             <h3 class="pp-section-title">Reviews</h3>
             <div class="pp-divider"></div>
 
-            <!-- Input row: avatar · star pick · text · send -->
-            <div class="pp-review-input-row">
-              <div class="pp-avatar pp-avatar--you">you</div>
+            <!-- Input row: avatar · [text + stars] · send -->
+            <div class="pp-review-input-row" style="align-items:flex-start;">
+              <div class="pp-avatar pp-avatar--you" style="margin-top:6px;">you</div>
               <div class="pp-input-area">
                 <input class="pp-review-input"
                        id="pp-review-input"
@@ -392,7 +398,8 @@ const PalettePopup = {
                     .join("")}
                 </div>
               </div>
-              <button class="pp-send-btn" onclick="PalettePopup._submitReview()">
+              <button class="pp-send-btn" onclick="PalettePopup._submitReview()"
+                      style="align-self:flex-start;margin-top:4px;flex-shrink:0;">
                 <i class="fa-solid fa-paper-plane"></i>
               </button>
             </div>
@@ -544,6 +551,13 @@ const PalettePopup = {
       window.PaletteDB.setRating(this._activeConfig.type, title, val);
   },
 
+  _setLogbookRating(n) {
+    this._logbookRating = n;
+    document.querySelectorAll('.pp-log-star').forEach((b, i) => {
+      b.classList.toggle('pp-log-star--on', i < n);
+    });
+  },
+
   _toggleLike() {
     const cfg = this._activeConfig;
     if (!cfg) return;
@@ -558,21 +572,46 @@ const PalettePopup = {
       window.PaletteDB.setLiked(cfg.type, cfg.title, cfg.liked);
   },
 
-  _addToLogbook() {
+  async _addToLogbook() {
+    const cfg = this._activeConfig;
+    if (!cfg) return;
+
     const btn = document.querySelector(".pp-logbook-btn");
-    if (!btn) return;
-    btn.textContent = " Added!";
-    btn.style.background = "#c97d87";
+    if (btn) { btn.disabled = true; btn.textContent = "Adding…"; }
+
+    try {
+      await LogbookSync.addToLogbook(cfg.type, {
+        id:          cfg.title,
+        title:       cfg.title,
+        subtitle:    cfg.subtitle,
+        img:         cfg.img   || null,
+        genre:       (cfg.tags && cfg.tags[0]) ? cfg.tags[0].toLowerCase() : "other",
+        description: cfg.description || "",
+        meta:        cfg.meta  || [],
+        link:        cfg.link  || null,
+        rating:      this._logbookRating || cfg.rating || 0,
+      });
+      if (btn) { btn.textContent = "✓ Added!"; btn.style.background = "#c97d87"; }
+    } catch (err) {
+      console.error("[LOGBOOK] PalettePopup error:", err);
+      if (btn) { btn.textContent = "Failed — try again"; btn.disabled = false; }
+      return;
+    }
+
     setTimeout(() => {
-      btn.textContent = "+ Add to Logbook";
-      btn.style.background = "";
-    }, 1800);
+      if (btn) {
+        btn.textContent = "+ Add to Logbook";
+        btn.style.background = "";
+        btn.disabled = false;
+      }
+    }, 2000);
   },
 
   close() {
     document.getElementById("palette-popup-overlay").style.display = "none";
     this._activeConfig = null;
     this._pickedRating = 0;
+    this._logbookRating = 0;
   },
 };
 
@@ -815,6 +854,7 @@ window.addEventListener("resize", () => {
 const LetterPopup = {
   _reviews: {}, // keyed by item.id
   _pickedRating: 0,
+  _logbookRating: 0,
   _activeItem: null,
   _activeInst: null,
   _activeIndex: null,
@@ -907,6 +947,11 @@ const LetterPopup = {
           <button class="letter-logbook-btn" onclick="LetterPopup._addToLogbook()">
             + Add to Logbook
           </button>
+          <div class="letter-logbook-rating-row">
+            ${[1,2,3,4,5].map(n =>
+              `<button class="letter-log-star" onclick="LetterPopup._setLogbookRating(${n})">★</button>`
+            ).join('')}
+          </div>
         </div>
  
         <!-- reviews -->
@@ -1022,15 +1067,29 @@ const LetterPopup = {
     }
   },
 
-  _addToLogbook() {
+  async _addToLogbook() {
+    const item = this._activeItem;
+    if (!item) return;
+
     const btn = document.querySelector(".letter-logbook-btn");
-    if (!btn) return;
-    btn.textContent = "Added.";
-    btn.style.background = "#4caf50";
+    if (btn) { btn.disabled = true; btn.textContent = "Adding…"; }
+
+    try {
+      await LogbookSync.addToLogbook("letters", item);
+      if (btn) { btn.textContent = "✓ Added!"; btn.style.background = "#4caf50"; }
+    } catch (err) {
+      console.error("[LOGBOOK] LetterPopup error:", err);
+      if (btn) { btn.textContent = "Failed — try again"; btn.disabled = false; }
+      return;
+    }
+
     setTimeout(() => {
-      btn.textContent = "+ Add to Logbook";
-      btn.style.background = "";
-    }, 1800);
+      if (btn) {
+        btn.textContent = "+ Add to Logbook";
+        btn.style.background = "";
+        btn.disabled = false;
+      }
+    }, 2000);
   },
 
   close() {
@@ -1038,6 +1097,7 @@ const LetterPopup = {
     this._activeItem = null;
     this._activeInst = null;
     this._activeIndex = null;
+    this._logbookRating = 0;
   },
 };
 
@@ -1402,3 +1462,52 @@ const MagicalPalette = (() => {
 
 /* ── Bootstrap: run after DOM + engines are ready ── */
 MagicalPalette.init();
+// ============================================================
+//  LOGBOOK RATING STARS — styles
+// ============================================================
+(function injectLogbookStarStyles() {
+  const style = document.createElement('style');
+  style.textContent = `
+    /* ── shared logbook star rows ── */
+    .pp-logbook-rating-row,
+    .letter-logbook-rating-row {
+      display: flex;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    /* ── PalettePopup logbook stars ── */
+    .pp-log-star {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: #d4a0aa;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.15s, transform 0.1s;
+    }
+    .pp-log-star:hover ~ .pp-log-star { color: #d4a0aa; }
+    .pp-log-star:hover,
+    .pp-log-star--on { color: #e8b84b; transform: scale(1.2); }
+
+    /* ── LetterPopup logbook stars ── */
+    .letter-log-star {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: #c8b89a;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.15s, transform 0.1s;
+    }
+    .letter-log-star:hover,
+    .letter-log-star--on { color: #e8b84b; transform: scale(1.2); }
+
+    /* ── send button fix: always top-aligned ── */
+    .pp-review-input-row { align-items: flex-start !important; }
+    .pp-send-btn { align-self: flex-start !important; margin-top: 4px; flex-shrink: 0; }
+  `;
+  document.head.appendChild(style);
+})();

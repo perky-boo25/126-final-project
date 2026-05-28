@@ -25,7 +25,13 @@ function renderMusic(tracks) {
   const list = document.getElementById('music-card-list');
   list.innerHTML = tracks.map(t => `
     <div class="music-card" data-id="${t.id}">
-      <div class="music-card-thumb"></div>
+      <div class="music-card-thumb">
+        ${t.image
+          ? `<img src="${t.image}" alt="${t.title}"
+               style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"
+               onerror="this.style.display='none'">`
+          : ''}
+      </div>
       <div class="music-card-body">
         <p class="music-card-title">${t.title} <span class="music-card-year">${t.year}</span></p>
         <p class="music-card-artist">By ${t.artist}</p>
@@ -42,7 +48,13 @@ function renderFilms(films) {
   const list = document.getElementById('film-card-list');
   list.innerHTML = films.map(f => `
     <div class="film-card" data-id="${f.id}">
-      <div class="film-card-thumb"></div>
+      <div class="film-card-thumb">
+        ${f.image
+          ? `<img src="${f.image}" alt="${f.title}"
+               style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"
+               onerror="this.style.display='none'">`
+          : ''}
+      </div>
       <div class="film-card-body">
         <div class="film-card-header">
           <p class="film-card-title">${f.title}</p>
@@ -64,7 +76,13 @@ function renderBooks(books) {
   const list = document.getElementById('book-card-list');
   list.innerHTML = books.map(b => `
     <div class="book-card" data-id="${b.id}">
-      <div class="book-card-thumb"></div>
+      <div class="book-card-thumb">
+        ${b.image
+          ? `<img src="${b.image}" alt="${b.title}"
+               style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"
+               onerror="this.style.display='none'">`
+          : ''}
+      </div>
       <div class="book-card-body">
         <p class="book-card-title">${b.title}</p>
         <p class="book-card-author">By ${b.author} <span class="book-card-year">${b.year}</span></p>
@@ -291,10 +309,12 @@ async function fetchLogbookData(db, uid) {
     'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js'
   );
 
+  // LogbookSync writes `username` not `userId` — filter by type+status,
+  // then client-filter by username to scope to the current user.
   const q = query(
     collection(db, 'posts'),
     where('type',   '==', 'log'),
-    where('userId', '==', uid)
+    where('status', '==', 'Published')
   );
 
   const snapshot = await getDocs(q);
@@ -302,12 +322,23 @@ async function fetchLogbookData(db, uid) {
   const grouped = { music: [], films: [], books: [], art: [] };
 
   snapshot.forEach(docSnap => {
-    const p = docSnap.data();
-    const id       = docSnap.id;
-    const cat      = (p.category || '').toLowerCase();
-    const item     = p.item || {};
-    const creator  = item.creator || '';
-    const imageUrl = item.imageUrl || p.imageUrl || '';
+    const p  = docSnap.data();
+    const id = docSnap.id;
+
+    // Client-side user filter
+    const currentUser = window.firebaseAuth?.currentUser || window._auth?.currentUser;
+    const myName = currentUser?.displayName || currentUser?.email || null;
+    if (myName && p.username && p.username !== myName) return;
+
+    const cat = (p.category || '').toLowerCase();
+
+    // `item` is stored as an array by LogbookSync — grab first element
+    const itemArr  = Array.isArray(p.item) ? p.item : (p.item ? [p.item] : []);
+    const item     = itemArr[0] || {};
+
+    // `subtitle` holds artist/author name; `img` holds the image URL
+    const creator  = item.subtitle || '';
+    const imageUrl = item.img || p.imageUrl || '';
 
     let year = '';
     if (p.activityDate) {
@@ -317,36 +348,44 @@ async function fetchLogbookData(db, uid) {
       year = p.datePosted.toDate().getFullYear().toString();
     }
 
+    // Genre tags from item.meta or item.genre
+    const metaGenre = (item.meta || []).find(m =>
+      m.label?.toLowerCase() === 'genre' || m.label?.toLowerCase() === 'subjects'
+    );
+    const genres = metaGenre
+      ? metaGenre.value.split(',').map(s => s.trim()).filter(Boolean)
+      : (item.genre ? [item.genre] : []);
+
     const addedDate = formatAddedDate(p.datePosted);
 
-    if (cat === 'music' || cat === 'album') {
+    if (cat === 'music') {
       grouped.music.push({
         id, title: p.title || item.title || '', artist: creator,
-        year, stars: p.rating || 0, desc: p.body || '',
+        year, stars: p.rating || 0, desc: p.body || item.description || '',
         image: imageUrl, addedDate,
       });
 
     } else if (cat === 'film') {
       grouped.films.push({
         id, title: p.title || item.title || '', director: creator,
-        year, stars: p.rating || 0, genres: p.genres || [],
-        desc: p.body || '', watchedDate: p.activityDate || '',
+        year, stars: p.rating || 0, genres,
+        desc: p.body || item.description || '', watchedDate: p.activityDate || '',
         image: imageUrl, addedDate,
       });
 
     } else if (cat === 'book') {
       grouped.books.push({
         id, title: p.title || item.title || '', author: creator,
-        year, stars: p.rating || 0, genres: p.genres || [],
-        desc: p.body || '', readDate: p.activityDate || '',
+        year, stars: p.rating || 0, genres,
+        desc: p.body || item.description || '', readDate: p.activityDate || '',
         image: imageUrl, addedDate,
       });
 
     } else if (cat === 'art') {
       grouped.art.push({
         id, title: p.title || item.title || '', artist: creator,
-        stars: p.rating || 0, review: p.body || '',
-        tags: p.tags || [], image: imageUrl, addedDate,
+        stars: p.rating || 0, review: p.body || item.description || '',
+        tags: genres, image: imageUrl, addedDate,
       });
     }
   });

@@ -75,7 +75,14 @@
 
   <section>
     <div class="section-music">
-      <h4 class="section-header" style="margin-left:85%;">★ soundwaves &amp; sentiments</h4>
+
+      <div class="music-header-row">
+        <h4 class="section-header">★ soundwaves &amp; sentiments</h4>
+        <button class="view-all-btn" onclick="PaletteCollection.getInstance('music').openSheet()">
+          <i class="fa-solid fa-music"></i> view all
+        </button>
+      </div>
+
       <div class="carousel-wrap" id="music-wrap">
         <button class="carousel-btn prev" onclick="PaletteCollection.getInstance('music').slide(-1)">←</button>
         <div class="carousel-track-outer">
@@ -83,12 +90,9 @@
         </div>
         <button class="carousel-btn next" onclick="PaletteCollection.getInstance('music').slide(1)">→</button>
 
-        <div class="view-all-container">
-          <button class="view-all-btn" onclick="PaletteCollection.getInstance('music').openSheet()">
-            <i class="fa-solid fa-music"></i> view all
-          </button>
-        </div>
+        <div class="view-all-container"></div>
       </div>
+
     </div>
   </section>
 
@@ -235,6 +239,6 @@
   <script type="module" src="firebase.js"></script>
   <script src="Discover/jscripts/discoveruifx.js"></script>
   <script src="Discover/api/discoverAPI.js"></script>
-</body> 
+</body>
 
 </html>

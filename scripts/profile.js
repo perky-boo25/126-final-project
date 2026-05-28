@@ -104,18 +104,13 @@ async function searchItunesTracks(searchText){
     try {
         const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=song&limit=8`;
 
-        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-
-        const response = await fetch(proxyUrl);
+        const response = await fetch(url);
         const data = await response.json();
 
         renderItunesResults(data.results || []);
     } catch(error) {
         console.error("itunes search failed:", error);
-
-        itunesSearchResults.innerHTML = `
-            <p>failed to search songs :(</p>
-        `;
+        itunesSearchResults.innerHTML = "<p>failed to search songs :(</p>";
     }
 }
 
@@ -148,6 +143,8 @@ function renderItunesResults(tracks){
         `;
 
         card.addEventListener("click", function(){
+            console.log("selected preview:", previewUrl);
+
             selectedCurrentTrack = {
                 title: title,
                 meta: album ? `${artist} • ${album}` : artist,
@@ -158,7 +155,6 @@ function renderItunesResults(tracks){
             editCurrentTrackTitle.value = selectedCurrentTrack.title;
             editCurrentTrackMeta.value = selectedCurrentTrack.meta;
 
-            itunesSearchInput.value = "";
             itunesSearchResults.innerHTML = "";
         });
 
@@ -399,6 +395,7 @@ let editNotes = [];
 
 
 let searchTimer;
+let itunesSearchTimer;
 
 
 
@@ -408,12 +405,19 @@ if (itunesSearchBtn && itunesSearchInput) {
     });
 
     itunesSearchInput.addEventListener("input", function(){
-        clearTimeout(searchTimer);
+        clearTimeout(itunesSearchTimer);
 
-        searchTimer = setTimeout(function(){
-            searchItunesTracks(itunesSearchInput.value);
+        const value = itunesSearchInput.value.trim();
+
+        if (value.length < 2){
+            itunesSearchResults.innerHTML = "";
+            return;
+        }
+
+        itunesSearchTimer = setTimeout(function(){
+            searchItunesTracks(value);
         }, 350);
-    });
+});
 }
 
 closeSearchModalBtn.addEventListener("click", closeSearchModal);
@@ -714,27 +718,42 @@ modalOverlay.addEventListener("click", closeEditModal);
     const vinylToggle = document.getElementById("vinyl-toggle");
     const vinylRecord = document.querySelector(".vinyl-record");
 
-function toggleVinylPlay() {
-    if (!selectedCurrentTrack.previewUrl){
-        console.log("no preview url for current track");
+async function toggleVinylPlay() {
+    console.log("current track:", selectedCurrentTrack);
+
+    const previewUrl = selectedCurrentTrack.previewUrl;
+
+    if (!previewUrl){
+        console.log("no preview url");
         return;
     }
 
-    if (!currentAudio || currentAudio.src !== selectedCurrentTrack.previewUrl){
-        currentAudio = new Audio(selectedCurrentTrack.previewUrl);
+    try {
+        if (!currentAudio || currentAudio.src !== previewUrl){
+            if (currentAudio){
+                currentAudio.pause();
+            }
 
-        currentAudio.addEventListener("ended", function(){
+            currentAudio = new Audio();
+            currentAudio.src = previewUrl;
+            currentAudio.crossOrigin = "anonymous";
+            currentAudio.load();
+
+            currentAudio.addEventListener("ended", function(){
+                vinylRecord.classList.remove("spinning");
+            });
+        }
+
+        if (currentAudio.paused){
+            await currentAudio.play();
+            vinylRecord.classList.add("spinning");
+        } else {
+            currentAudio.pause();
             vinylRecord.classList.remove("spinning");
-            currentAudio.currentTime = 0;
-        });
-    }
+        }
 
-    if (currentAudio.paused) {
-        currentAudio.play();
-        vinylRecord.classList.add("spinning");
-    } else {
-        currentAudio.pause();
-        vinylRecord.classList.remove("spinning");
+    } catch(error){
+        console.error("audio play failed:", error);
     }
 }
 

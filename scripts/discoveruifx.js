@@ -427,13 +427,11 @@ const PalettePopup = {
           )
           .join("");
         const date = r.datePosted?.toDate
-          ? r.datePosted
-              .toDate()
-              .toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })
+          ? r.datePosted.toDate().toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })
           : "";
 
         return `
@@ -563,7 +561,7 @@ const PalettePopup = {
   _addToLogbook() {
     const btn = document.querySelector(".pp-logbook-btn");
     if (!btn) return;
-    btn.textContent = "✓ Added!";
+    btn.textContent = " Added!";
     btn.style.background = "#c97d87";
     setTimeout(() => {
       btn.textContent = "+ Add to Logbook";
@@ -794,74 +792,7 @@ window.addEventListener("resize", () => {
   };
 })();
 
-(function patchLettersCarousel() {
-  const _original = PaletteCollection.prototype.buildCarousel;
-
-  // Tilt angles for the subtle "scattered letters" look.
-  // Cycles through this list so cards always get a consistent tilt.
-  const TILTS = [-2.5, 1.8, -1.2, 2.2, -1.8, 1.4, -2.0, 1.6];
-
-  // Stamp emoji variety
-  const STAMPS = ["🌸", "✦", "☁️", "🌿", "★", "♡", "🕊️", "🍃"];
-
-  PaletteCollection.prototype.buildCarousel = function () {
-    if (this.type !== "letters") {
-      return _original.call(this);
-    }
-
-    const grid = document.getElementById("letters-grid");
-    if (!grid) return;
-
-    grid.innerHTML = this.items
-      .map((item, index) => {
-        const stamp = STAMPS[index % STAMPS.length];
-
-        return `
-        <div class="envelope-card"
-             onclick="PaletteCollection.getInstance('letters').openLetterPopup(${index})">
- 
-          <div class="envelope-body">
- 
-            <!-- Flap -->
-            <div class="envelope-flap"></div>
- 
-            <!-- Stamp -->
-            <div class="envelope-stamp" aria-hidden="true">${stamp}</div>
- 
-            <!-- Postmark -->
-            <div class="envelope-postmark" aria-hidden="true">
-              palette<br>★<br>post
-            </div>
- 
-            <!-- Wax seal -->
-            <div class="envelope-seal" aria-hidden="true">✦</div>
- 
-            <!-- Fold lines -->
-            <div class="envelope-folds" aria-hidden="true"></div>
- 
-            <!-- Content -->
-            <div class="envelope-content">
-              <p class="envelope-title">${item.title}</p>
-              <p class="envelope-excerpt">${item.excerpt || item.description.slice(0, 120) + "…"}</p>
-              <div class="envelope-footer">
-                <span class="envelope-date">${item.date}</span>
-                <button class="envelope-heart ${item.liked ? "liked" : ""}"
-                        onclick="event.stopPropagation();
-                                 PaletteCollection.getInstance('letters').toggleLike(event, ${index})"
-                        aria-label="Like">
-                  ${item.liked ? "♥" : "♡"}
-                </button>
-              </div>
-            </div>
- 
-          </div>
-        </div>`;
-      })
-      .join("");
-  };
-})();
-
-// ── Patch 2: updateTrackPosition — letters uses CSS grid, not transform ──
+// ── Patch: updateTrackPosition — letters uses CSS grid, not transform ──
 (function patchLettersTrackPosition() {
   const _original = PaletteCollection.prototype.updateTrackPosition;
 
@@ -871,7 +802,7 @@ window.addEventListener("resize", () => {
   };
 })();
 
-// ── Patch 3: slide — letters has no carousel to slide ──────────
+// ── Patch: slide — letters has no carousel to slide ──
 (function patchLettersSlide() {
   const _original = PaletteCollection.prototype.slide;
 
@@ -880,95 +811,6 @@ window.addEventListener("resize", () => {
     return _original.call(this, direction);
   };
 })();
-
-// ── Custom method: openLetterPopup ─────────────────────────────
-// Adds a brief "envelope opening" flash then delegates to the
-// existing PalettePopup.open() with exactly the same config shape
-// all other types use. No changes to PalettePopup itself.
-
-PaletteCollection.prototype.openLetterPopup = function (index) {
-  const card = document.querySelectorAll(".envelope-card")[index];
-
-  // Quick visual "open" pulse on the clicked card
-  // Open popup immediately (no animation)
-  this.openPopup(index);
-};
-
-(function patchLettersCarousel() {
-  /* ── buildCarousel: render envelopes into the track ── */
-  const _origBuild = PaletteCollection.prototype.buildCarousel;
-  PaletteCollection.prototype.buildCarousel = function () {
-    if (this.type !== "letters") return _origBuild.call(this);
-
-    const track = document.getElementById(this.trackId);
-    if (!track) return;
-
-    const stamps = ["🌸", "✉️", "🌿", "☁️", "🕊️", "★", "♡", "🌙"];
-
-    track.innerHTML = this.items
-      .map((item, index) => {
-        const stamp = stamps[index % stamps.length];
-
-        return `
-        <div class="envelope-card"
-             onclick="PaletteCollection.getInstance('letters').openLetterPopup(${index})">
-          <div class="envelope-body">
-            <div class="envelope-flap"></div>
-            <div class="envelope-stamp" aria-hidden="true">${stamp}</div>
-            <div class="envelope-postmark" aria-hidden="true">palette<br>★<br>post</div>
-            <div class="envelope-seal" aria-hidden="true">✦</div>
-            <div class="envelope-content">
-              <p class="envelope-title">${item.title}</p>
-              <p class="envelope-excerpt">${item.excerpt || item.description.slice(0, 100) + "…"}</p>
-              <div class="envelope-footer">
-                <span class="envelope-date">${item.date}</span>
-                <button class="envelope-heart ${item.liked ? "liked" : ""}"
-                        onclick="event.stopPropagation();
-                                 PaletteCollection.getInstance('letters').toggleLike(event, ${index})"
-                        aria-label="Like">
-                  ${item.liked ? "♥" : "♡"}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>`;
-      })
-      .join("");
-  };
-
-  /* ── updateTrackPosition: pixel-scroll the flex track ── */
-  const _origUpdate = PaletteCollection.prototype.updateTrackPosition;
-  PaletteCollection.prototype.updateTrackPosition = function () {
-    if (this.type !== "letters") return _origUpdate.call(this);
-
-    const track = document.getElementById(this.trackId);
-    if (!track) return;
-    /* 220px card + 20px gap */
-    track.style.transform = `translateX(-${this.currentIndex * 240}px)`;
-  };
-
-  /* ── slide: clamp to letters item count ── */
-  const _origSlide = PaletteCollection.prototype.slide;
-  PaletteCollection.prototype.slide = function (dir) {
-    if (this.type !== "letters") return _origSlide.call(this, dir);
-
-    const visibleApprox = Math.floor(
-      (document.querySelector(".letters-track-outer")?.clientWidth || 900) /
-        240,
-    );
-    const max = Math.max(0, this.items.length - visibleApprox);
-    this.currentIndex = Math.max(0, Math.min(this.currentIndex + dir, max));
-    this.updateTrackPosition();
-  };
-})();
-
-PaletteCollection.prototype.openLetterPopup = function (index) {
-  /* quick scale pulse on the clicked card */
-  const cards = document.querySelectorAll("#letters-track .envelope-card");
-  const card = cards[index];
-  /* open the letter-paper popup immediately */
-  LetterPopup.open(this.items[index], index, this);
-};
 
 const LetterPopup = {
   _reviews: {}, // keyed by item.id
@@ -1183,7 +1025,7 @@ const LetterPopup = {
   _addToLogbook() {
     const btn = document.querySelector(".letter-logbook-btn");
     if (!btn) return;
-    btn.textContent = "✓ Added!";
+    btn.textContent = "Added.";
     btn.style.background = "#4caf50";
     setTimeout(() => {
       btn.textContent = "+ Add to Logbook";
@@ -1199,6 +1041,7 @@ const LetterPopup = {
   },
 };
 
+// ── patchLettersSheet — polaroid version (replaces the envelope version) ──
 (function patchLettersSheet() {
   const _origRenderGrid = PaletteSheet.renderGrid.bind(PaletteSheet);
 
@@ -1257,7 +1100,7 @@ const LetterPopup = {
 /* ── BOOTSTRAP ── */
 const MusicEngine = new PaletteCollection({
   type: "music",
-  endpoint: "Discover/data/songs.json",
+  endpoint: "/data/songs.json",
   badgeImg: "Discover/images/spotify-logo.png",
   trackId: "music-track",
   badgeLabel: "SPOTIFY",
@@ -1266,137 +1109,80 @@ const MusicEngine = new PaletteCollection({
   sheetTitle: "★ soundwaves & sentiments",
   searchPlaceholder: "search songs...",
   filters: [
-    {
-      label: "All",
-      value: "all",
-    },
-    {
-      label: "Pop",
-      value: "pop",
-    },
-    {
-      label: "Indie",
-      value: "indie",
-    },
+    { label: "All", value: "all" },
+    { label: "Pop", value: "pop" },
+    { label: "Indie", value: "indie" },
   ],
 });
 
 const BookEngine = new PaletteCollection({
   type: "books",
-  endpoint: "Discover/data/books.json",
-  badgeImg: "Discover/images/goodreads-logo.png", // Update path if needed
+  endpoint: "/data/books.json",
+  badgeImg: "Discover/images/goodreads-logo.png",
   trackId: "books-track",
   badgeLabel: "GOODREADS",
   badgeColor: "#8a6d53",
-  imgPlaceholder: "📚",
+  imgPlaceholder: "★",
   sheetTitle: "★ stories and spines library",
   searchPlaceholder: "search books...",
   filters: [
-    {
-      label: "All",
-      value: "all",
-    },
-    {
-      label: "Fiction",
-      value: "fiction",
-    },
-    {
-      label: "Sci-Fi",
-      value: "scifi",
-    },
+    { label: "All", value: "all" },
+    { label: "Fiction", value: "fiction" },
+    { label: "Sci-Fi", value: "scifi" },
   ],
 });
 
 const MovieEngine = new PaletteCollection({
   type: "movies",
-  endpoint: "Discover/data/movies.json",
+  endpoint: "/data/movies.json",
   badgeImg: "",
   trackId: "movies-track",
   badgeLabel: "LETTERBOXD",
   badgeColor: "#00c030",
-  imgPlaceholder: "🎬",
+  imgPlaceholder: "★",
   sheetTitle: "★ frames & feelings — all films",
   searchPlaceholder: "search films...",
   visibleCount: 5,
   filters: [
-    {
-      label: "All",
-      value: "all",
-    },
-    {
-      label: "Romance",
-      value: "romance",
-    },
-    {
-      label: "Drama",
-      value: "drama",
-    },
-    {
-      label: "Thriller",
-      value: "thriller",
-    },
-    {
-      label: "Animation",
-      value: "animation",
-    },
-    {
-      label: "Comedy",
-      value: "comedy",
-    },
+    { label: "All", value: "all" },
+    { label: "Romance", value: "romance" },
+    { label: "Drama", value: "drama" },
+    { label: "Thriller", value: "thriller" },
+    { label: "Animation", value: "animation" },
+    { label: "Comedy", value: "comedy" },
   ],
 });
 
 const ArtEngine = new PaletteCollection({
   type: "art",
-  endpoint: "Discover/data/art.json", // ← adjust path to match your project
+  endpoint: "/data/art.json",
   badgeImg: "",
   trackId: "art-track",
   badgeLabel: "GALLERY",
   badgeColor: "#5a3060",
-  imgPlaceholder: "🖼️",
+  imgPlaceholder: "★",
   sheetTitle: "★ pigments & poetry — full gallery",
   searchPlaceholder: "search artworks...",
-  visibleCount: 4, // used only by slide() max-offset calc; actual stepping is pixel-based
+  visibleCount: 4,
   filters: [
-    {
-      label: "All",
-      value: "all",
-    },
-    {
-      label: "Impressionism",
-      value: "impressionism",
-    },
-    {
-      label: "Post-Impressionism",
-      value: "post-impressionism",
-    },
-    {
-      label: "Surrealism",
-      value: "surrealism",
-    },
-    {
-      label: "Renaissance",
-      value: "renaissance",
-    },
-    {
-      label: "Baroque",
-      value: "baroque",
-    },
-    {
-      label: "Ukiyo-e",
-      value: "ukiyo-e",
-    },
+    { label: "All", value: "all" },
+    { label: "Impressionism", value: "impressionism" },
+    { label: "Post-Impressionism", value: "post-impressionism" },
+    { label: "Surrealism", value: "surrealism" },
+    { label: "Renaissance", value: "renaissance" },
+    { label: "Baroque", value: "baroque" },
+    { label: "Ukiyo-e", value: "ukiyo-e" },
   ],
 });
 
 const LettersEngine = new PaletteCollection({
   type: "letters",
-  endpoint: "Discover/data/letters.json",
+  endpoint: "/data/letters.json",
   badgeImg: "",
   trackId: "letters-track",
   badgeLabel: "JOURNAL",
   badgeColor: "#8a6a4a",
-  imgPlaceholder: "✉️",
+  imgPlaceholder: "★",
   sheetTitle: "★ letters & journals — all entries",
   searchPlaceholder: "search entries, moods…",
   visibleCount: 4,
@@ -1410,330 +1196,19 @@ const LettersEngine = new PaletteCollection({
   ],
 });
 
-// ============================================================
-//  API OVERRIDES
-//  Books → Open Library  |  Art → Art Institute of Chicago
-//  Films → TMDB (set TMDB_API_KEY below; falls back to movies.json)
-// ============================================================
+// ── Change 1: initialize() calls removed ──
+// discoverAPI.js overrides each engine's initialize() and then boots all of
+// them together via initAll(). Calling the base-class version here (before
+// discoverAPI.js has loaded) would fire a letters.json fetch and stamp the
+// carousel with the wrong data before the Firestore override ever runs.
 
-// ── TMDB key ─────────────────────────────────────────────────
-// Paste your key from https://www.themoviedb.org/settings/api
-// Leave as '' to fall back to the local movies.json file.
-const TMDB_API_KEY = "";
-
-// ============================================================
-//  BOOKS — Open Library
-// ============================================================
-
-BookEngine.initialize = async function () {
-  const SUBJECTS = [
-    "fiction",
-    "science_fiction",
-    "romance",
-    "thriller",
-    "mystery",
-  ];
-  const LIMIT_PER_SUBJECT = 12;
-
-  try {
-    const responses = await Promise.all(
-      SUBJECTS.map((subject) =>
-        fetch(
-          `https://openlibrary.org/subjects/${subject}.json?limit=${LIMIT_PER_SUBJECT}`,
-        ).then((r) => {
-          if (!r.ok) throw new Error(`HTTP ${r.status}`);
-          return r.json();
-        }),
-      ),
-    );
-
-    const SUBJECT_GENRE_MAP = {
-      fiction: "fiction",
-      science_fiction: "scifi",
-      romance: "romance",
-      thriller: "thriller",
-      mystery: "mystery",
-    };
-
-    const seen = new Set();
-    const allBooks = [];
-
-    responses.forEach((data, i) => {
-      const filterGenre = SUBJECT_GENRE_MAP[SUBJECTS[i]];
-
-      (data.works || []).forEach((book) => {
-        if (!book.key || seen.has(book.key)) return;
-        seen.add(book.key);
-
-        const img = book.cover_id
-          ? `https://covers.openlibrary.org/b/id/${book.cover_id}-L.jpg`
-          : null;
-
-        const authors =
-          (book.authors || []).map((a) => a.name).join(", ") ||
-          "Unknown author";
-
-        allBooks.push({
-          title: book.title || "Untitled",
-          subtitle: authors,
-          img,
-          genre: filterGenre,
-          description:
-            `Published ${book.first_publish_year || "unknown"}. ` +
-            (book.subject || []).slice(0, 3).join(", "),
-          meta: [
-            { label: "Author", value: authors },
-            { label: "Year", value: book.first_publish_year || "—" },
-            {
-              label: "Subjects",
-              value: (book.subject || []).slice(0, 3).join(", ") || "—",
-            },
-          ],
-          liked: false,
-          rating: 0,
-          link: {
-            url: `https://openlibrary.org${book.key}`,
-            label: "View on Open Library",
-          },
-        });
-      });
-    });
-
-    this.items = allBooks;
-    this.buildCarousel();
-  } catch (err) {
-    console.error("[BOOKS] API error — falling back to local JSON:", err);
-    // Graceful fallback
-    try {
-      const res = await fetch(this.endpoint);
-      this.items = await res.json();
-      this.buildCarousel();
-    } catch (e) {
-      console.error("[BOOKS] Fallback also failed:", e);
-    }
-  }
+// ── Change 2: no-op stub for LettersEngine ──
+// Even if initAll() is somehow delayed, this prevents the base-class
+// initialize() from ever running a fetch(letters.json) for this engine.
+// discoverAPI.js overwrites this stub with the real Firestore override.
+LettersEngine.initialize = async function () {
+  // Replaced by discoverAPI.js — do not call the base-class fetch.
 };
-
-// ============================================================
-//  ART — Art Institute of Chicago  (broad paginated fetch)
-// ============================================================
-
-ArtEngine.initialize = async function () {
-  const PAGES = 3; // 3 × 20 = up to 60 artworks
-  const LIMIT = 20;
-  const FIELDS =
-    "id,title,artist_display,date_display,medium_display," +
-    "artwork_type_title,place_of_origin,image_id," +
-    "style_titles,dimensions,credit_line,is_public_domain";
-
-  try {
-    const pageResults = await Promise.all(
-      Array.from({ length: PAGES }, (_, i) =>
-        fetch(
-          `https://api.artic.edu/api/v1/artworks` +
-            `?page=${i + 1}&limit=${LIMIT}&fields=${FIELDS}`,
-        ).then((r) => {
-          if (!r.ok) throw new Error(`HTTP ${r.status}`);
-          return r.json();
-        }),
-      ),
-    );
-
-    const iiifBase =
-      pageResults[0]?.config?.iiif_url || "https://www.artic.edu/iiif/2";
-
-    const STYLE_MAP = [
-      ["impressionism", "impressionism"],
-      ["post-impressionism", "post-impressionism"],
-      ["pointillism", "post-impressionism"],
-      ["surrealism", "surrealism"],
-      ["renaissance", "renaissance"],
-      ["baroque", "baroque"],
-      ["ukiyo-e", "ukiyo-e"],
-      ["japonism", "ukiyo-e"],
-    ];
-
-    const allArt = pageResults.flatMap((page) => page.data || []);
-
-    this.items = allArt
-      .filter((art) => art.image_id)
-      .map((art) => {
-        const img = `${iiifBase}/${art.image_id}/full/400,/0/default.jpg`;
-
-        const [artistName = "Unknown artist", artistDetail = ""] = (
-          art.artist_display || ""
-        ).split("\n");
-
-        const stylesLower = (art.style_titles || []).map((s) =>
-          s.toLowerCase(),
-        );
-        const matched = STYLE_MAP.find(([keyword]) =>
-          stylesLower.some((s) => s.includes(keyword)),
-        );
-        const genre = matched ? matched[1] : "other";
-
-        return {
-          title: art.title || "Untitled",
-          subtitle: artistName,
-          img,
-          genre,
-          description: [
-            artistDetail,
-            art.medium_display,
-            art.dimensions,
-            art.credit_line,
-          ]
-            .filter(Boolean)
-            .join(" · "),
-          meta: [
-            { label: "Artist", value: artistName },
-            { label: "Date", value: art.date_display || "—" },
-            { label: "Medium", value: art.medium_display || "—" },
-            { label: "Type", value: art.artwork_type_title || "—" },
-            { label: "Origin", value: art.place_of_origin || "—" },
-            { label: "Dimensions", value: art.dimensions || "—" },
-            {
-              label: "Public domain",
-              value: art.is_public_domain ? "Yes" : "No",
-            },
-          ],
-          liked: false,
-          rating: 0,
-          link: {
-            url: `https://www.artic.edu/artworks/${art.id}`,
-            label: "View at Art Institute of Chicago",
-          },
-        };
-      });
-
-    this.buildCarousel();
-  } catch (err) {
-    console.error("[ART] API error — falling back to local JSON:", err);
-    try {
-      const res = await fetch(this.endpoint);
-      this.items = await res.json();
-      this.buildCarousel();
-    } catch (e) {
-      console.error("[ART] Fallback also failed:", e);
-    }
-  }
-};
-
-// ============================================================
-//  FILMS — TMDB  (broad popular fetch, full genre map)
-// ============================================================
-
-MovieEngine.initialize = async function () {
-  if (!TMDB_API_KEY) {
-    console.warn("[FILMS] No TMDB key — falling back to local movies.json.");
-    try {
-      const res = await fetch(this.endpoint);
-      this.items = await res.json();
-      this.buildCarousel();
-    } catch (e) {
-      console.error("[FILMS] Fallback also failed:", e);
-    }
-    return;
-  }
-
-  const BASE = "https://api.themoviedb.org/3";
-  const PAGES = 3; // 3 × 20 = up to 60 films
-
-  const params = new URLSearchParams({
-    api_key: TMDB_API_KEY,
-    sort_by: "popularity.desc",
-    "vote_count.gte": "100",
-    language: "en-US",
-  });
-
-  const GENRE_MAP = {
-    10749: "romance",
-    18: "drama",
-    53: "thriller",
-    16: "animation",
-    35: "comedy",
-    28: "drama", // Action
-    12: "drama", // Adventure
-    14: "drama", // Fantasy
-    27: "thriller", // Horror
-    9648: "thriller", // Mystery
-    878: "drama", // Sci-Fi
-    10752: "drama", // War
-    37: "drama", // Western
-    80: "thriller", // Crime
-    99: "drama", // Documentary
-    36: "drama", // History
-    10402: "drama", // Music
-    10770: "drama", // TV Movie
-  };
-
-  const IMG_BASE = "https://image.tmdb.org/t/p/w500";
-
-  try {
-    const pageResults = await Promise.all(
-      Array.from({ length: PAGES }, (_, i) =>
-        fetch(`${BASE}/discover/movie?${params}&page=${i + 1}`).then((r) => {
-          if (!r.ok) throw new Error(`HTTP ${r.status}`);
-          return r.json();
-        }),
-      ),
-    );
-
-    const allMovies = pageResults.flatMap((page) => page.results || []);
-
-    this.items = allMovies.map((film) => {
-      const matchedId = (film.genre_ids || []).find((id) => GENRE_MAP[id]);
-      const genre = matchedId ? GENRE_MAP[matchedId] : "drama";
-      const ratingOf5 = Math.round((film.vote_average / 10) * 5 * 2) / 2;
-
-      return {
-        title: film.title || "Untitled",
-        subtitle: film.release_date?.slice(0, 4) || "—",
-        img: film.poster_path ? `${IMG_BASE}${film.poster_path}` : null,
-        genre,
-        description: film.overview || "No description available.",
-        meta: [
-          { label: "Release date", value: film.release_date || "—" },
-          { label: "Rating", value: `${film.vote_average?.toFixed(1)}/10` },
-          { label: "Votes", value: film.vote_count?.toLocaleString() || "—" },
-          { label: "Popularity", value: film.popularity?.toFixed(1) || "—" },
-          { label: "Language", value: film.original_language },
-          { label: "TMDB ID", value: film.id },
-        ],
-        liked: false,
-        rating: ratingOf5,
-        link: {
-          url: `https://www.themoviedb.org/movie/${film.id}`,
-          label: "View on TMDB",
-        },
-      };
-    });
-
-    this.buildCarousel();
-  } catch (err) {
-    console.error(
-      "[FILMS] API error — falling back to local movies.json:",
-      err,
-    );
-    try {
-      const res = await fetch(this.endpoint);
-      this.items = await res.json();
-      this.buildCarousel();
-    } catch (e) {
-      console.error("[FILMS] Fallback also failed:", e);
-    }
-  }
-};
-
-// ============================================================
-//  BOOTSTRAP — initialise all engines
-// ============================================================
-
-MusicEngine.initialize(); // loads from songs.json (unchanged)
-BookEngine.initialize(); // ← Open Library API
-MovieEngine.initialize(); // ← TMDB API (or movies.json fallback)
-ArtEngine.initialize(); // ← Art Institute of Chicago API
-LettersEngine.initialize(); // loads from letters.json (unchanged)
 
 const MagicalPalette = (() => {
   /* ── Config ── */
@@ -1748,9 +1223,6 @@ const MagicalPalette = (() => {
     letters: { label: "JOURNAL", color: "#8a6a4a", placeholder: "✉️" },
   };
 
-  /* Letter stamp decoration — cycles per card */
-  const STAMPS = ["🌸", "✉️", "🌿", "☁️", "🕊️", "★", "♡", "🌙"];
-
   /* ── Fisher-Yates shuffle (in-place) ── */
   function shuffle(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
@@ -1760,9 +1232,7 @@ const MagicalPalette = (() => {
     return arr;
   }
 
-  /* ── Wait for all engines to have loaded items ──
-     Each engine's initialize() is async; we poll until every
-     engine has at least one item or 8 seconds pass.            */
+  /* ── Wait for all engines to have loaded items ── */
   function waitForEngines() {
     const engineTypes = ["music", "books", "movies", "art", "letters"];
     const MAX_WAIT_MS = 8000;
@@ -1822,14 +1292,9 @@ const MagicalPalette = (() => {
     if (!inst) return;
 
     if (type === "letters") {
-      /* Letter-paper popup */
       const item = inst.items[originalIndex];
-
-      /* Quick scale pulse (mimics openLetterPopup) */
-      /* No reliable DOM reference here, so skip the pulse — popup opens immediately */
       LetterPopup.open(item, originalIndex, inst);
     } else {
-      /* Standard PalettePopup via existing openPopup() */
       inst.openPopup(originalIndex);
     }
   }
@@ -1907,11 +1372,7 @@ const MagicalPalette = (() => {
 
     /* Called by the shuffle button */
     shuffle() {
-      /* Spin animation on the button icon */
       const btn = document.querySelector(".mp-refresh-btn");
-      if (btn) {
-        // spinning animation removed
-      }
       render();
     },
 

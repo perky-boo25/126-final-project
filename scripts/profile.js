@@ -1,6 +1,6 @@
 //import firestore db
-import {db, auth} from "./firebase.js";
-import{ formatDate, formatTime, getMiniText} from "./helpers.js";
+import {db, auth} from "../firebase.js";
+import{ formatDate, formatTime, getMiniText} from "../helpers.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 
@@ -69,7 +69,7 @@ async function loadProfile(currentUserId){
     await loadPinnedPost(pinnedPostId);
     
 
-    profilePicture.src = user.profilePicture || "no-profile.png";
+    profilePicture.src = user.profilePicture || "/assets/images/no-profile.png";
     profileName.textContent = user.name || "";
     profileUsername.textContent = "@" + (user.username || "");
     profileBio.textContent = user.bio || "";
@@ -186,7 +186,7 @@ async function loadPinnedPost(pinnedPostId){
 
     const post = postSnap.data();
 
-    pinnedProfilePicture.src = post.userProfilePicture || "no-profile.png";
+    pinnedProfilePicture.src = post.userProfilePicture || "/assets/images/no-profile.png";
     pinnedUsername.textContent = "@" + (post.username || "username");
     pinnedType.textContent = getMiniText(post);
     pinnedDate.textContent = post.datePosted ? formatDate(post.datePosted) : "";
@@ -224,7 +224,7 @@ function renderCarousel(items, track){
                 slotHTML += `
                     <div class="favorite-slot">
                         <div class="cover-placeholder">
-                            <img src="${item.cover || "no-image.jpg"}" alt="cover">
+                            <img src="${item.cover || "/assets/images/no-image.jpg"}" alt="cover">
                         </div>
                         <p class="postcard-title">${item.title || "untitled"}</p>
                         <p class="postcard-meta">${item.type || ""}</p>
@@ -585,7 +585,7 @@ function fillEditModalFromProfile() {
     editName.value = profileName.textContent || "";
     editUsername.value = profileUsername.textContent.replace("@", "") || "";
     editBio.value = profileBio.textContent || "";
-    editProfilePicturePreview.src = profilePicture.src || "no-profile.png";
+    editProfilePicturePreview.src = profilePicture.src || "/assets/images/no-profile.png";
     editCurrentTrackTitle.value = currentTrackTitle.textContent || "";
     editCurrentTrackMeta.value = currentTrackMeta.textContent || "";
     selectedCurrentTrack.title = currentTrackTitle.textContent || "";

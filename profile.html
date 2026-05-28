@@ -7,22 +7,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Life+Savers:wght@400;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="profileStyle.css">
+    <link rel="stylesheet" href="/assets/css/profileStyle.css">
 </head>
 <body>
 
-<nav class="navbar">
-    <div class="nav-logo">Palette</div>
-    <div class="nav-links">
-        <a href="dashboard.html">Dashboard</a>
-        <span>|</span>
-        <a href="#">Logbook</a>
-        <span>|</span>
-        <a href="#">Discover</a>
-        <span>|</span>
-        <a href="profile.html" class="nav-active">Profile</a>
-    </div>
-</nav>
+<div id="navbar-placeholder"></div>
+<script src="/scripts/nav-bar.js"></script>
 
 <div class="profile-shell">
     <aside class="profile-sidebar">
@@ -51,9 +41,9 @@
     <main class="profile-main">
         <section class="profile-hero">
             <article class="card intro-card">
-                <p class="eyebrow">personal archive / postcard desk</p>
+                <p class="eyebrow">personal archive</p>
                 <h1>hello, this is my little corner.</h1>
-                <p class="intro-text">logs, entries, favorites, and recommendations live here.</p>
+                <p class="intro-text">logs, entries, favorites live here.</p>
 
                 <div class="stats-row">
                     <div class="stat-chip">
@@ -119,7 +109,7 @@
                     <div class="entry-main">
                         <div class="entry-topline">
                             <div class="profile-row">
-                                <img class="post-profile" id="pinned-post-profile" src="no-profile.png" alt="profile">
+                                <img class="post-profile" id="pinned-post-profile" src="/assets/images/no-profile.png" alt="profile">
                                 <div>
                                     <p class="username" id="pinned-username">@username</p>
                                     <p class="mini-meta" id="pinned-type">post</p>
@@ -173,7 +163,7 @@
                 <label class="field-block"><span>bio</span><textarea id="edit-bio" rows="4"></textarea></label>
                 <label class="field-block">
                     <span>profile picture</span>
-                    <div class="edit-photo-preview"><img id="edit-profile-picture-preview" src="no-profile.png" alt="profile preview"></div>
+                    <div class="edit-photo-preview"><img id="edit-profile-picture-preview" src="/assets/images/no-profile.png" alt="profile preview"></div>
                     <input id="edit-profile-picture-file" type="file" accept="image/*">
                 </label>
             </section>
@@ -249,6 +239,6 @@
     </div>
 </div>
 
-<script type="module" src="profile.js"></script>
+<script type="module" src="/scripts/profile.js"></script>
 </body>
 </html>

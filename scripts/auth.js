@@ -2,8 +2,8 @@
 // handles all firebase authentication logic
 // manages sign up, log-in, log out, and password reset
 
-import { auth } from "../../firebase.js";
-import { db } from "../../firebase.js";
+import { auth } from "../firebase.js";
+import { db } from "../firebase.js";
 import { doc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 import {
     createUserWithEmailAndPassword,

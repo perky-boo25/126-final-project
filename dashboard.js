@@ -102,7 +102,7 @@ async function loadActiveUsers(){
         userCard.className = "user-card";
 
         userCard.innerHTML = `
-            <img class="active-profile" src="${user.profilePicture || "no-profile.png"}" alt="profile">
+            <img class="active-profile" src="${user.profilePicture || "/assets/images/no-profile.png"}" alt="profile">
             <span class="active-username">@${user.username || "username"}</span>
             `;
 
@@ -198,7 +198,7 @@ function createPostElement(post){
         <div class="post-main">
             <div class="post-head">
                 <div class="profile-row">
-                    <img class="post-profile" src="${post.userProfilePicture || "no-profile.png"}" alt="profile">
+                    <img class="post-profile" src="${post.userProfilePicture || "/assets/images/no-profile.png"}" alt="profile">
                     <div>
                         <p class="username">@${post.username || "username"}</p>
                         <p class="mini-text">${getMiniText(post)}</p>
@@ -240,7 +240,7 @@ function createPostElement(post){
             <p class="stub-code">${post.tagType || ""}</p>
 
             <div class="stamp-box">
-                <img class="stamp-img" src="heart.png" alt="ink stamp placeholder">
+                <img class="stamp-img" src="/assets/images/heart.png" alt="ink stamp placeholder">
             </div>
 
             <p class="stub-rate">${formatRating(post.rating, post.type)}</p>

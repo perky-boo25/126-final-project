@@ -1194,3 +1194,20 @@ body.edit-modal-open .profile-shell {
 .empty-favorite-slot .cover-placeholder {
     border-style: dashed;
 }
+
+.pinned-media-box {
+    margin-top: 14px;
+    max-width: 50%;
+    max-height: 50%;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1.5px dashed var(--line);
+    background: rgba(255,255,255,0.48);
+    box-shadow: var(--shadow-soft);
+}
+
+.pinned-media-box img {
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}

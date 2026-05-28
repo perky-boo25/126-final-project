@@ -60,12 +60,13 @@ async function loadProfile(currentUserId){
     
 
     const user = userSnap.data()
+    pinnedPostId = user.pinnedPostId || "";
     editFavorites = user.favorites || [];
     editNotes = user.notes || [];
     renderCarousel(user.favorites || [], favoritesTrack);
     initCarousel("favorites-track");
     renderNotes(user.notes || []);
-    await loadPinnedPost(user.pinnedPostId);
+    await loadPinnedPost(pinnedPostId);
     
 
     profilePicture.src = user.profilePicture || "no-profile.png";
@@ -191,11 +192,17 @@ async function loadPinnedPost(pinnedPostId){
     pinnedDate.textContent = post.datePosted ? formatDate(post.datePosted) : "";
     pinnedTime.textContent = formatTime(post.datePosted);
 
-    pinnedBody.innerHTML=`
+    pinnedBody.innerHTML = `
         <p class="post-content">
             ${post.body || "welp, there's no pinned post here"}
         </p>
-    `;
+
+        ${post.imageUrl ? `
+            <div class="pinned-media-box">
+                <img src="${post.imageUrl}" alt="pinned post image">
+            </div>
+    ` : ""}
+`;
 }
 
 
@@ -350,13 +357,15 @@ const deezerSearchInput = document.getElementById("deezer-search-input");
 const deezerSearchBtn = document.getElementById("deezer-search-btn");
 const deezerSearchResults = document.getElementById("deezer-search-results");
 
+const removePinnedPostBtn = document.getElementById("remove-pinned-post-btn");
+
 let selectedCurrentTrack = {
     title: "",
     meta: "",
     previewUrl: "",
     cover: ""
 };
-
+let pinnedPostId = "";
 let currentAudio = null;
 let currentSearchTarget = "";
 let selectedProfilePictureDataUrl = "";
@@ -418,6 +427,16 @@ searchModalInput.addEventListener("input", function() {
         searchMixedMedia(searchModalInput.value, searchModalResults, currentSearchTarget);
     }, 350);
 });
+
+if (removePinnedPostBtn) {
+    removePinnedPostBtn.addEventListener("click", function() {
+        pinnedPostId = "";
+        pinnedBody.innerHTML = "<p class='post-content'>no featured post here</p>";
+        pinnedDate.textContent = "";
+        pinnedTime.textContent = "";
+        pinnedType.textContent = "post";
+    });
+}
 
 function openSearchModal(target) {
     currentSearchTarget = target;
@@ -664,7 +683,8 @@ if (saveProfileChangesBtn) {
             currentTrackPreviewUrl: selectedCurrentTrack.previewUrl || "",
             currentTrackCover: selectedCurrentTrack.cover || "",
             favorites: editFavorites,
-            notes: editNotes
+            notes: editNotes,
+            pinnedPostId: pinnedPostId,
         });
         
         profileName.textContent = editName.value;

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Logbook & Journal</title>
+  <link rel="stylesheet" href="/styles/logbook.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="navbar-placeholder"></div>
+  <script src="/scripts/nav-bar.js"></script>
+
+  <div class="page-wrapper">
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>My Logbook &amp; Journal</h1>
+        <p>
+         A creative space dedicated to documenting inspiration in all its forms — preserving the stories, emotions, and ideas that deserve to live beyond a single moment.
+        </p>
+        <div class="palette">
+          <span class="color c1"></span>
+          <span class="color c2"></span>
+          <span class="color c3"></span>
+          <span class="color c4"></span>
+          <span class="color c5"></span>
+        </div>
+        <div class="hero-sub-links">
+          <a href="logbook.html" class="hero-sub-active">Logbook</a>
+          <a href="journal.html">Journal</a>
+        </div>
+        <button class="add-btn" onclick="location.href='discover.html'">+ Add to Logbook</button>
+      </div>
+    </section>
+
+    <!-- TABS -->
+    <section class="tabs-section">
+      <div class="tabs-wrapper">
+
+        <!-- MUSIC -->
+        <div class="tab-group music">
+          <button class="tab-header">
+            <img src="/assets/images/music_tab.png" alt="Music">
+          </button>
+          <div class="folder-overlay">
+            <img class="folder-img" src="/assets/images/music_folder.png" alt="">
+            <div class="folder-entries music-folder-entries">
+              <div class="music-card-list" id="music-card-list">
+                <!-- Populated by logbook.js -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FILMS -->
+        <div class="tab-group films">
+          <button class="tab-header">
+            <img src="/assets/images/films_tab.png" alt="Films">
+          </button>
+          <div class="folder-overlay">
+            <img class="folder-img" src="/assets/images/films_folder.png" alt="">
+            <div class="folder-entries films-folder-entries">
+              <div class="film-card-list" id="film-card-list">
+                <!-- Populated by logbook.js -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOOKS -->
+        <div class="tab-group books">
+          <button class="tab-header">
+            <img src="/assets/images/books_tab.png" alt="Books">
+          </button>
+          <div class="folder-overlay">
+            <img class="folder-img" src="/assets/images/books_folder.png" alt="">
+            <div class="folder-entries books-folder-entries">
+              <div class="book-card-list" id="book-card-list">
+                <!-- Populated by logbook.js -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ART -->
+        <div class="tab-group art">
+          <button class="tab-header">
+            <img src="/assets/images/art_tab.png" alt="Art">
+          </button>
+          <div class="folder-overlay">
+            <img class="folder-img" src="/assets/images/art_folder.png" alt="">
+            <div class="folder-entries art-folder-entries">
+              <div class="art-masonry" id="art-masonry">
+                <!-- Populated by logbook.js -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ART MODAL -->
+  <div class="art-modal-overlay" id="artModalOverlay">
+    <div class="art-modal" id="artModal">
+      <button class="art-modal-close" id="artModalClose">✕</button>
+      <img class="art-modal-img" id="artModalImg" src="" alt="">
+      <div class="art-modal-body">
+        <p class="art-modal-title" id="artModalTitle"></p>
+        <p class="art-modal-artist" id="artModalArtist"></p>
+        <div class="art-modal-stars" id="artModalStars"></div>
+        <div class="art-modal-tags" id="artModalTags"></div>
+        <p class="art-modal-review" id="artModalReview"></p>
+        <p class="art-modal-added" id="artModalAdded"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/scripts/logbook.js"></script>
+</body>
+</html>

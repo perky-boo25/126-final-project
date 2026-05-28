@@ -26,3 +26,6 @@
   //Initialize firebase products to use
   export const db   = getFirestore(app);
   export const auth = getAuth(app);
+
+  window.db = db;
+  window.firebaseAuth = auth;

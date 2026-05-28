@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palette — Share Your Taste</title>
+    <link rel="stylesheet" href="/styles/sign-in-up-styles.css">
+</head>
+<body>
+    <div class="split-container">
+        <div class="left-side">
+        </div>
+
+        <div class="right-side">
+            <!-- X BUTTON -->
+            <button class="close-btn" onclick="document.location.href='/index.html'" aria-label="Close">&#x2715;</button>
+            <!--HEADER-->
+            <div class="card-header">
+                <div>
+                    <div class="brand">Palette Card</div>
+                </div>
+                <div>
+                    <div class="number">00XX</div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+        
+            <!--FIELDS-->
+            <div class="card-body">
+                <div class="field">
+                    <input type="text" id="username" placeholder="Username">
+                </div>
+                <div class="field">
+                    <input type="email" id="email" placeholder="Email">
+                </div>
+                <div class="field">
+                    <input type="password" id="password" placeholder="Password">
+                </div>
+                <p id="error-msg" style="color: red; font-size: 0.85rem; display: none;"></p>
+                <button id="signup-btn">Create Account</button>
+                <p>Already have an account?&nbsp;<a href="log-in.html" class="login-link">Log-in.</a></p>
+            </div>
+
+            <!--FOOTER-->
+            <div class="card-footer">
+                <span class="certify">This card certifies the bearer as a Palette user.</span>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="/scripts/auth-forms.js"></script>
+</body>
+</html>

@@ -188,7 +188,7 @@ async function loadPinnedPost(pinnedPostId){
     pinnedProfilePicture.src = post.userProfilePicture || "no-profile.png";
     pinnedUsername.textContent = "@" + (post.username || "username");
     pinnedType.textContent = getMiniText(post);
-    pinnedDate.textContent = formatDate(post.activityDate) || "";
+    pinnedDate.textContent = post.datePosted ? formatDate(post.datePosted) : "";
     pinnedTime.textContent = formatTime(post.datePosted);
 
     pinnedBody.innerHTML=`

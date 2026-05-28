@@ -248,10 +248,32 @@ function createPostElement(post){
     `;
 
     addStampInteraction(article);
+    addPinInteraction(article, post);
 
     return article;
 }
 
+function addPinInteraction(postElement, post) {
+    const pinBtn = postElement.querySelector(".pin-post-btn");
+
+    if (!pinBtn) {
+        return;
+    }
+
+    pinBtn.addEventListener("click", async function(event) {
+        event.stopPropagation();
+
+        const userRef = doc(db, "users", currentUserId);
+
+        await updateDoc(userRef, {
+            pinnedPostId: post.id
+        });
+
+        postElement.classList.add("is-pinned");
+
+        console.log("pinned post:", post.id);
+    });
+}
 
 // choose the asset based on category
 function getAsset(category, type) {

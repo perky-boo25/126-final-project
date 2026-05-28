@@ -1,8 +1,8 @@
 //import the firestore database from firebase.js
-import {db, auth} from "../firebase.js";
+import {db, auth} from "/firebase.js";
 
 //import helper functions
-import{ formatDate, formatTime, getMiniText, isToday} from "./helpers.js";
+import{ formatDate, formatTime, getMiniText, isToday} from "/scripts/helpers.js";
 
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
@@ -15,7 +15,8 @@ import {
     query,
     orderBy,
     getDocs,
-    limit
+    doc,
+    updateDoc
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 const feed = document.getElementById("feed");
@@ -45,28 +46,27 @@ onAuthStateChanged(auth, async function(user) {
 async function loadDashboardPosts(){
     const postsRef = collection(db, "posts");
 
-    //newest posts first
     const q = query(
         postsRef,
         orderBy("datePosted", "desc")
-    )
-
+    );
 
     const snapshot = await getDocs(q);
 
-    feed.innerHTML ="";
+    feed.innerHTML = "";
+    allPosts = [];
 
-    //create one post card for each document
     snapshot.forEach(function(docSnap) {
         const post = docSnap.data();
+
+        post.id = docSnap.id;
 
         allPosts.push(post);
     });
 
-    
-
     renderPosts(allPosts);
 }
+
 
 // shows the posts on the dashboard
 function renderPosts(posts) {
@@ -102,7 +102,7 @@ async function loadActiveUsers(){
         userCard.className = "user-card";
 
         userCard.innerHTML = `
-            <img class="active-profile" src="${user.profilePicture || "no-profile.png"}" alt="profile">
+            <img class="active-profile" src="${user.profilePicture || "/assets/images/no-profile.png"}" alt="profile">
             <span class="active-username">@${user.username || "username"}</span>
             `;
 
@@ -198,7 +198,7 @@ function createPostElement(post){
         <div class="post-main">
             <div class="post-head">
                 <div class="profile-row">
-                    <img class="post-profile" src="${post.userProfilePicture || "no-profile.png"}" alt="profile">
+                    <img class="post-profile" src="${post.userProfilePicture || "/assets/images/no-profile.png"}" alt="profile">
                     <div>
                         <p class="username">@${post.username || "username"}</p>
                         <p class="mini-text">${getMiniText(post)}</p>
@@ -229,6 +229,7 @@ function createPostElement(post){
         </div>
 
         <aside class="stub">
+        <button class="pin-post-btn" type="button" title="pin post">⌖</button>
     <div class="stub-cut"></div>
 
     
@@ -239,7 +240,7 @@ function createPostElement(post){
             <p class="stub-code">${post.tagType || ""}</p>
 
             <div class="stamp-box">
-                <img class="stamp-img" src="heart.png" alt="ink stamp placeholder">
+                <img class="stamp-img" src="/assets/images/heart.png" alt="ink stamp placeholder">
             </div>
 
             <p class="stub-rate">${formatRating(post.rating, post.type)}</p>
@@ -247,10 +248,32 @@ function createPostElement(post){
     `;
 
     addStampInteraction(article);
+    addPinInteraction(article, post);
 
     return article;
 }
 
+function addPinInteraction(postElement, post) {
+    const pinBtn = postElement.querySelector(".pin-post-btn");
+
+    if (!pinBtn) {
+        return;
+    }
+
+    pinBtn.addEventListener("click", async function(event) {
+        event.stopPropagation();
+
+        const userRef = doc(db, "users", currentUserId);
+
+        await updateDoc(userRef, {
+            pinnedPostId: post.id
+        });
+
+        postElement.classList.add("is-pinned");
+
+        console.log("pinned post:", post.id);
+    });
+}
 
 // choose the asset based on category
 function getAsset(category, type) {

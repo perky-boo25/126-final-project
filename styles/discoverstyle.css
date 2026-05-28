@@ -710,9 +710,6 @@ section {
   align-self: flex-end;
 }
 
-.book-cover-card:hover {
-  transform: translateY(-10px);
-}
 
 .book-cover-card img {
   width: 100%;
@@ -864,7 +861,6 @@ section {
 }
 
 .movie-poster-card:hover {
-  transform: scale(1.06) translateY(-4px);
   outline-color: #e8c97a;
   z-index: 2;
 }
@@ -902,15 +898,10 @@ section {
   right: 0;
   padding: 10px 10px 12px;
   z-index: 3;
-  transform: translateY(6px);
   opacity: 0;
-  transition:
-    opacity 0.25s,
-    transform 0.25s;
 }
 .movie-poster-card:hover .movie-poster-info {
   opacity: 1;
-  transform: translateY(0);
 }
 
 .movie-poster-title {
@@ -2904,3 +2895,4 @@ section {
   justify-content: center;
   padding: 20px;
 }
+

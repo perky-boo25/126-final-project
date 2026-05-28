@@ -2896,3 +2896,114 @@ section {
   padding: 20px;
 }
 
+/* ================================================================
+   VIEW-ALL MODAL — STATIC POLAROID CARDS (Letters/Journals)
+   ================================================================ */
+.view-all-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.static-pin-card {
+  flex-shrink: 0;
+  width: 200px;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 10px 10px 28px;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(44, 26, 30, 0.12);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.static-pin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(44, 26, 30, 0.18);
+}
+
+/* Tape strip */
+.static-pin-card::before {
+  content: "";
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 22px;
+  background: rgba(199, 130, 142, 0.35);
+  border-radius: 3px;
+  z-index: 2;
+}
+
+/* Photo area */
+.static-pin-card-img {
+  width: 100%;
+  height: 140px;
+  background: #f0e8ea;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.static-pin-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Typography */
+.static-pin-card-title {
+  font-family: "Playfair Display", serif;
+  font-size: 13.5px;
+  color: #2c1a1e;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+
+.static-pin-card-sub {
+  font-size: 10.5px;
+  color: #a07878;
+  font-weight: 300;
+}
+
+.static-pin-card-snippet {
+  font-size: 10px;
+  color: #7c5d62;
+  line-height: 1.6;
+  margin-top: 6px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+
+/* Heart Button on the Polaroid */
+.static-pin-card .heart-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: #c97d87;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+  transition:
+    color 0.2s,
+    transform 0.15s;
+}
+
+.static-pin-card .heart-btn.liked {
+  color: #e84393;
+}
+
+.static-pin-card .heart-btn:hover {
+  transform: scale(1.15);
+}
